@@ -5,6 +5,15 @@ service cloud.firestore {
       allow read;
       allow write: if request.auth.uid != null;
     }
+      match /statements/{statementId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+    match /statementsSubscribe/{statementSubId=**}{
+      allow read;
+      allow write: if request.auth.uid != null;
+    }
+    
     match /posts/{postId=**}{
       allow read;
       allow write: if request.auth.uid != null;
