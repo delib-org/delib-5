@@ -11,7 +11,7 @@ const SetStatement = () => {
             const data = new FormData(ev.currentTarget);
            
             const newStatement:any = Object.fromEntries(data.entries());
-            console.log(newStatement)
+           
             StatementSchema.parse(newStatement)
 
             setStatment(newStatement);

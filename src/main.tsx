@@ -11,26 +11,35 @@ import { listeToAuth } from './functions/db/auth';
 import App from './view/pages/home/App';
 import Main from './view/pages/main/Main';
 import SetStatement from './view/features/statement/SetStatement';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query';
+const queryClient = new QueryClient()
+
 
 listeToAuth
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Start/>
+    element: <Start />
 
   },
   {
     path: "/home",
-    element:<App/>,
+    element: <App />,
     children: [
       {
         path: "",
-        element: <Main/>
+        element: <Main />
       },
       {
         path: "addStatment",
-        element: <SetStatement/>
+        element: <SetStatement />
       }
     ]
   }
@@ -38,6 +47,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-     <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </React.StrictMode>,
 )
