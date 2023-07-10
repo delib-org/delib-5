@@ -8,12 +8,13 @@ import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHo
 import { setStatementSubscription, statementSubscriptionSelector, statementsSelector } from '../../../model/slices/statements/statementsSlice';
 import { auth } from '../../../functions/db/auth';
 import useAuth from '../../../functions/hooks/authHooks';
+import StatementCard from '../../features/statement/StatementCard';
 
 let unsubscribe: Function = () => { };
 
 const Main = () => {
     const navigate = useNavigate();
-    const statements = useAppSelector(statementSubscriptionSelector);
+    const statements = [...useAppSelector(statementSubscriptionSelector)].sort((a, b) => b.lastUpdate - a.lastUpdate);
     const isLgged = useAuth();
     const dispatch = useAppDispatch();
     
@@ -42,7 +43,7 @@ const Main = () => {
             <h1>Main</h1>
             <Fav onclick={handleAddStatment} />
 
-            {statements.map((statement: StatementSubscription) => <p key={statement.statement.statementId}>{statement.statement.statement}</p>)}
+            {statements.map((statement: StatementSubscription) => <StatementCard key={statement.statement.statementId} statement={statement.statement}/>)}
         </div>
     )
 }

@@ -14,6 +14,7 @@ import SetStatement from './view/features/statement/SetStatement';
 
 import { store } from './model/store'
 import { Provider } from 'react-redux'
+import Statement from './view/pages/statement/Statement';
 
 
 
@@ -22,8 +23,8 @@ listeToAuth
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Start />
-
+    element: <Start />,
+    errorElement: <div>Not Found</div>
   },
   {
     path: "/home",
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "addStatment",
         element: <SetStatement />
+      },
+      {
+        path:"statement/:statementId",
+        element:<Statement />
       }
     ]
   }

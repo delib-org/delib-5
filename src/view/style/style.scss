@@ -1,6 +1,7 @@
 @import './input.scss';
 @import './start.scss';
 @import './buttons.scss';
+@import "./statementCard.scss";
 
 :root {
     --mainBackground: #32527b;
@@ -120,6 +121,8 @@ body {
     padding: 10px;
     margin: 5px;
     box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
 }
 
 .card h2 {
