@@ -11,6 +11,7 @@ const SetStatement = () => {
             const data = new FormData(ev.currentTarget);
            
             const newStatement:any = Object.fromEntries(data.entries());
+            newStatement.statementId = crypto.randomUUID();
            
             StatementSchema.parse(newStatement)
 

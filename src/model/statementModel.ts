@@ -2,6 +2,7 @@ import {z} from 'zod';
 
 export const StatementSchema = z.object({
     statement:z.string(),
+    statementId:z.string()
 });
 
 export type Statement = z.infer<typeof StatementSchema>;
@@ -10,8 +11,9 @@ export const StatementSubscriptionSchema = z.object({
     role:z.string(),
     userId:z.string(),
     statementId:z.string(),
-    lastUpdate:z.date(),
-    statementsSubscribeId:z.string().optional(),
+    lastUpdate:z.number(),
+    statementsSubscribeId:z.string(),
+    statement:StatementSchema
 });
 
 export type StatementSubscription = z.infer<typeof StatementSubscriptionSchema>;

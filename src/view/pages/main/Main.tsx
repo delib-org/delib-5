@@ -1,19 +1,38 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
-import { useQueryClient,useQuery } from 'react-query';
-import { getStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
-import { StatementSubscription } from '../../../model/statementModel';
 
+import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
+import { Statement, StatementSubscription } from '../../../model/statementModel';
+import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
+import { setStatementSubscription, statementSubscriptionSelector, statementsSelector } from '../../../model/slices/statements/statementsSlice';
+import { auth } from '../../../functions/db/auth';
+import useAuth from '../../../functions/hooks/authHooks';
 
+let unsubscribe: Function = () => { };
 
 const Main = () => {
     const navigate = useNavigate();
+    const statements = useAppSelector(statementSubscriptionSelector);
+    const isLgged = useAuth();
+    const dispatch = useAppDispatch();
+    
+    function updateStoreStSubCB(statementSubscription: StatementSubscription) {
+        dispatch(setStatementSubscription(statementSubscription));
+    }
 
-      // Access the client
-  const queryClient = useQueryClient()
-  const {data, error, isLoading} = useQuery('subs', getStatmentsSubsciptions)
-  console.log(data)
-  console.log(error)
+    useEffect(() => {
+    console.log(isLgged)
+        if (isLgged) {
+            unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB);
+        }
+        return () => {
+            unsubscribe()
+        }
+    }, [isLgged])
+    // Access the client
+
+
 
     function handleAddStatment() {
         navigate('/home/addStatment')
@@ -22,9 +41,8 @@ const Main = () => {
         <div>
             <h1>Main</h1>
             <Fav onclick={handleAddStatment} />
-            {isLoading? <p>Loading...</p>
-            :
-            data?.map((item:StatementSubscription) => <p key={item.statementsSubscribeId}>{item.statementId}</p>)}
+
+            {statements.map((statement: StatementSubscription) => <p key={statement.statement.statementId}>{statement.statement.statement}</p>)}
         </div>
     )
 }

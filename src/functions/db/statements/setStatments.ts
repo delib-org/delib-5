@@ -7,14 +7,15 @@ import { Role } from "../../../model/role";
 
 export async function setStatment(statement: Statement) {
     try {
+        StatementSchema.parse(statement);
+
         const user = auth.currentUser;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
 
-        const statementId = crypto.randomUUID();
+        const statementId = statement.statementId;
         const statementsSubscribeId = `${user.uid}--${statementId}`;
-
-        StatementSchema.parse(statement);
+       
 
         //set statement
 
@@ -24,7 +25,7 @@ export async function setStatment(statement: Statement) {
         //add subscription
 
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
-        await setDoc(statementsSubscribeRef, { statementsSubscribeId, role: Role.admin, userId: user.uid, statementId, lastUpdate: Timestamp.fromDate(new Date()) }, { merge: true });
+        await setDoc(statementsSubscribeRef, {statement, statementsSubscribeId, role: Role.admin, userId: user.uid, statementId, lastUpdate: Timestamp.fromDate(new Date()) }, { merge: true });
     } catch (error) {
         console.error(error);
     }
