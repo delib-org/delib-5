@@ -5,7 +5,7 @@ import { Collections } from "../collections";
 import { auth } from "../auth";
 import { Role } from "../../../model/role";
 
-export async function setStatment(statement: Statement) {
+export async function setStatmentToDB(statement: Statement) {
     try {
         StatementSchema.parse(statement);
 

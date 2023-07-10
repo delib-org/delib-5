@@ -2,7 +2,9 @@ import {z} from 'zod';
 
 export const StatementSchema = z.object({
     statement:z.string(),
-    statementId:z.string()
+    statementId:z.string(),
+    creatorId:z.string(),
+    parentId:z.string(),
 });
 
 export type Statement = z.infer<typeof StatementSchema>;
