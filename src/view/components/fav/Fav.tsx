@@ -5,7 +5,7 @@ interface Props {
 }
 const Fav:FC<Props> = ({onclick}) => {
   return (
-    <div className="fav" onClick={(ev)=>onclick?onclick(ev):null}><div>+</div></div>
+    <div className="fav fav--fixed" onClick={(ev)=>onclick?onclick(ev):null}><div>+</div></div>
   )
 }
 

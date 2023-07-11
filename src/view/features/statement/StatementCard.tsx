@@ -10,6 +10,7 @@ const StatementCard: FC<Props> = ({ statement }) => {
         <Link to={`/home/statement/${statement.statementId}`}>
             <div className='card statementCard' >
                 <h3>{statement.statement}</h3>
+                {statement.lastMessage?<p>{statement.lastMessage}</p>:null}
             </div>
         </Link>
     )

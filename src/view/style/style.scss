@@ -2,6 +2,7 @@
 @import './start.scss';
 @import './buttons.scss';
 @import "./statementCard.scss";
+@import "./statement.scss";
 
 :root {
     --mainBackground: #32527b;
@@ -72,6 +73,20 @@ body {
 .page {
     width: 100vw;
     height: 100vh;
+
+    &__header{
+        box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.486);
+        z-index: 100;
+    }
+    &__main{
+        overflow-y: auto;
+        flex: auto;
+    }
+    &__footer{
+        // box-shadow: 0px -3px 9px rgba(0, 0, 0, 0.486);
+        z-index: 100;
+    
+    }
 }
 
 .page__grid{
@@ -81,20 +96,11 @@ body {
      width: 100vw;
 }
 
-.page__header{
-    box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.486);
-    z-index: 100;
-}
 
-.page__main{
-    overflow-y: auto;
-}
 
-.page__footer{
-    box-shadow: 0px -3px 9px rgba(0, 0, 0, 0.486);
-    z-index: 100;
 
-}
+
+
 
 
 

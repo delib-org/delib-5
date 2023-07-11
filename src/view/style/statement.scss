@@ -1,0 +1,46 @@
+.statement {
+    display: flex;
+    flex-direction: column;
+
+
+    &__input {
+        width: 100vw;
+        display: flex;
+        flex-direction: row;
+        padding: 5px;
+        box-sizing: border-box;
+
+        align-items: center;
+
+        >* {
+            margin: 5px;
+        }
+
+        button {
+           
+            width: 60px;
+            height: 60px;
+            border: none;
+
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                transform: rotate(180deg) translateX(16px);
+            }
+
+        }
+
+        textarea {
+            border-radius: 30px;
+            min-height: 5ch;
+            flex: auto;
+            padding: 5px 15px;
+            color: gray;
+            resize: none;
+            outline: none;
+        }
+    }
+}

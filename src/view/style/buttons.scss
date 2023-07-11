@@ -4,45 +4,64 @@
     width: 60px;
     height: 60px;
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
     justify-content: center;
-    position: fixed;
-    right: 6vw;
-    bottom: 11vh;
+    position: relative;
     border-radius: 50%;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
     user-select: none;
     cursor: pointer;
     z-index: 200;
+
+    &:active {
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    &--blink {
+        /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+        animation: blinkFav 200ms ease-in-out 0s 35 alternate;
+    }
+
+    &--fixed {
+        position: fixed;
+        right: 6vw;
+        bottom: 11vh;
+    }
+
+    &>div {
+        z-index: 100;
+        transform: scale(1);
+        color: white;
+        text-align: center;
+        font-size: 3rem;
+        background: var(--accent);
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        // position: absolute;
+        // left: 50%;
+        /* right: 50%; */
+        // top: 50%;
+        // transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        svg {
+            transform: rotate(180deg) translateX(16px);
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
 }
 
-.fav:active {
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
 
-.fav>div {
-    transform: scale(1);
-    color: white;
-    text-align: center;
-    font-size: 3rem;
-    background: var(--accent);
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    position: absolute;
-    left: 50%;
-    /* right: 50%; */
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
 
-.fav--blink {
-    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
-    animation: blinkFav 200ms ease-in-out 0s 35 alternate;
-}
+
+
 
 @keyframes blinkFav {
     from {

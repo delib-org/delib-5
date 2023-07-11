@@ -91,7 +91,7 @@ export function listenToStatementsOfStatment(statementId:string|undefined, updat
           
             statementsDB.forEach((statementDB) => {
                 const statement = statementDB.data() as Statement;
-                console.log('listenToStatementsOfStatment', statement);
+               
                 updateStore(statement);
             });
         });

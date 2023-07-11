@@ -23,19 +23,21 @@ const Statement: FC = () => {
     useEffect(() => {
         if (statementId)
             unsub = listenToStatement(statementId, updateStoreStatementCB)
-            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB)
+        unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB)
         return () => {
             unsub()
         }
     }, [statementId])
     return (
-        <div className="page">
+        <div className="page statement">
             <Link to="/home"><button>Back</button></Link>
             <h1>{statement?.statement}</h1>
-            <div className="chatWrapper">
+            <div className="page__main chatWrapper">
                 {statementSubs?.map((statement) => <StatementChat key={statement.statementId} statement={statement} />)}
             </div>
-            {statement?<StatementInput statement={statement}  />:null}
+
+            {statement ? <StatementInput statement={statement} /> : null}
+
         </div>
     )
 }

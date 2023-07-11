@@ -23,7 +23,7 @@ const Main = () => {
     }
 
     useEffect(() => {
-    console.log(isLgged)
+  
         if (isLgged) {
             unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB);
         }
