@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { Collections } from "../collections";
 import { Statement, StatementSubscription } from "../../../model/statementModel";
 import { DB } from "../config";
@@ -53,11 +53,11 @@ export function listenStatmentsSubsciptions(cb: Function): Function {
         // const statementsSubscriptions: StatementSubscription[] = [];
         return onSnapshot(q, (subsDB) => {
             subsDB.forEach((subDB) => {
-              
+
                 const statementSubscription = subDB.data() as any;
                 statementSubscription.lastUpdate = statementSubscription.lastUpdate;
                 cb(statementSubscription);
-              
+
 
             });
         })
@@ -67,6 +67,26 @@ export function listenStatmentsSubsciptions(cb: Function): Function {
         return () => { };
     }
 }
+
+export async function getIsSubscribed(statementId: string | undefined): Promise<boolean> {
+    try {
+        if (!statementId) throw new Error("Statement id is undefined");
+        const user = auth.currentUser;
+        if (!user) throw new Error("User not logged in");
+
+        const subscriptionRef = doc(DB, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
+        const subscriptionDB = await getDoc(subscriptionRef);
+        console.log('subscriptionDB.exists', subscriptionDB.exists());
+        if (!subscriptionDB.exists()) return false;
+        return true;
+
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+
+}
+
 
 export function listenToStatement(statementId: string, updateStore: Function) {
     try {
@@ -82,16 +102,16 @@ export function listenToStatement(statementId: string, updateStore: Function) {
     }
 }
 
-export function listenToStatementsOfStatment(statementId:string|undefined, updateStore:Function){
+export function listenToStatementsOfStatment(statementId: string | undefined, updateStore: Function) {
     try {
-        if(!statementId) throw new Error("Statement id is undefined");
+        if (!statementId) throw new Error("Statement id is undefined");
         const statementsRef = collection(DB, Collections.statements);
         const q = query(statementsRef, where("parentId", "==", statementId));
         return onSnapshot(q, (statementsDB) => {
-          
+
             statementsDB.forEach((statementDB) => {
                 const statement = statementDB.data() as Statement;
-               
+
                 updateStore(statement);
             });
         });

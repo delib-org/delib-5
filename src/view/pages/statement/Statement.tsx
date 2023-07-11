@@ -1,17 +1,23 @@
 import { FC, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom'
-import { listenToStatement, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
+import { getIsSubscribed, listenToStatement, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, statementSelector, statementSubsSelector } from '../../../model/slices/statements/statementsSlice';
 import { Statement } from '../../../model/statementModel';
 import StatementInput from './StatementInput';
 import StatementChat from '../../features/statement/StatementChat';
+import { auth } from '../../../functions/db/auth';
+import { Role } from '../../../model/role';
+import { setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
 
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
 const Statement: FC = () => {
     const dispatch = useAppDispatch();
     const { statementId } = useParams();
+    const user = auth.currentUser;
+
+    //check if the user is registered
 
     const statement = useAppSelector(statementSelector(statementId));
     const statementSubs = useAppSelector(statementSubsSelector(statementId));
@@ -21,13 +27,34 @@ const Statement: FC = () => {
     }
 
     useEffect(() => {
-        if (statementId)
-            unsub = listenToStatement(statementId, updateStoreStatementCB)
-        unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB)
+        if (statementId) {
+           
+            unsub = listenToStatement(statementId, updateStoreStatementCB);
+            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB);
+
+        }
+
         return () => {
             unsub()
         }
     }, [statementId])
+
+    useEffect(() => {
+        if (statement) {
+            
+            (async () => {
+                console.log('statement exists useEffect')
+                const isSubscribed = await getIsSubscribed(statementId)
+                console.log('isSubscribed', isSubscribed);
+
+                // if isSubscribed is false, then subscribe
+                if (!isSubscribed) {
+                    // subscribe
+                    setStatmentSubscriptionToDB(statement, Role.member)
+                }
+            })();
+        }
+    }, [statement])
     return (
         <div className="page statement">
             <Link to="/home"><button>Back</button></Link>
