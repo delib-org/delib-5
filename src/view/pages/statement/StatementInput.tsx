@@ -23,6 +23,7 @@ function handleAddStatement(e:any){
         }
          
         setStatmentToDB(newStatement);
+        e.target.reset();
     } catch (error) {
         console.error(error);
     }

@@ -81,3 +81,22 @@ export function listenToStatement(statementId: string, updateStore: Function) {
         return () => { };
     }
 }
+
+export function listenToStatementsOfStatment(statementId:string|undefined, updateStore:Function){
+    try {
+        if(!statementId) throw new Error("Statement id is undefined");
+        const statementsRef = collection(DB, Collections.statements);
+        const q = query(statementsRef, where("parentId", "==", statementId));
+        return onSnapshot(q, (statementsDB) => {
+          
+            statementsDB.forEach((statementDB) => {
+                const statement = statementDB.data() as Statement;
+                console.log('listenToStatementsOfStatment', statement);
+                updateStore(statement);
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        return () => { };
+    }
+}
