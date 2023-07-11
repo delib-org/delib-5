@@ -55,7 +55,7 @@ export function listenStatmentsSubsciptions(cb: Function): Function {
             subsDB.forEach((subDB) => {
               
                 const statementSubscription = subDB.data() as any;
-                statementSubscription.lastUpdate = statementSubscription.lastUpdate.seconds;
+                statementSubscription.lastUpdate = statementSubscription.lastUpdate;
                 cb(statementSubscription);
               
 
