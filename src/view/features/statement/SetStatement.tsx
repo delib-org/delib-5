@@ -1,9 +1,11 @@
 import React from 'react'
-import { Statement, StatementSchema } from '../../../model/statementModel';
-import { setStatment } from '../../../functions/db/statements/setStatments';
-import { Link } from 'react-router-dom';
+import { StatementSchema } from '../../../model/statementModel';
+import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
+import { Link, useParams } from 'react-router-dom';
+import { auth } from '../../../functions/db/auth';
 
 const SetStatement = () => {
+    const {statementId} = useParams();
     function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
             
@@ -12,10 +14,12 @@ const SetStatement = () => {
            
             const newStatement:any = Object.fromEntries(data.entries());
             newStatement.statementId = crypto.randomUUID();
+            newStatement.creatorId = auth.currentUser?.uid;
+            newStatement.parentId = statementId ||"top";
            
             StatementSchema.parse(newStatement)
 
-            setStatment(newStatement);
+            setStatmentToDB(newStatement);
             ev.currentTarget.reset();
         } catch (error) {
             console.error(error)

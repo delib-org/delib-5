@@ -4,6 +4,7 @@ import { listenToStatement } from '../../../functions/db/statements/getStatement
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, statementSelector } from '../../../model/slices/statements/statementsSlice';
 import { Statement } from '../../../model/statementModel';
+import StatementInput from './StatementInput';
 
 let unsub: Function = () => { }
 const Statement: FC = () => {
@@ -28,6 +29,7 @@ const Statement: FC = () => {
         <div className="page">
             <Link to="/home"><button>Back</button></Link>
             <h1>{statement?.statement}</h1>
+            {statement?<StatementInput statement={statement}  />:null}
         </div>
     )
 }

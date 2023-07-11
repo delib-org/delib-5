@@ -31,8 +31,7 @@ export const statementsSlicer = createSlice({
     },
     setStatementSubscription: (state, action: PayloadAction<StatementSubscription>) => {
       try {
-        console.log('setStatementSubscription')
-        console.log(action.payload)
+    
         StatementSubscriptionSchema.parse(action.payload);
         state.statementSubscription = updateArray(state.statementSubscription, action.payload, "statementsSubscribeId");
       } catch (error) {
