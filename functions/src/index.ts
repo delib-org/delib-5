@@ -7,10 +7,10 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import { updateSubscribedListnersCB } from "./fn_statements";
+import { updateSubscribedListnersCB,updateParentWithNewMessageCB } from "./fn_statements";
 
 // const { onRequest } = require("firebase-functions/v2/https");
-const { onDocumentUpdated } = require("firebase-functions/v2/firestore");
+const { onDocumentUpdated,onDocumentCreated } = require("firebase-functions/v2/firestore");
 
 // The Firebase Admin SDK to access Firestore.
 const { initializeApp } = require("firebase-admin/app");
@@ -23,3 +23,4 @@ export const db = getFirestore();
 // update subscribers when statement is updated
 exports.updateSubscribedListners = onDocumentUpdated("/statements/{statementId}",updateSubscribedListnersCB);
 
+exports.updateParentWithNewMessage = onDocumentCreated("/statements/{statementId}",updateParentWithNewMessageCB);

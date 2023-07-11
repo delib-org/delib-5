@@ -6,6 +6,7 @@ export const StatementSchema = z.object({
     creatorId:z.string(),
     parentId:z.string(),
     hasChildren:z.boolean().optional(),
+    lastMessage:z.string().optional(),
 });
 
 export type Statement = z.infer<typeof StatementSchema>;

@@ -3,7 +3,7 @@ import { Timestamp } from "firebase-admin/firestore";
 import { db } from "./index";
 
 export async function updateSubscribedListnersCB(event: any) {
- 
+
 
   //get all subscribers
   const { statementId } = event.params;
@@ -26,10 +26,28 @@ export async function updateSubscribedListnersCB(event: any) {
     }
 
   });
-
-
-
-
-
   return
+}
+
+export async function updateParentWithNewMessageCB(e: any) {
+  try {
+    //get parentId
+    const statement = e.data.data();
+    const parentId = statement.parentId;
+    if (!parentId) throw new Error("parentId not found");
+    if (parentId !== "top") {
+      //get parent
+      const parentRef = db.doc(`statements/${parentId}`);
+      const parentDB = await parentRef.get();
+      const parent = parentDB.data();
+      if (!parent) throw new Error("parent not found");
+      //update parent
+      const lastMessage = statement.statement;
+      const lastUpdate = Timestamp.now().toMillis();
+      parentRef.update({ lastMessage, lastUpdate });
+    }
+    return
+  } catch (error) {
+    return
+  }
 }
