@@ -32,7 +32,7 @@ const Statement: FC = () => {
         <div className="page statement">
             <Link to="/home"><button>Back</button></Link>
             <h1>{statement?.statement}</h1>
-            <div className="page__main chatWrapper">
+            <div className="page__main wrapper">
                 {statementSubs?.map((statement) => <StatementChat key={statement.statementId} statement={statement} />)}
             </div>
 

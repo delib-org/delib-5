@@ -2,6 +2,26 @@
     display: flex;
     flex-direction: column;
 
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap:15px;
+        .statement__chatCard {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+
+            &--me{
+                border-radius: 10px 10px 0px 10px;
+                background-color: #bcefbc;
+            }
+            &--other{
+                border-radius: 10px 10px 10px 0px;
+                background-color: #e0e0e0;
+            }
+        }
+    }
+
 
     &__input {
         width: 100vw;
@@ -17,7 +37,7 @@
         }
 
         button {
-           
+
             width: 60px;
             height: 60px;
             border: none;
