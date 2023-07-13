@@ -5,20 +5,42 @@
     .wrapper {
         display: flex;
         flex-direction: column;
-        gap:15px;
-        .statement__chatCard {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
+        gap: 15px;
 
-            &--me{
-                border-radius: 10px 10px 0px 10px;
-                background-color: #bcefbc;
+        .statement {
+            &__chatCard {
+                display: flex;
+                gap: 10px;
+                &__main {
+                    flex: auto;
+                    background-color: white;
+                    padding: 20px;
+                    border-radius: 10px;
+
+                    &--me {
+                        border-radius: 10px 10px 0px 10px;
+                        background-color: #bcefbc;
+                    }
+
+                    &--other {
+                        border-radius: 10px 10px 10px 0px;
+                        background-color: #e0e0e0;
+                    }
+                }
+
+                &__profile {
+                    // position: absolute;
+                    // top: -5px;
+                    // right: -20px;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50px;
+                    background-color: teal;
+                    background-size: contain;
+                }
             }
-            &--other{
-                border-radius: 10px 10px 10px 0px;
-                background-color: #e0e0e0;
-            }
+
+
         }
     }
 

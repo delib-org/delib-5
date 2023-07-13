@@ -76,7 +76,7 @@ export async function getIsSubscribed(statementId: string | undefined): Promise<
 
         const subscriptionRef = doc(DB, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
         const subscriptionDB = await getDoc(subscriptionRef);
-        console.log('subscriptionDB.exists', subscriptionDB.exists());
+     
         if (!subscriptionDB.exists()) return false;
         return true;
 

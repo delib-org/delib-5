@@ -28,7 +28,7 @@ const Statement: FC = () => {
 
     useEffect(() => {
         if (statementId) {
-           
+
             unsub = listenToStatement(statementId, updateStoreStatementCB);
             unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB);
 
@@ -41,12 +41,11 @@ const Statement: FC = () => {
 
     useEffect(() => {
         if (statement) {
-            
-            (async () => {
-                console.log('statement exists useEffect')
-                const isSubscribed = await getIsSubscribed(statementId)
-                console.log('isSubscribed', isSubscribed);
 
+            (async () => {
+             
+                const isSubscribed = await getIsSubscribed(statementId)
+    
                 // if isSubscribed is false, then subscribe
                 if (!isSubscribed) {
                     // subscribe
