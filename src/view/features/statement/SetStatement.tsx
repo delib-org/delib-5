@@ -1,5 +1,5 @@
 import React from 'react'
-import { StatementSchema } from '../../../model/statementModel';
+import { StatementSchema, StatementType } from '../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
 import { Link, useParams } from 'react-router-dom';
 import { auth } from '../../../functions/db/auth';
@@ -16,6 +16,7 @@ const SetStatement = () => {
             newStatement.statementId = crypto.randomUUID();
             newStatement.creatorId = auth.currentUser?.uid;
             newStatement.parentId = statementId ||"top";
+            newStatement.type = StatementType.GROUP;
            
             StatementSchema.parse(newStatement)
 

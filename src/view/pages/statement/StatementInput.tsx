@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Statement } from '../../../model/statementModel'
+import { Statement, StatementType } from '../../../model/statements/statementModel'
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
 import { auth } from '../../../functions/db/auth';
 import SendIcon from '@mui/icons-material/Send';
@@ -21,6 +21,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
                 statementId: crypto.randomUUID(),
                 creatorId: userId,
                 parentId: statement.statementId,
+                type: StatementType.STATEMENT,
             }
 
             setStatmentToDB(newStatement);

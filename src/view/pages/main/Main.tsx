@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
 
 import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
-import { Statement, StatementSubscription } from '../../../model/statementModel';
+import { Statement, StatementSubscription } from '../../../model/statements/statementModel';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatementSubscription, statementSubscriptionSelector, statementsSelector } from '../../../model/slices/statements/statementsSlice';
+import { setStatementSubscription, statementSubscriptionSelector, statementsSelector } from '../../../model/statements/statementsSlice';
 import { auth } from '../../../functions/db/auth';
 import useAuth from '../../../functions/hooks/authHooks';
 import StatementCard from '../../features/statement/StatementCard';

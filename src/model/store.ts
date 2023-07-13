@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { statementsSlicer } from './slices/statements/statementsSlice'
+import { statementsSlicer } from './statements/statementsSlice'
 // ...
 
 export const store = configureStore({

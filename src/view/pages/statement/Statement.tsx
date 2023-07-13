@@ -2,8 +2,8 @@ import { FC, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatement, statementSelector, statementSubsSelector } from '../../../model/slices/statements/statementsSlice';
-import { Statement } from '../../../model/statementModel';
+import { setStatement, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
+import { Statement } from '../../../model/statements/statementModel';
 import StatementInput from './StatementInput';
 import StatementChat from '../../features/statement/StatementChat';
 import { auth } from '../../../functions/db/auth';

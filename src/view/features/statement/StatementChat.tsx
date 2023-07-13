@@ -1,5 +1,5 @@
 import {FC} from 'react'
-import { Statement } from '../../../model/statementModel'
+import { Statement } from '../../../model/statements/statementModel'
 import { auth } from '../../../functions/db/auth'
 
 interface Props{

@@ -1,9 +1,9 @@
 import { isEqual } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../../store'
-import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from '../../statementModel'
-import { updateArray } from '../../../functions/general/helpers';
+import { RootState } from '../store'
+import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from './statementModel'
+import { updateArray } from '../../functions/general/helpers';
 
 // Define a type for the slice state
 interface StatementsState {

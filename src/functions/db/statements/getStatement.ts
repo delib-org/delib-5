@@ -1,9 +1,9 @@
 import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { Collections } from "../collections";
-import { Statement, StatementSubscription } from "../../../model/statementModel";
+import { Statement, StatementSubscription, StatementType } from "../../../model/statements/statementModel";
 import { DB } from "../config";
 import { auth } from "../auth";
-import { setStatement, setStatementSubscription } from "../../../model/slices/statements/statementsSlice";
+import { setStatement, setStatementSubscription } from "../../../model/statements/statementsSlice";
 
 
 
@@ -48,7 +48,7 @@ export function listenStatmentsSubsciptions(cb: Function): Function {
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
         const statementsSubscribeRef = collection(DB, Collections.statementsSubscribe);
-        const q = query(statementsSubscribeRef, where("userId", "==", user.uid), orderBy("lastUpdate", "desc"));
+        const q = query(statementsSubscribeRef, where("statement.type", "==", StatementType.GROUP), where("userId", "==", user.uid), orderBy("lastUpdate", "desc"));
         // const querySnapshot = await getDocs(q);
         // const statementsSubscriptions: StatementSubscription[] = [];
         return onSnapshot(q, (subsDB) => {

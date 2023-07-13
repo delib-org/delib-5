@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Statement } from '../../../model/statementModel'
+import { Statement } from '../../../model/statements/statementModel'
 import { Link } from 'react-router-dom'
 interface Props {
     statement: Statement

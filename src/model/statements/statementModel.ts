@@ -1,5 +1,14 @@
 import {z} from 'zod';
 
+export enum StatementType {
+    STATEMENT = 'statement',
+    GROUP = 'GROUP'
+};
+
+const statementType = z.enum([StatementType.STATEMENT, StatementType.GROUP]);
+
+
+
 export const StatementSchema = z.object({
     statement:z.string(),
     statementId:z.string(),
@@ -7,6 +16,7 @@ export const StatementSchema = z.object({
     parentId:z.string(),
     hasChildren:z.boolean().optional(),
     lastMessage:z.string().optional(),
+    type:statementType,
 });
 
 export type Statement = z.infer<typeof StatementSchema>;

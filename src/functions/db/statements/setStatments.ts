@@ -1,5 +1,5 @@
 import { Timestamp, doc, setDoc } from "firebase/firestore";
-import { Statement, StatementSchema } from "../../../model/statementModel";
+import { Statement, StatementSchema } from "../../../model/statements/statementModel";
 import { DB } from "../config";
 import { Collections } from "../collections";
 import { auth } from "../auth";
@@ -9,13 +9,7 @@ export async function setStatmentToDB(statement: Statement) {
     try {
         StatementSchema.parse(statement);
 
-        const user = auth.currentUser;
-        if (!user) throw new Error("User not logged in");
-        if (!user.uid) throw new Error("User not logged in");
-
         const statementId = statement.statementId;
-
-
 
         //set statement
 
