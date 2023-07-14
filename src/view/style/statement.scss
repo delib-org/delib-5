@@ -1,52 +1,56 @@
 .statement {
     display: flex;
     flex-direction: column;
+    width: 100vw;
 
     .wrapper {
         display: flex;
         flex-direction: column;
         gap: 15px;
+    }
 
-        .statement {
-            &__chatCard {
-                display: flex;
-                gap: 10px;
-                &__main {
-                    flex: auto;
-                    background-color: white;
-                    padding: 20px;
-                    border-radius: 10px;
-                    &--me {
-                        border-radius: 10px 10px 0px 10px;
-                        background-color: #bcefbc;
-                    }
-    
-                    &--other {
-                        border-radius: 10px 10px 10px 0px;
-                        background-color: #e0e0e0;
-                     
-                    }
-                }
-               
+    &__chatCard {
+        display: flex;
+        gap: 10px;
 
-                &--other {
-                   
-                    flex-direction: row-reverse;
-                }
-                &__profile {
-                    // position: absolute;
-                    // top: -5px;
-                    // right: -20px;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50px;
-                    background-color: teal;
-                    background-size: contain;
-                }
+        &__main {
+            flex: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+
+            &--me {
+                border-radius: 10px 10px 0px 10px;
+                background-color: #bcefbc;
             }
 
+            &--other {
+                border-radius: 10px 10px 10px 0px;
+                background-color: #e0e0e0;
 
+            }
         }
+
+
+        &--other {
+
+            flex-direction: row-reverse;
+        }
+
+        &__profile {
+            // position: absolute;
+            // top: -5px;
+            // right: -20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50px;
+            background-color: teal;
+            background-size: contain;
+        }
+
+
+
+
     }
 
 
@@ -90,4 +94,28 @@
             outline: none;
         }
     }
+}
+
+.bubble {
+    --r: 25px;
+    /* the radius */
+    --t: 30px;
+    /* the size of the tail */
+border-radius: 10px 10px 10px 0px;
+    max-width: 300px;
+    padding: calc(2*var(--r)/3);
+    background-color: aqua;
+    color: #fff;
+}
+
+.left {
+    border-radius: 15px 15px 15px 0px;
+    background-color: #61b4e4;
+}
+
+.right {
+   
+   
+    border-radius: 15px 15px 0px 15px;
+    background-color: #39c89b;
 }

@@ -35,7 +35,6 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
     function handleInput(e: any) {
         try {
-            console.dir(e)
 
             if (e.key === 'Enter' && !e.shiftKey) {
                 // submit form

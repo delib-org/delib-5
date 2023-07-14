@@ -17,13 +17,13 @@ const Main = () => {
     const statements = [...useAppSelector(statementSubscriptionSelector)].sort((a, b) => b.lastUpdate - a.lastUpdate);
     const isLgged = useAuth();
     const dispatch = useAppDispatch();
-    
+
     function updateStoreStSubCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription));
     }
 
     useEffect(() => {
-  
+
         if (isLgged) {
             unsubscribe = listenStatmentsSubsciptions(updateStoreStSubCB);
         }
@@ -39,11 +39,15 @@ const Main = () => {
         navigate('/home/addStatment')
     }
     return (
-        <div>
-            <h1>Main</h1>
-            <Fav onclick={handleAddStatment} />
+        <div className='page'>
+            <div className="page__header">
+                <h1>Main</h1>
+            </div>
+            <div className="page__main">
 
-            {statements.map((statement: StatementSubscription) => <StatementCard key={statement.statement.statementId} statement={statement.statement}/>)}
+                {statements.map((statement: StatementSubscription) => <StatementCard key={statement.statement.statementId} statement={statement.statement} />)}
+            </div>
+            <Fav onclick={handleAddStatment} />
         </div>
     )
 }

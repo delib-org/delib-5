@@ -43,9 +43,9 @@ const Statement: FC = () => {
         if (statement) {
 
             (async () => {
-             
+
                 const isSubscribed = await getIsSubscribed(statementId)
-    
+
                 // if isSubscribed is false, then subscribe
                 if (!isSubscribed) {
                     // subscribe
@@ -55,14 +55,20 @@ const Statement: FC = () => {
         }
     }, [statement])
     return (
-        <div className="page statement">
-            <Link to="/home"><button>Back</button></Link>
-            <h1>{statement?.statement}</h1>
-            <div className="page__main wrapper">
-                {statementSubs?.map((statement) => <StatementChat key={statement.statementId} statement={statement} />)}
-            </div>
+        <div className="page">
 
-            {statement ? <StatementInput statement={statement} /> : null}
+            <div className="page__header">
+                <Link to="/home"><button>Back</button></Link>
+                <h1>{statement?.statement}</h1>
+            </div>
+            <div className="page__main">
+                <div className="wrapper wrapper--chat">
+                    {statementSubs?.map((statement) => <StatementChat key={statement.statementId} statement={statement} />)}
+                </div>
+            </div>
+            <div className="page__footer">
+                {statement ? <StatementInput statement={statement} /> : null}
+            </div>
 
         </div>
     )
