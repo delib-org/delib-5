@@ -101,11 +101,16 @@
     /* the radius */
     --t: 30px;
     /* the size of the tail */
-border-radius: 10px 10px 10px 0px;
+    border-radius: 10px 10px 10px 0px;
     max-width: 300px;
     padding: calc(2*var(--r)/3);
     background-color: aqua;
     color: #fff;
+
+    //on mobile max width should be limeted
+    @media only screen and (max-width: 600px) {
+        max-width: 200px;
+    }
 }
 
 .left {
@@ -114,8 +119,8 @@ border-radius: 10px 10px 10px 0px;
 }
 
 .right {
-   
-   
+
+
     border-radius: 15px 15px 0px 15px;
     background-color: #39c89b;
 }
