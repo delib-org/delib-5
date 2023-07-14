@@ -2,7 +2,6 @@ import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { Statement, StatementSchema } from "../../../model/statements/statementModel";
 import { DB } from "../config";
 import { Collections } from "../collections";
-import { auth } from "../auth";
 import { Role } from "../../../model/role";
 import { getUserFromFirebase } from "../users/usersGeneral";
 

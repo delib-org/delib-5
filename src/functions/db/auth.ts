@@ -46,6 +46,7 @@ export function listenToAuth() {
                 // https://firebase.google.com/docs/reference/js/auth.user
           
                console.log('User is signed in')
+            //    console.log(user)
             } else {
                 // User is signed out
                 console.log('User is signed out')

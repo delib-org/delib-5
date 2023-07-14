@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import { User } from '../../../model/users/userModel'
-import { getUserFromFirebase } from '../../../functions/db/users/usersGeneral';
 
 interface Props {
     user: User | null

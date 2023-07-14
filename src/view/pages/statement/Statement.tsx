@@ -14,6 +14,8 @@ import { User } from '../../../model/users/userModel';
 let firstTime = true
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
+
+
 const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const dispatch = useAppDispatch();
@@ -38,11 +40,15 @@ const Statement: FC = () => {
     }
 
     const scrollToBottom = () => {
+        if (!messagesEndRef) return;
+        if (!messagesEndRef.current) return;
         if (firstTime) {
-            messagesEndRef.current?.scrollIntoView({ behavior: "auto" })
+            //@ts-ignore
+            messagesEndRef.current.scrollIntoView({ behavior: "auto" })
             firstTime = false
         } else {
-            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+            //@ts-ignore
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
         }
     }
 
@@ -57,7 +63,8 @@ const Statement: FC = () => {
         }
 
         return () => {
-            unsub()
+            unsub();
+            unsubSubStatements();
         }
     }, [statementId])
 

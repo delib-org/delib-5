@@ -3,7 +3,7 @@ import { StatementSchema, StatementType } from '../../../model/statements/statem
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
 import { Link, useParams } from 'react-router-dom';
 import { auth } from '../../../functions/db/auth';
-import { User, UserSchema } from '../../../model/users/userModel';
+import { UserSchema } from '../../../model/users/userModel';
 
 const SetStatement = () => {
     const { statementId } = useParams();
@@ -19,7 +19,6 @@ const SetStatement = () => {
             UserSchema.parse(user);
 
            
-            debugger;
             const newStatement: any = Object.fromEntries(data.entries());
             newStatement.statementId = crypto.randomUUID();
             newStatement.creatorId = auth.currentUser?.uid;
