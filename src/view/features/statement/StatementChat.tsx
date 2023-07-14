@@ -11,7 +11,7 @@ const StatementChat: FC<Props> = ({ statement }) => {
   const userId = auth.currentUser?.uid;
   const userProfile = statement.creator.photoURL;
   const creatorId = statement.creatorId;
-  console.log(userId === creatorId)
+  
   const isMe = userId === creatorId;
 
   return (

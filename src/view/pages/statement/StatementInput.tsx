@@ -14,42 +14,76 @@ const StatementInput: FC<Props> = ({ statement }) => {
     function handleAddStatement(e: any) {
         try {
             e.preventDefault();
-            const userId = auth.currentUser?.uid;
-            if (!userId) throw new Error('User not logged in');
+            const value = e.target.newStatement.value;
 
-            const creator = getUserFromFirebase();
-            if(!creator) throw new Error('User not logged in');
-
-            const newStatement: Statement = {
-                statement: e.target.newStatement.value,
-                statementId: crypto.randomUUID(),
-                creatorId: userId,
-                creator,
-                parentId: statement.statementId,
-                type: StatementType.STATEMENT,
-            }
-
+            const newStatement: Statement|undefined = getNewStatment(value, statement);
+            if(!newStatement) throw new Error('No statement');
             setStatmentToDB(newStatement);
             e.target.reset();
         } catch (error) {
             console.error(error);
         }
 
-       
+
+
+        
     }
 
     function handleAddStatementA(event: any) {
         console.log(event)
     }
 
+    function handleInput(e: any) {
+        try {
+            console.dir(e)
+
+            if (e.key === 'Enter' && !e.shiftKey) {
+                // submit form
+                const newStatement: Statement|undefined = getNewStatment(e.target.value, statement);
+                if(!newStatement) throw new Error('No statement');
+                setStatmentToDB(newStatement);
+                e.target.value = '';
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
 
-        <form onSubmit={handleAddStatement} className="page__footer statement__input">
-            <textarea name='newStatement' />
+        <form onSubmit={handleAddStatement} name="theForm" className="page__footer statement__input">
+            <textarea name='newStatement' onKeyUp={handleInput} />
             <button className="fav" onClick={handleAddStatementA}><div><SendIcon>Submit</SendIcon></div></button>
         </form>
 
     )
+}
+
+function getNewStatment(value?: string, statement?: Statement) {
+         
+    try {
+        if(!statement) throw new Error('No statement');
+        if (!value) throw new Error('No value');
+        const userId = auth.currentUser?.uid;
+        if (!userId) throw new Error('User not logged in');
+
+        const creator = getUserFromFirebase();
+        if (!creator) throw new Error('User not logged in');
+
+        const newStatement: Statement = {
+            statement: value,
+            statementId: crypto.randomUUID(),
+            creatorId: userId,
+            creator,
+            parentId: statement.statementId,
+            type: StatementType.STATEMENT,
+        };
+        return newStatement;
+    } catch (error) {
+        console.error(error);
+        return undefined
+    }
 }
 
 export default StatementInput
