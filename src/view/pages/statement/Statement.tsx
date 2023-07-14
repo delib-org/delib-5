@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
@@ -6,21 +6,19 @@ import { setStatement, statementSelector, statementSubsSelector } from '../../..
 import { Statement } from '../../../model/statements/statementModel';
 import StatementInput from './StatementInput';
 import StatementChat from '../../features/statement/StatementChat';
-import { auth } from '../../../functions/db/auth';
 import { Role } from '../../../model/role';
 import { setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
-import { getUserFromFirebase } from '../../../functions/db/users/usersGeneral';
 import { User } from '../../../model/users/userModel';
-import { set } from 'lodash';
 
+let firstTime = true
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
 const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const dispatch = useAppDispatch();
     const { statementId } = useParams();
-    const user = getUserFromFirebase();
+    const messagesEndRef = useRef(null)
 
     //check if the user is registered
 
@@ -38,6 +36,17 @@ const Statement: FC = () => {
             setTalker(null);
         }
     }
+
+    const scrollToBottom = () => {
+        if (firstTime) {
+            messagesEndRef.current?.scrollIntoView({ behavior: "auto" })
+            firstTime = false
+        } else {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+        }
+    }
+
+    useEffect(() => { firstTime = true }, [])
 
     useEffect(() => {
         if (statementId) {
@@ -67,6 +76,10 @@ const Statement: FC = () => {
             })();
         }
     }, [statement])
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [statementSubs]);
     return (
         <div className="page">
             <div onClick={() => { handleShowTalker(null) }}>
@@ -84,6 +97,7 @@ const Statement: FC = () => {
                         </div>
                     ))
                     }
+                    <div ref={messagesEndRef} />
                 </div>
             </div>
             <div className="page__footer">
