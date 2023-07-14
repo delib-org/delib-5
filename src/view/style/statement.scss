@@ -16,19 +16,23 @@
                     background-color: white;
                     padding: 20px;
                     border-radius: 10px;
-
                     &--me {
                         border-radius: 10px 10px 0px 10px;
                         background-color: #bcefbc;
                     }
-
+    
                     &--other {
                         border-radius: 10px 10px 10px 0px;
                         background-color: #e0e0e0;
-                        flex-direction: row-reverse;
+                     
                     }
                 }
+               
 
+                &--other {
+                   
+                    flex-direction: row-reverse;
+                }
                 &__profile {
                     // position: absolute;
                     // top: -5px;

@@ -3,6 +3,7 @@ import { Statement, StatementType } from '../../../model/statements/statementMod
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
 import { auth } from '../../../functions/db/auth';
 import SendIcon from '@mui/icons-material/Send';
+import { getUserFromFirebase } from '../../../functions/db/users/usersGeneral';
 
 interface Props {
     statement: Statement
@@ -16,10 +17,14 @@ const StatementInput: FC<Props> = ({ statement }) => {
             const userId = auth.currentUser?.uid;
             if (!userId) throw new Error('User not logged in');
 
+            const creator = getUserFromFirebase();
+            if(!creator) throw new Error('User not logged in');
+
             const newStatement: Statement = {
                 statement: e.target.newStatement.value,
                 statementId: crypto.randomUUID(),
                 creatorId: userId,
+                creator,
                 parentId: statement.statementId,
                 type: StatementType.STATEMENT,
             }

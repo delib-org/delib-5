@@ -7,19 +7,19 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({ statement }) => {
-  console.log(auth.currentUser);
+
   const userId = auth.currentUser?.uid;
-  const userProfile = auth.currentUser?.photoURL;
+  const userProfile = statement.creator.photoURL;
   const creatorId = statement.creatorId;
-  const isMe = userId === creatorId ? "statement__chatCard--me" : "statement__chatCard--other";
-  console.log('isMe', isMe);
+  console.log(userId === creatorId)
+  const isMe = userId === creatorId;
 
   return (
     <>
 
-      <div className={`statement__chatCard ${isMe}`}>
+      <div className={isMe?`statement__chatCard statement__chatCard--me`:"statement__chatCard statement__chatCard--other"}>
         <div className="statement__chatCard__profile" style={userProfile?{backgroundImage:`url(${userProfile})`}:{}}></div>
-        <div className="statement__chatCard__main"> {statement.statement}</div>
+        <div className={isMe?"statement__chatCard__main statement__chatCard__main--me":"statement__chatCard__main statement__chatCard__main--other"}> {statement.statement}</div>
       </div>
     </>
   )

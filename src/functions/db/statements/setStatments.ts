@@ -4,6 +4,7 @@ import { DB } from "../config";
 import { Collections } from "../collections";
 import { auth } from "../auth";
 import { Role } from "../../../model/role";
+import { getUserFromFirebase } from "../users/usersGeneral";
 
 export async function setStatmentToDB(statement: Statement) {
     try {
@@ -27,7 +28,7 @@ export async function setStatmentToDB(statement: Statement) {
 export async function setStatmentSubscriptionToDB(statement: Statement, role: Role) {
     try {
         console.log('subscribe', role)
-        const user = auth.currentUser;
+        const user = getUserFromFirebase();
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
         const { statementId } = statement;
