@@ -7,7 +7,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Start from './view/pages/start/Start';
-import { listeToAuth } from './functions/db/auth';
+import { listenToAuth } from './functions/db/auth';
 import App from './view/pages/home/App';
 import Main from './view/pages/main/Main';
 import SetStatement from './view/features/statement/SetStatement';
@@ -18,7 +18,7 @@ import Statement from './view/pages/statement/Statement';
 
 
 
-listeToAuth
+listenToAuth();
 
 const router = createBrowserRouter([
   {

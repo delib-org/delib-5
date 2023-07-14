@@ -7,10 +7,12 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({ statement }) => {
+  console.log(auth.currentUser);
   const userId = auth.currentUser?.uid;
   const userProfile = auth.currentUser?.photoURL;
   const creatorId = statement.creatorId;
   const isMe = userId === creatorId ? "statement__chatCard--me" : "statement__chatCard--other";
+  console.log('isMe', isMe);
 
   return (
     <>

@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import { UserSchema } from '../users/userModel';
 
 export enum StatementType {
     STATEMENT = 'statement',
@@ -13,6 +14,7 @@ export const StatementSchema = z.object({
     statement:z.string(),
     statementId:z.string(),
     creatorId:z.string(),
+    creator:UserSchema,
     parentId:z.string(),
     hasChildren:z.boolean().optional(),
     lastMessage:z.string().optional(),
