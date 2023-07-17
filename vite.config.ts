@@ -3,8 +3,15 @@ import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import react from '@vitejs/plugin-react-swc'
 
 const manifestPlugin:Partial<VitePWAOptions> = {
-  registerType: 'prompt',
+  registerType: 'autoUpdate',
   includeAssets: ['favicon.ico'],
+  injectRegister: 'auto',
+  devOptions: {
+    enabled: true
+  },
+  workbox: {
+    globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+  },
   manifest: {
     name: "Delib",
     short_name: "Delib",
