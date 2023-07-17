@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react'
-import useAuth from '../../../functions/hooks/authHooks'
-import { Outlet, useNavigate } from 'react-router-dom';
+
+import { Outlet } from 'react-router-dom';
 
 
 
