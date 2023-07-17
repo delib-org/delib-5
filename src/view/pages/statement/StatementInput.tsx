@@ -75,6 +75,7 @@ function getNewStatment(value?: string, statement?: Statement) {
             statementId: crypto.randomUUID(),
             creatorId: userId,
             creator,
+            createdAt: new Date().getTime(),
             parentId: statement.statementId,
             type: StatementType.STATEMENT,
         };

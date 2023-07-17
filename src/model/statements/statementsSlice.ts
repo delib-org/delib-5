@@ -57,6 +57,6 @@ export const { setStatement, setStatementSubscription } = statementsSlicer.actio
 export const statementsSelector = (state: RootState) => state.statements.statements;
 export const statementSubscriptionSelector = (state: RootState) => state.statements.statementSubscription
 export const statementSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId);
-export const statementSubsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter(statementSub => statementSub.parentId === statementId);
+export const statementSubsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter(statementSub => statementSub.parentId === statementId).sort((a, b) => a.createdAt - b.createdAt);
 
 export default statementsSlicer.reducer

@@ -11,6 +11,10 @@ import { setStatmentSubscriptionToDB } from '../../../functions/db/statements/se
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User } from '../../../model/users/userModel';
 
+//icons
+import ShareIcon from '@mui/icons-material/Share';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
 let firstTime = true
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
@@ -37,6 +41,15 @@ const Statement: FC = () => {
         } else {
             setTalker(null);
         }
+    }
+
+    function handleShare() {
+        const shareData = {
+            title: "Delib: making creating aggrements easy",
+            text: `Come join me on Delib!: ${statement?.statement}`,
+            url: `https://delib-5.web.app/home/statement/${statementId}`,
+        };
+        navigator.share(shareData);
     }
 
     const scrollToBottom = () => {
@@ -88,13 +101,16 @@ const Statement: FC = () => {
         scrollToBottom()
     }, [statementSubs]);
     return (
-        <div className="page">
-            <div onClick={() => { handleShowTalker(null) }}>
+        <>
+            {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
-            </div>
+            </div> : null}
             <div className="page__header">
-                <Link to="/home"><button>Back</button></Link>
-                <h1>{statement?.statement}</h1>
+                <div className='page__header__wrapper'>
+                    <Link to="/home"><ArrowBackIosIcon /></Link>
+                    <h1>{statement?.statement}</h1>
+                    <div onClick={handleShare}><ShareIcon /></div>
+                </div>
             </div>
             <div className="page__main">
                 <div className="wrapper wrapper--chat">
@@ -111,7 +127,7 @@ const Statement: FC = () => {
                 {statement ? <StatementInput statement={statement} /> : null}
             </div>
 
-        </div>
+        </>
     )
 }
 

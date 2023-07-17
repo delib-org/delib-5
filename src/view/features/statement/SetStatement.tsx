@@ -25,6 +25,7 @@ const SetStatement = () => {
             newStatement.parentId = statementId || "top";
             newStatement.type = StatementType.GROUP;
             newStatement.creator = user;
+            newStatement.createdAt = new Date().getTime();
 
             StatementSchema.parse(newStatement)
 

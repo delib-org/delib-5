@@ -35,7 +35,7 @@ export async function setStatmentSubscriptionToDB(statement: Statement, role: Ro
         const statementsSubscribeId = `${user.uid}--${statementId}`;
 
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
-        await setDoc(statementsSubscribeRef, { statement, statementsSubscribeId, role, userId: user.uid, statementId, lastUpdate: Timestamp.now().toMillis() }, { merge: true });
+        await setDoc(statementsSubscribeRef, { statement, statementsSubscribeId, role, userId: user.uid, statementId, lastUpdate: Timestamp.now().toMillis(), createdAt:Timestamp.now().toMillis() }, { merge: true });
     } catch (error) {
         console.error(error);
     }

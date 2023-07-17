@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { Collections } from "../collections";
 import { Statement, StatementSubscription, StatementType } from "../../../model/statements/statementModel";
 import { DB } from "../config";
@@ -96,7 +96,7 @@ export function listenToStatementsOfStatment(statementId: string | undefined, up
     try {
         if (!statementId) throw new Error("Statement id is undefined");
         const statementsRef = collection(DB, Collections.statements);
-        const q = query(statementsRef, where("parentId", "==", statementId));
+        const q = query(statementsRef, where("parentId", "==", statementId), orderBy("createdAt", "desc"), limit(20));
         return onSnapshot(q, (statementsDB) => {
 
             statementsDB.forEach((statementDB) => {
