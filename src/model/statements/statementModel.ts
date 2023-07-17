@@ -18,6 +18,8 @@ export const StatementSchema = z.object({
     parentId:z.string(),
     hasChildren:z.boolean().optional(),
     lastMessage:z.string().optional(),
+    lsetUpdate:z.number().optional(),
+    createdAt:z.number(),
     type:statementType,
 });
 

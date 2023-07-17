@@ -17,10 +17,10 @@ export const DB = getFirestore(app);
 export const analytics = getAnalytics(app);
 
 //development
-// import { getAuth } from "firebase/auth";
-// import { connectFirestoreEmulator  } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { connectFirestoreEmulator  } from "firebase/firestore";
 
-// import { connectAuthEmulator } from "firebase/auth";
-// connectFirestoreEmulator(DB, '127.0.0.1', 8080);
-// const auth = getAuth();
-// connectAuthEmulator(auth, "http://127.0.0.1:9099");
+import { connectAuthEmulator } from "firebase/auth";
+connectFirestoreEmulator(DB, '127.0.0.1', 8080);
+const auth = getAuth();
+connectAuthEmulator(auth, "http://127.0.0.1:9099");
