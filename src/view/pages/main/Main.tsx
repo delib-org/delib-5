@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHo
 import { setStatementSubscription, statementSubscriptionSelector} from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';
 import StatementCard from '../../features/statement/StatementCard';
+import { setUser } from '../../../model/users/userSlice';
 
 let unsubscribe: Function = () => { };
 
@@ -37,10 +38,15 @@ const Main = () => {
     function handleAddStatment() {
         navigate('/home/addStatment')
     }
+
+    function handleLogout() {
+        dispatch(setUser(null))
+    }
     return (
         <div className='page'>
             <div className="page__header">
                 <h1>Main</h1>
+                <button onClick={handleLogout}>Logout</button>
             </div>
             <div className="page__main">
 

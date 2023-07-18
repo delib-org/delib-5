@@ -1,16 +1,24 @@
 import { useEffect } from 'react';
 import { googleLogin } from '../../../functions/db/auth'
-import useAuth from '../../../functions/hooks/authHooks'
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../../functions/hooks/reduxHooks';
+import { userSelector } from '../../../model/users/userSlice';
 
 const Start = () => {
     const navigate = useNavigate();
-    const isLOgged = useAuth();
-    console.log(isLOgged)
+    const user = useAppSelector(userSelector)
+ 
     useEffect(() => {
-        if (isLOgged)
+        console.log(user)
+        if (user){
             navigate('/home');
-    }, [isLOgged])
+          
+        }else{
+            console.log('not logged')
+        }
+    }, [user])
+    
+    
     return (
         <div
             className='page splashPage'
