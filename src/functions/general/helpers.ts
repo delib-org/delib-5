@@ -28,3 +28,21 @@ export function updateArray(
     return currentArray;
   }
 }
+
+export function setIntialLocationSessionStorage(pathname: string|null) {
+  try {
+        sessionStorage.setItem('initialLocation', pathname||'/');
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+export function getIntialLocationSessionStorage():string|undefined {
+  try {
+       return sessionStorage.getItem('initialLocation') || undefined;
+
+  } catch (error) {
+    console.error(error);
+    return undefined;
+  }
+}

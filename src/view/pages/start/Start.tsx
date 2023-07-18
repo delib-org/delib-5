@@ -3,6 +3,7 @@ import { googleLogin } from '../../../functions/db/auth'
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { userSelector } from '../../../model/users/userSlice';
+import { getIntialLocationSessionStorage } from '../../../functions/general/helpers';
 
 const Start = () => {
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ const Start = () => {
  
     useEffect(() => {
         if (user){
-            navigate('/home');
+            navigate(getIntialLocationSessionStorage()|| '/home');
           
         }else{
             console.log('not logged')
