@@ -1,6 +1,7 @@
 
 import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 import { app } from "./config";
+import { getUserFromFirebase } from "./users/usersGeneral";
 
 
 const provider = new GoogleAuthProvider();
@@ -46,7 +47,7 @@ export function listenToAuth(cb:Function) {
                 // https://firebase.google.com/docs/reference/js/auth.user
           
                console.log('User is signed in')
-               cb(user)
+               cb(getUserFromFirebase())
             //    console.log(user)
             } else {
                 // User is signed out

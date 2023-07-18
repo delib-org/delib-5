@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
 
@@ -57,4 +57,4 @@ const Main = () => {
     )
 }
 
-export default Main
+export default React.memo( Main)

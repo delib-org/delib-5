@@ -1,6 +1,5 @@
 
 import { Outlet, useNavigate } from 'react-router-dom';
-import useAuth from '../../../functions/hooks/authHooks';
 import { useEffect } from 'react';
 import { useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { userSelector } from '../../../model/users/userSlice';

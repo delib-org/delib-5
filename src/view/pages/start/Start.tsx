@@ -9,7 +9,6 @@ const Start = () => {
     const user = useAppSelector(userSelector)
  
     useEffect(() => {
-        console.log(user)
         if (user){
             navigate('/home');
           
