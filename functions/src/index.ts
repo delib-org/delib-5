@@ -7,7 +7,7 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import { updateSubscribedListnersCB,updateParentWithNewMessageCB } from "./fn_statements";
+import { updateSubscribedListnersCB,updateParentWithNewMessageCB, sendNotificationsCB } from "./fn_statements";
 
 // const { onRequest } = require("firebase-functions/v2/https");
 const { onDocumentUpdated,onDocumentCreated } = require("firebase-functions/v2/firestore");
@@ -24,3 +24,5 @@ export const db = getFirestore();
 exports.updateSubscribedListners = onDocumentUpdated("/statements/{statementId}",updateSubscribedListnersCB);
 
 exports.updateParentWithNewMessage = onDocumentCreated("/statements/{statementId}",updateParentWithNewMessageCB);
+
+exports.updateNotifications = onDocumentCreated("/statements/{statementId}",sendNotificationsCB);

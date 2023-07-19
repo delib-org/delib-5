@@ -17,9 +17,13 @@ export const DB = getFirestore(app);
 export const analytics = getAnalytics(app);
 export const messaging = getMessaging(app);
 
+export let deviceToken:string|undefined = undefined;
+
 getToken(messaging,{vapidKey}).then((currentToken) => {
     if (currentToken) {
       // Send the token to your server and update the UI if necessary
+      console.log(currentToken)
+      deviceToken = currentToken;
       console.log('Send the token to your server and update the UI if necessary')
       // ...
     } else {
@@ -33,10 +37,10 @@ getToken(messaging,{vapidKey}).then((currentToken) => {
   });
 
 //development
-import { getAuth } from "firebase/auth";
-import { connectFirestoreEmulator  } from "firebase/firestore";
+// import { getAuth } from "firebase/auth";
+// import { connectFirestoreEmulator  } from "firebase/firestore";
 
-import { connectAuthEmulator } from "firebase/auth";
-connectFirestoreEmulator(DB, '127.0.0.1', 8080);
-const auth = getAuth();
-connectAuthEmulator(auth, "http://127.0.0.1:9099");
+// import { connectAuthEmulator } from "firebase/auth";
+// connectFirestoreEmulator(DB, '127.0.0.1', 8080);
+// const auth = getAuth();
+// connectAuthEmulator(auth, "http://127.0.0.1:9099");

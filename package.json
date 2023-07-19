@@ -9,7 +9,9 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "deploy:h":"npm run build && firebase deploy --only hosting"
+    "deploy:h":"npm run build && firebase deploy --only hosting",
+    "deploy:f":"firebase deploy --only functions",
+    "deploy":"npm run deploy:h && npm run deploy:f"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
