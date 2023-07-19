@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
@@ -12,8 +12,8 @@ import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User } from '../../../model/users/userModel';
 
 //icons
-import ShareIcon from '@mui/icons-material/Share';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ShareIcon from '../../icons/ShareIcon';
+import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
 
 let firstTime = true
 let unsub: Function = () => { }
@@ -131,4 +131,4 @@ const Statement: FC = () => {
     )
 }
 
-export default Statement
+export default React.memo(Statement);

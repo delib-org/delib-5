@@ -7,7 +7,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Start from './view/pages/start/Start';
-import { listenToAuth } from './functions/db/auth';
 import App from './view/pages/home/App';
 import Main from './view/pages/main/Main';
 import SetStatement from './view/features/statement/SetStatement';
@@ -15,41 +14,54 @@ import SetStatement from './view/features/statement/SetStatement';
 import { store } from './model/store'
 import { Provider } from 'react-redux'
 import Statement from './view/pages/statement/Statement';
+import All from './view/pages/all/All';
+import ErrorPage from './view/pages/error/ErrorPage';
 
 
 
-listenToAuth();
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Start />,
-    errorElement: <div>Not Found</div>
-  },
-  {
-    path: "/home",
-    element: <App />,
+    element: <All />,
+    errorElement: <ErrorPage/>,
     children: [
       {
         path: "",
-        element: <Main />
+        element: <Start />,
+        errorElement: <ErrorPage/>
       },
       {
-        path: "addStatment",
-        element: <SetStatement />
-      },
-      {
-        path:"statement/:statementId",
-        element:<Statement />
+        path: "home",
+        element: <App />,
+        errorElement: <ErrorPage/>,
+        children: [
+          {
+            path: "",
+            element: <Main />,
+            errorElement: <ErrorPage/>,
+          },
+          {
+            path: "addStatment",
+            element: <SetStatement />,
+            errorElement: <ErrorPage/>,
+          },
+          {
+            path: "statement/:statementId",
+            element: <Statement />,
+            errorElement: <ErrorPage/>,
+          }
+        ]
       }
     ]
   }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-   <Provider store={store}>
+    <Provider store={store}>
       <RouterProvider router={router} />
-      </Provider>
+    </Provider>
   </React.StrictMode>,
 )

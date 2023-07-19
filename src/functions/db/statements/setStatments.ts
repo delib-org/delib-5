@@ -4,6 +4,7 @@ import { DB } from "../config";
 import { Collections } from "../collections";
 import { Role } from "../../../model/role";
 import { getUserFromFirebase } from "../users/usersGeneral";
+import { subscribeToNotifications } from "../users/setUsersDB";
 
 export async function setStatmentToDB(statement: Statement) {
     try {
@@ -18,6 +19,7 @@ export async function setStatmentToDB(statement: Statement) {
 
         //add subscription
         await setStatmentSubscriptionToDB(statement,Role.admin)
+        await subscribeToNotifications(statementId,true)
 
     } catch (error) {
         console.error(error);

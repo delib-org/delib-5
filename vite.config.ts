@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 const manifestPlugin:Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
   includeAssets: ['favicon.ico'],
-  injectRegister: 'auto',
+  injectRegister: 'inline',
   devOptions: {
     enabled: true
   },

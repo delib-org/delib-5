@@ -92,7 +92,7 @@ body {
             svg{
                margin: 10px;
             }
-            //only on mobile
+            //only not on mobile
             @media screen and (min-width: 600px) {
                 max-width: 75ch;
                 margin: auto;

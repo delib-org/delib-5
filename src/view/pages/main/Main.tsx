@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
 
@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHo
 import { setStatementSubscription, statementSubscriptionSelector} from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';
 import StatementCard from '../../features/statement/StatementCard';
+import { setUser } from '../../../model/users/userSlice';
+import { logOut } from '../../../functions/db/auth';
 
 let unsubscribe: Function = () => { };
 
@@ -37,10 +39,16 @@ const Main = () => {
     function handleAddStatment() {
         navigate('/home/addStatment')
     }
+
+    function handleLogout() {
+        logOut();
+        dispatch(setUser(null))
+    }
     return (
         <div className='page'>
             <div className="page__header">
                 <h1>Main</h1>
+                <button onClick={handleLogout}>Logout</button>
             </div>
             <div className="page__main">
 
@@ -51,4 +59,4 @@ const Main = () => {
     )
 }
 
-export default Main
+export default React.memo( Main)

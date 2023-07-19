@@ -23,15 +23,9 @@ const StatementInput: FC<Props> = ({ statement }) => {
         } catch (error) {
             console.error(error);
         }
-
-
-
-        
+      
     }
 
-    function handleAddStatementA(event: any) {
-        console.log(event)
-    }
 
     function handleInput(e: any) {
         try {
@@ -53,7 +47,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
         <form onSubmit={handleAddStatement} name="theForm" className="page__footer statement__input">
             <textarea name='newStatement' onKeyUp={handleInput} />
-            <button className="fav" onClick={handleAddStatementA}><div><SendIcon>Submit</SendIcon></div></button>
+            <button className="fav"><div><SendIcon>Submit</SendIcon></div></button>
         </form>
 
     )

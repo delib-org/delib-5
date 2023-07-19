@@ -1,6 +1,7 @@
 const { logger } = require("firebase-functions");
 import { Timestamp } from "firebase-admin/firestore";
 import { db } from "./index";
+import admin = require('firebase-admin');
 
 export async function updateSubscribedListnersCB(event: any) {
 
@@ -8,12 +9,12 @@ export async function updateSubscribedListnersCB(event: any) {
   //get all subscribers
   const { statementId } = event.params;
   const statement = event.data.after.data();
-  logger.log("updating subscribers of statement", statementId);
 
   //get all subscribers to this statement
   const subscribersRef = db.collection("statementsSubscribe");
   const q = subscribersRef.where("statementId", "==", statementId);
   const subscribersDB = await q.get();
+
   //update all subscribers
   subscribersDB.docs.forEach((doc: any) => {
     try {
@@ -22,7 +23,7 @@ export async function updateSubscribedListnersCB(event: any) {
 
       db.doc(`statementsSubscribe/${subscriberId}`).set({ statement: statement, lastUpdate: Timestamp.now().toMillis() }, { merge: true });
     } catch (error) {
-
+      logger.log("error updating subscribers", error);
     }
 
   });
@@ -48,6 +49,50 @@ export async function updateParentWithNewMessageCB(e: any) {
     }
     return
   } catch (error) {
+    logger.log("error updating parent with new message", error);
+    console.error(error);
     return
+  }
+}
+
+export async function sendNotificationsCB(e: any) {
+  try {
+    const statement = e.data.data();
+    logger.log("statement", statement);
+    const parentId = statement.parentId;
+    if (!parentId) throw new Error("parentId not found");
+
+    //get all subscribers to this statement
+    const subscribersRef = db.collection("statementsNotifications");
+    const q = subscribersRef.where("statementId", "==", parentId).where("subscribed", "==", true);
+
+    const subscribersDB = await q.get();
+
+
+    //send push notifications to all subscribers
+    subscribersDB.docs.forEach((doc: any) => {
+      const token = doc.data().token;
+
+      if(token){
+        const message = {
+          notification: {
+            title: 'New message',
+            body: statement.statement
+          },
+          token: token
+        };
+        admin.messaging().send(message)
+          .then((response: any) => {
+            // Response is a message ID string.
+            // logger.log('Successfully sent message:', response);
+          })
+          .catch((error: any) => {
+            // logger.log('Error sending message:', error);
+          });
+      }
+    });
+
+  } catch (error) {
+    logger.error("error sending notifications", error);
   }
 }

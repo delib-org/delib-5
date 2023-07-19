@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { statementsSlicer } from './statements/statementsSlice'
+import { userSlicer } from './users/userSlice'
 // ...
 
 export const store = configureStore({
   reducer: {
     statements: statementsSlicer.reducer,
+    user: userSlicer.reducer
   },
 })
 

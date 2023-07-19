@@ -1,19 +1,21 @@
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useAppSelector } from '../../../functions/hooks/reduxHooks';
+import { userSelector } from '../../../model/users/userSlice';
 
 
 
 function App() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
-  // const isLogged = useAuth();
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     // if(!isLogged) navigate('/');
-  //   }, 500);
-
-  // }, [isLogged])
+  const user = useAppSelector(userSelector)
+  useEffect(() => {
+    
+      if(!user) navigate('/');
+ 
+  }, [user])
   return (
     <div className="page">
       <Outlet />
