@@ -9,6 +9,7 @@ import { setStatementSubscription, statementSubscriptionSelector} from '../../..
 import useAuth from '../../../functions/hooks/authHooks';
 import StatementCard from '../../features/statement/StatementCard';
 import { setUser } from '../../../model/users/userSlice';
+import { logOut } from '../../../functions/db/auth';
 
 let unsubscribe: Function = () => { };
 
@@ -40,6 +41,7 @@ const Main = () => {
     }
 
     function handleLogout() {
+        logOut();
         dispatch(setUser(null))
     }
     return (

@@ -16,9 +16,9 @@ const All = () => {
     useEffect(() => { 
         listenToAuth(updateUserToStore);
         setIntialLocationSessionStorage(location.pathname);
-        // console.log(location.pathname)
 
-    }, [])
+    }, []);
+
     return (
         <>
             <Outlet />

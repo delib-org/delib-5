@@ -11,6 +11,8 @@ const Start = () => {
  
     useEffect(() => {
         if (user){
+            console.log(getIntialLocationSessionStorage())
+            console.log(getIntialLocationSessionStorage()|| '/home');
             navigate(getIntialLocationSessionStorage()|| '/home');
           
         }else{

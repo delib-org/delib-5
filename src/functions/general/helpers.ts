@@ -29,17 +29,18 @@ export function updateArray(
   }
 }
 
-export function setIntialLocationSessionStorage(pathname: string|null) {
+export function setIntialLocationSessionStorage(pathname: string | null) {
   try {
-        sessionStorage.setItem('initialLocation', pathname||'/');
+    if (pathname === '/') pathname = '/home';
+    sessionStorage.setItem('initialLocation', pathname || '/home');
 
   } catch (error) {
     console.error(error);
   }
 }
-export function getIntialLocationSessionStorage():string|undefined {
+export function getIntialLocationSessionStorage(): string | undefined {
   try {
-       return sessionStorage.getItem('initialLocation') || undefined;
+    return sessionStorage.getItem('initialLocation') || undefined;
 
   } catch (error) {
     console.error(error);
