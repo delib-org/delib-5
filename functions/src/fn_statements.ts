@@ -79,15 +79,16 @@ export async function sendNotificationsCB(e: any) {
             title: 'New message',
             body: statement.statement
           },
-          token: token
+          token: token,
         };
         admin.messaging().send(message)
           .then((response: any) => {
+            logger.log("response", response);
             // Response is a message ID string.
             // logger.log('Successfully sent message:', response);
           })
           .catch((error: any) => {
-            // logger.log('Error sending message:', error);
+            logger.error('Error sending message:', error);
           });
       }
     });
