@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore  } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { getMessaging, getToken } from "firebase/messaging";
 import { getAnalytics } from "firebase/analytics";
 import { keys, vapidKey } from "./configKey";
@@ -17,24 +17,24 @@ export const DB = getFirestore(app);
 export const analytics = getAnalytics(app);
 export const messaging = getMessaging(app);
 
-export let deviceToken:string|undefined = undefined;
+export let deviceToken: string | undefined = undefined;
 
-getToken(messaging,{vapidKey}).then((currentToken) => {
-    if (currentToken) {
-      // Send the token to your server and update the UI if necessary
-      console.log(currentToken)
-      deviceToken = currentToken;
-      console.log('Send the token to your server and update the UI if necessary')
-      // ...
-    } else {
-      // Show permission request UI
-      console.log('No registration token available. Request permission to generate one.');
-      // ...
-    }
-  }).catch((err) => {
-    console.log('An error occurred while retrieving token. ', err);
+getToken(messaging, { vapidKey }).then((currentToken) => {
+  if (currentToken) {
+    // Send the token to your server and update the UI if necessary
+    console.log(currentToken)
+    deviceToken = currentToken;
+
     // ...
-  });
+  } else {
+    // Show permission request UI
+    console.log('No registration token available. Request permission to generate one.');
+    // ...
+  }
+}).catch((err) => {
+  console.log('An error occurred while retrieving token. ', err);
+  // ...
+});
 
 //development
 // import { getAuth } from "firebase/auth";

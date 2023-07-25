@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../../model/users/userSlice';
 import { User } from '../../../model/users/userModel';
 import { setIntialLocationSessionStorage } from '../../../functions/general/helpers';
+// import { app, messaging } from '../../../functions/db/config';
+// import { getMessaging } from 'firebase/messaging';
 
 const All = () => {
     const location = useLocation();
@@ -16,6 +18,8 @@ const All = () => {
     useEffect(() => { 
         listenToAuth(updateUserToStore);
         setIntialLocationSessionStorage(location.pathname);
+
+        
 
     }, []);
 
