@@ -4,7 +4,8 @@
 The objective of Delib 5 is to serve as an inclusive B2C deliberative app, offering a diverse array of deliberation methods.
 
 ### What is deliberation
-Deliberation stands as an informed and inclusive mode of discussion, aiming to discover the most optimal solution for all stakeholders while ensuring minimal harm to the interests of the minority.
+Deliberation stands as an informed and inclusive mode of discussion, dedicated to discovering the most optimal solution for all stakeholders, while actively striving to minimize any harm to the interests of those who might be adversely affected by the proposed solution.
+
 ### Theory of Deliberation
 There are many theories of deliberation. A partial summary of the theory we use can be found on "[On deliberation](https://www.delib.org/wiki/index.php/Main_Page)". 
 
