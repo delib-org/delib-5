@@ -5,7 +5,7 @@ The goal of delib 5 is to be a B2C deliberative app with many methods of deliber
 ### What is deliberation
 Deliberation stands as an informed and inclusive mode of discussion, aiming to discover the most optimal solution for all stakeholders while ensuring minimal harm to the interests of the minority.
 ### Theory of Deliberation
-There are many theories of deliberation vast. A partial summary of the theory we use can be found on "[On deliberation](https://www.delib.org/wiki/index.php/Main_Page)". 
+There are many theories of deliberation. A partial summary of the theory we use can be found on "[On deliberation](https://www.delib.org/wiki/index.php/Main_Page)". 
 
 ### Development History
 Before Delib 5, there were Delib 1, 2, 3, and 4. We have experimented with all of them in many scenarios. Delib 5 is built upon the experience gained using them.
