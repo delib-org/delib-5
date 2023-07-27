@@ -22,8 +22,12 @@ There is the main screen, which contains “statements.”:
 Within Delib, the focal points revolve around three essential entities: "person," "statement" (הגד), and "evaluation." Each person enjoys the freedom to craft multiple statements (1:n), with others having the opportunity to engage through responses within a designated container (statement screen), thereby facilitating collaborative evaluation of each other's input. Statements are subsequently ordered based on these evaluations to streamline the process further. Leveraging the power of "general good" algorithms, individuals can easily identify statements that best alignment of interests, fostering a harmonious convergence of perspectives.
 A statement can be just a statement or become a container for other statements.
 
+![Infinte deliberation](https://github.com/delib-org/delib-5/blob/main/DESIGN/imgs/02.png)
+
 This can help deliberation become an infinite discussion on the one hand. On the other hand, every statement-container can summarise the discussion for the whole container and represent the best alignment of interests, thus summarising a long discussion into one or a few lines.
 Technology
 The technology stack was designed to help the initial creator to build the app fast while using widespread technologies that new volunteers can adopt. The technologies are React in the frontend and Firebase in the backend. If there is a demand to change the backend to more traditional technology, volunteers can develop a node-express/nest-socket-MongoDB backend.
+
+For further reading on the design document pls read: https://docs.google.com/document/d/1oblrN27SeiETLp4iOZtr7yN_HFokRNK8YuhBnMtlrDc/edit?usp=sharing
 
 
