@@ -1,7 +1,8 @@
 # delib-5
 ## Strategy
 ### Goal
-The goal of delib 5 is to be a B2C deliberative app with many methods of deliberation.
+The objective of Delib 5 is to serve as an inclusive B2C deliberative app, offering a diverse array of deliberation methods.
+
 ### What is deliberation
 Deliberation stands as an informed and inclusive mode of discussion, aiming to discover the most optimal solution for all stakeholders while ensuring minimal harm to the interests of the minority.
 ### Theory of Deliberation
