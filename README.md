@@ -27,7 +27,8 @@ A statement can be just a statement or become a container for other statements.
 ![Infinte deliberation](https://github.com/delib-org/delib-5/blob/main/DESIGN/imgs/02.png)
 
 This can help deliberation become an infinite discussion on the one hand. On the other hand, every statement-container can summarise the discussion for the whole container and represent the best alignment of interests, thus summarising a long discussion into one or a few lines.
-Technology
+
+## Technology
 The technology stack was designed to help the initial creator to build the app fast while using widespread technologies that new volunteers can adopt. The technologies are React in the frontend and Firebase in the backend. If there is a demand to change the backend to more traditional technology, volunteers can develop a node-express/nest-socket-MongoDB backend.
 
 For further reading on the design document pls read: https://docs.google.com/document/d/1oblrN27SeiETLp4iOZtr7yN_HFokRNK8YuhBnMtlrDc/edit?usp=sharing
