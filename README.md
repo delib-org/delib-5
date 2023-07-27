@@ -15,7 +15,10 @@ Targeting a diverse audience, our platform welcomes individuals seeking to colla
 ## Design
 The main Information architecture of the app is based on WhatsApp IA.
 
-There is the main screen, which contains “statements.”
+There is the main screen, which contains “statements.”:
+
+![Main architecture](https://github.com/delib-org/delib-5/blob/main/DESIGN/imgs/01.png)
+
 Within Delib, the focal points revolve around three essential entities: "person," "statement" (הגד), and "evaluation." Each person enjoys the freedom to craft multiple statements (1:n), with others having the opportunity to engage through responses within a designated container (statement screen), thereby facilitating collaborative evaluation of each other's input. Statements are subsequently ordered based on these evaluations to streamline the process further. Leveraging the power of "general good" algorithms, individuals can easily identify statements that best alignment of interests, fostering a harmonious convergence of perspectives.
 A statement can be just a statement or become a container for other statements.
 
