@@ -26,6 +26,8 @@ If the efirebase cli is not install, run:
 Then initlise the emualtors by running:
 ```firebase init emulators```
 
+To run the emulators, run ```npm run deve``` in the root direcotry.
+To run client run ```npm run dev``` in the root directory
 
 
 
