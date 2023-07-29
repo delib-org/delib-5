@@ -14,7 +14,17 @@ Go to the root directory and run ```npm i```.
 
 Go to the functions directory and run ```npm i```.
 
-THen you have to install the emulators. 
+Then you have to install the emulators. 
+
+To install emulators, first make sure you firebase CLI is installed.
+
+```firebase --version```
+
+If the efirebase cli is not install, run:
+```npm install -g firebase-tools``` or ```sudo npm install -g firebase-tools``` if you asre on a macOS.
+
+Then initlise the emualtors by running:
+```firebase init emulators```
 
 
 
