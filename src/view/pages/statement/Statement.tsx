@@ -14,25 +14,28 @@ import { User } from '../../../model/users/userModel';
 //icons
 import ShareIcon from '../../icons/ShareIcon';
 import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
+import AskForNotifications from '../../components/notifications/AskForNotifications';
 
 let firstTime = true
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
 
-const askNotification = ("Notification" in window)
+const askNotification = ("Notification" in window && Notification.permission !== "granted")
 
 
 const Statement: FC = () => {
+
     const [talker, setTalker] = useState<User | null>(null);
     const dispatch = useAppDispatch();
     const { statementId } = useParams();
     const messagesEndRef = useRef(null)
-    
+
 
     //check if the user is registered
 
     const statement = useAppSelector(statementSelector(statementId));
     const statementSubs = useAppSelector(statementSubsSelector(statementId));
+    const showAskForNotifications = useAppSelector((state) => state.user.askToSubscribeToNotifications.show);
 
     function updateStoreStatementCB(statement: Statement) {
         dispatch(setStatement(statement))
@@ -57,17 +60,17 @@ const Statement: FC = () => {
 
     function handleRegisterToNotifications() {
         try {
-            if(Notification.permission === "granted"){
-               alert("You are already registered to notifications")
-            } else if(Notification.permission === "denied"){
+            if (Notification.permission === "granted") {
+                alert("You are already registered to notifications")
+            } else if (Notification.permission === "denied") {
                 alert("You denied notifications")
-            } else{
+            } else {
                 alert("You will be asked to allow notifications")
                 Notification.requestPermission().then((permission) => {
                     console.log(permission)
-                    if(permission === "granted"){
+                    if (permission === "granted") {
                         alert("You are now registered to notifications")
-                    } else{
+                    } else {
                         alert("You denied notifications")
                     }
                 })
@@ -126,6 +129,7 @@ const Statement: FC = () => {
     }, [statementSubs]);
     return (
         <>
+            {showAskForNotifications ? <AskForNotifications /> : null}
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
             </div> : null}
@@ -133,7 +137,7 @@ const Statement: FC = () => {
                 <div className='page__header__wrapper'>
                     <Link to="/home"><ArrowBackIosIcon /></Link>
                     <h1>{statement?.statement}</h1>
-                    {askNotification?<button onClick={handleRegisterToNotifications}>Register to notifications</button>:null}
+                    {askNotification ? <button onClick={handleRegisterToNotifications}>Register to notifications</button> : null}
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import { Collections } from "../collections";
 import { Role } from "../../../model/role";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { subscribeToNotifications } from "../users/setUsersDB";
+import { getUserPermissionToNotifications } from "../../notifications";
 
 export async function setStatmentToDB(statement: Statement) {
     try {
@@ -46,18 +47,3 @@ export async function setStatmentSubscriptionToDB(statement: Statement, role: Ro
     }
 }
 
-export async function getUserPermissionToNotifications(): Promise<boolean> {
-    try {
-        //@ts-ignore
-        if (!"Notification" in window) throw new Error("Notification not supported");
-        if (Notification.permission === "granted") return true;
-        if (Notification.permission === "denied") throw new Error("Permission denied");
-
-        const permission = await Notification.requestPermission();
-        if (permission !== "granted") throw new Error("Permission not granted");
-        return true;
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
-}
