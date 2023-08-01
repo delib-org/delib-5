@@ -1,5 +1,5 @@
 import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
-import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionNotification } from "../../../model/statements/statementModel";
+import { Statement, StatementSchema, StatementSubscription } from "../../../model/statements/statementModel";
 import { DB, deviceToken } from "../config";
 import { Collections } from "../collections";
 import { Role } from "../../../model/role";

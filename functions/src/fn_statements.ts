@@ -32,9 +32,11 @@ export async function updateSubscribedListnersCB(event: any) {
 
 export async function updateParentWithNewMessageCB(e: any) {
   try {
+   
     //get parentId
     const statement = e.data.data();
     const parentId = statement.parentId;
+    logger.log("updateParentWithNewMessageCB", parentId);
     if (!parentId) throw new Error("parentId not found");
     if (parentId !== "top") {
       //get parent
@@ -58,8 +60,9 @@ export async function updateParentWithNewMessageCB(e: any) {
 export async function sendNotificationsCB(e: any) {
   try {
     const statement = e.data.data();
-    logger.log("statement", statement);
+   
     const parentId = statement.parentId;
+   
     if (!parentId) throw new Error("parentId not found");
 
     //get all subscribers to this statement
@@ -67,11 +70,12 @@ export async function sendNotificationsCB(e: any) {
     const q = subscribersRef.where("statementId", "==", parentId).where("notification", "==", true);
 
     const subscribersDB = await q.get();
-
+    logger.log("subscribersDB size", subscribersDB.docs.length);
 
     //send push notifications to all subscribers
     subscribersDB.docs.forEach((doc: any) => {
       const token = doc.data().token;
+      logger.log("token", token);
 
       if(token){
         const message = {

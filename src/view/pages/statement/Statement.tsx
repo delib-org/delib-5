@@ -10,7 +10,7 @@ import { Role } from '../../../model/role';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User } from '../../../model/users/userModel';
-import AskForNotifications from '../../components/notifications/AskForNotifications';
+
 
 //icons
 import ShareIcon from '../../icons/ShareIcon';
@@ -23,7 +23,7 @@ let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
 let unsubStatementSubscription: Function = () => { };
 
-const askNotification = ("Notification" in window && Notification.permission !== "granted")
+// const askNotification = ("Notification" in window && Notification.permission !== "granted")
 
 
 const Statement: FC = () => {
@@ -38,8 +38,8 @@ const Statement: FC = () => {
 
     const statement = useAppSelector(statementSelector(statementId));
     const statementSubs = useAppSelector(statementSubsSelector(statementId));
-    const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
-    const { role } = statementSubscription || { role: Role.member};
+    const statementSubscription:StatementSubscription|undefined = useAppSelector(statementSubscriptionSelector(statementId));
+    const  role:any  = statementSubscription?.role || Role.member;
    
     // const showAskForNotifications = useAppSelector((state) => state.user.askToSubscribeToNotifications.show);
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
@@ -101,6 +101,7 @@ const Statement: FC = () => {
         return () => {
             unsub();
             unsubSubStatements();
+            unsubStatementSubscription();
         }
     }, [statementId])
 
