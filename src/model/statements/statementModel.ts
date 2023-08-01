@@ -33,6 +33,7 @@ export const StatementSubscriptionSchema = z.object({
     statementsSubscribeId:z.string(),
     statement:StatementSchema,
     notification:z.boolean().optional(),
+    token:z.string().optional()
 });
 
 export type StatementSubscription = z.infer<typeof StatementSubscriptionSchema>;
@@ -42,6 +43,7 @@ export const StatementSubscriptionNotificationSchema = z.object({
     userId:z.string(),
     subscribed:z.boolean(),
     token:z.string(),
+    notification:z.boolean().optional()
 });
 
 export type StatementSubscriptionNotification = z.infer<typeof StatementSubscriptionNotificationSchema>;

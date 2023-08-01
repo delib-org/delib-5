@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
+import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from '../../../model/statements/statementModel';
 import StatementInput from './StatementInput';
 import StatementChat from '../../features/statement/StatementChat';
@@ -38,6 +38,9 @@ const Statement: FC = () => {
 
     const statement = useAppSelector(statementSelector(statementId));
     const statementSubs = useAppSelector(statementSubsSelector(statementId));
+    const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
+    const { role } = statementSubscription || { role: Role.member};
+   
     const showAskForNotifications = useAppSelector((state) => state.user.askToSubscribeToNotifications.show);
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
 
@@ -67,7 +70,7 @@ const Statement: FC = () => {
     }
 
     function handleRegisterToNotifications() {
-        // setStatmentSubscriptionNotificationToDB(statement, )
+        setStatmentSubscriptionNotificationToDB(statement, role)
     }
 
 
