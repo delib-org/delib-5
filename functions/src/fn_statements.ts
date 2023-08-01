@@ -63,8 +63,8 @@ export async function sendNotificationsCB(e: any) {
     if (!parentId) throw new Error("parentId not found");
 
     //get all subscribers to this statement
-    const subscribersRef = db.collection("statementsNotifications");
-    const q = subscribersRef.where("statementId", "==", parentId).where("subscribed", "==", true);
+    const subscribersRef = db.collection("statementsSubscribe");
+    const q = subscribersRef.where("statementId", "==", parentId).where("notification", "==", true);
 
     const subscribersDB = await q.get();
 
