@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatement, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
+import { setStatement, statementNotificationSelector, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
 import { Statement } from '../../../model/statements/statementModel';
 import StatementInput from './StatementInput';
 import StatementChat from '../../features/statement/StatementChat';
@@ -36,6 +36,8 @@ const Statement: FC = () => {
     const statement = useAppSelector(statementSelector(statementId));
     const statementSubs = useAppSelector(statementSubsSelector(statementId));
     const showAskForNotifications = useAppSelector((state) => state.user.askToSubscribeToNotifications.show);
+    const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
+    console.log('hasNotifications', hasNotifications)
 
     function updateStoreStatementCB(statement: Statement) {
         dispatch(setStatement(statement))

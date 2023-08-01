@@ -31,7 +31,8 @@ export const StatementSubscriptionSchema = z.object({
     statementId:z.string(),
     lastUpdate:z.number(),
     statementsSubscribeId:z.string(),
-    statement:StatementSchema
+    statement:StatementSchema,
+    notification:z.boolean().optional(),
 });
 
 export type StatementSubscription = z.infer<typeof StatementSubscriptionSchema>;
