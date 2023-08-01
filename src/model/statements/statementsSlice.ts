@@ -59,6 +59,6 @@ export const statementSubscriptionSelector = (state: RootState) => state.stateme
 export const statementSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId);
 export const statementSubsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter(statementSub => statementSub.parentId === statementId).sort((a, b) => a.createdAt - b.createdAt);
 export const statementNotificationSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId)?.notification || false;
-
+// export const statementSubscriptionSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId);
 
 export default statementsSlicer.reducer

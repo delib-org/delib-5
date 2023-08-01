@@ -1,5 +1,5 @@
-import { Timestamp, doc, setDoc } from "firebase/firestore";
-import { Statement, StatementSchema } from "../../../model/statements/statementModel";
+import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
+import { Statement, StatementSchema, StatementSubscription } from "../../../model/statements/statementModel";
 import { DB } from "../config";
 import { Collections } from "../collections";
 import { Role } from "../../../model/role";
@@ -32,13 +32,15 @@ export async function setStatmentToDB(statement: Statement) {
 
 export async function setStatmentSubscriptionToDB(statement: Statement, role: Role, setNotifications: boolean = false) {
     try {
-        console.log('subscribe', role)
+      
         const user = getUserFromFirebase();
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
         const { statementId } = statement;
         StatementSchema.parse(statement);
+
         const statementsSubscribeId = `${user.uid}--${statementId}`;
+
         if(role === Role.admin) setNotifications = true;
 
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
@@ -48,3 +50,26 @@ export async function setStatmentSubscriptionToDB(statement: Statement, role: Ro
     }
 }
 
+export async function setStatmentSubscriptionNotificationToDB(statement: Statement|undefined,  token: string) {
+    try {
+
+        if(!statement) throw new Error("Statement is undefined");
+        const { statementId } = statement;
+
+        
+        const user = getUserFromFirebase();
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
+        const statementsSubscribeId = `${user.uid}--${statementId}`;
+        const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
+        const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
+        if (!statementSubscriptionDB.exists()) throw new Error("Statement subscription not found");
+
+        const statementSubscription = statementSubscriptionDB.data() as StatementSubscription;
+        let { notification } = statementSubscription;
+        notification = !notification || true;
+        await setDoc(statementsSubscribeRef, { token,notification }, { merge: true });
+    } catch (error) {
+        console.error(error);
+    }
+}

@@ -7,7 +7,7 @@ import { Statement, StatementSubscription } from '../../../model/statements/stat
 import StatementInput from './StatementInput';
 import StatementChat from '../../features/statement/StatementChat';
 import { Role } from '../../../model/role';
-import { setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
+import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User } from '../../../model/users/userModel';
 import AskForNotifications from '../../components/notifications/AskForNotifications';
@@ -66,7 +66,11 @@ const Statement: FC = () => {
         navigator.share(shareData);
     }
 
- 
+    function handleRegisterToNotifications() {
+        // setStatmentSubscriptionNotificationToDB(statement, )
+    }
+
+
     const scrollToBottom = () => {
         if (!messagesEndRef) return;
         if (!messagesEndRef.current) return;
@@ -125,7 +129,9 @@ const Statement: FC = () => {
             <div className="page__header">
                 <div className='page__header__wrapper'>
                     <Link to="/home"><ArrowBackIosIcon /></Link>
-                    {hasNotifications ? <NotificationsOffIcon />:<NotificationsActiveIcon />}
+                    <div onClick={handleRegisterToNotifications}>
+                        {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon />}
+                    </div>
                     <h1>{statement?.statement}</h1>
                     {askNotification ? <button onClick={handleRegisterToNotifications}>Register to notifications</button> : null}
                     <div onClick={handleShare}><ShareIcon /></div>
