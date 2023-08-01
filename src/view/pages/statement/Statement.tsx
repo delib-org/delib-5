@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
-import { getIsSubscribed, listenToStatement, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
+import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatement, statementNotificationSelector, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
-import { Statement } from '../../../model/statements/statementModel';
+import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector } from '../../../model/statements/statementsSlice';
+import { Statement, StatementSubscription } from '../../../model/statements/statementModel';
 import StatementInput from './StatementInput';
 import StatementChat from '../../features/statement/StatementChat';
 import { Role } from '../../../model/role';
@@ -19,6 +19,7 @@ import AskForNotifications from '../../components/notifications/AskForNotificati
 let firstTime = true
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
+let unsubStatementSubscription: Function = () => { };
 
 const askNotification = ("Notification" in window && Notification.permission !== "granted")
 
@@ -41,6 +42,9 @@ const Statement: FC = () => {
 
     function updateStoreStatementCB(statement: Statement) {
         dispatch(setStatement(statement))
+    }
+    function updateStatementSubscriptionCB(statementSubscription: StatementSubscription) {
+        dispatch(setStatementSubscription(statementSubscription))
     }
 
     function handleShowTalker(_talker: User | null) {
@@ -101,6 +105,7 @@ const Statement: FC = () => {
 
             unsub = listenToStatement(statementId, updateStoreStatementCB);
             unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB);
+            unsubStatementSubscription = listenToStatementSubscription(statementId, updateStatementSubscriptionCB);
 
         }
 
