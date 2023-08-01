@@ -30,7 +30,7 @@ export async function setStatmentToDB(statement: Statement) {
     }
 }
 
-export async function setStatmentSubscriptionToDB(statement: Statement, role: Role) {
+export async function setStatmentSubscriptionToDB(statement: Statement, role: Role, setNotifications: boolean = false) {
     try {
         console.log('subscribe', role)
         const user = getUserFromFirebase();
@@ -39,9 +39,10 @@ export async function setStatmentSubscriptionToDB(statement: Statement, role: Ro
         const { statementId } = statement;
         StatementSchema.parse(statement);
         const statementsSubscribeId = `${user.uid}--${statementId}`;
+        if(role === Role.admin) setNotifications = true;
 
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
-        await setDoc(statementsSubscribeRef, { statement, statementsSubscribeId, role, userId: user.uid, statementId, lastUpdate: Timestamp.now().toMillis(), createdAt: Timestamp.now().toMillis() }, { merge: true });
+        await setDoc(statementsSubscribeRef, {notification:setNotifications, statement, statementsSubscribeId, role, userId: user.uid, statementId, lastUpdate: Timestamp.now().toMillis(), createdAt: Timestamp.now().toMillis() }, { merge: true });
     } catch (error) {
         console.error(error);
     }

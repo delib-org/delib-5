@@ -10,11 +10,13 @@ import { Role } from '../../../model/role';
 import { setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User } from '../../../model/users/userModel';
+import AskForNotifications from '../../components/notifications/AskForNotifications';
 
 //icons
 import ShareIcon from '../../icons/ShareIcon';
 import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
-import AskForNotifications from '../../components/notifications/AskForNotifications';
+import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 
 let firstTime = true
 let unsub: Function = () => { }
@@ -38,7 +40,7 @@ const Statement: FC = () => {
     const statementSubs = useAppSelector(statementSubsSelector(statementId));
     const showAskForNotifications = useAppSelector((state) => state.user.askToSubscribeToNotifications.show);
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
-    console.log('hasNotifications', hasNotifications)
+
 
     function updateStoreStatementCB(statement: Statement) {
         dispatch(setStatement(statement))
@@ -64,27 +66,7 @@ const Statement: FC = () => {
         navigator.share(shareData);
     }
 
-    function handleRegisterToNotifications() {
-        try {
-            if (Notification.permission === "granted") {
-                alert("You are already registered to notifications")
-            } else if (Notification.permission === "denied") {
-                alert("You denied notifications")
-            } else {
-                alert("You will be asked to allow notifications")
-                Notification.requestPermission().then((permission) => {
-                    console.log(permission)
-                    if (permission === "granted") {
-                        alert("You are now registered to notifications")
-                    } else {
-                        alert("You denied notifications")
-                    }
-                })
-            }
-        } catch (error) {
-            console.error(error)
-        }
-    }
+ 
     const scrollToBottom = () => {
         if (!messagesEndRef) return;
         if (!messagesEndRef.current) return;
@@ -143,6 +125,7 @@ const Statement: FC = () => {
             <div className="page__header">
                 <div className='page__header__wrapper'>
                     <Link to="/home"><ArrowBackIosIcon /></Link>
+                    {hasNotifications ? <NotificationsOffIcon />:<NotificationsActiveIcon />}
                     <h1>{statement?.statement}</h1>
                     {askNotification ? <button onClick={handleRegisterToNotifications}>Register to notifications</button> : null}
                     <div onClick={handleShare}><ShareIcon /></div>
