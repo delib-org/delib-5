@@ -41,7 +41,7 @@ const Statement: FC = () => {
     const statementSubscription = useAppSelector(statementSubscriptionSelector(statementId));
     const { role } = statementSubscription || { role: Role.member};
    
-    const showAskForNotifications = useAppSelector((state) => state.user.askToSubscribeToNotifications.show);
+    // const showAskForNotifications = useAppSelector((state) => state.user.askToSubscribeToNotifications.show);
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
 
 
@@ -125,7 +125,7 @@ const Statement: FC = () => {
     }, [statementSubs]);
     return (
         <>
-            {showAskForNotifications ? <AskForNotifications /> : null}
+        
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
             </div> : null}
@@ -136,7 +136,6 @@ const Statement: FC = () => {
                         {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon />}
                     </div>
                     <h1>{statement?.statement}</h1>
-                    {askNotification ? <button onClick={handleRegisterToNotifications}>Register to notifications</button> : null}
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
             </div>

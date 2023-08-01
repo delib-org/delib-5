@@ -60,6 +60,10 @@ export async function setStatmentSubscriptionNotificationToDB(statement: Stateme
         if (!statement) throw new Error("Statement is undefined");
         const { statementId } = statement;
 
+        //ask user for permission to send notifications
+        await getUserPermissionToNotifications();
+
+
 
         const user = getUserFromFirebase();
         if (!user) throw new Error("User not logged in");
