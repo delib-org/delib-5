@@ -10,6 +10,7 @@ import { Role } from '../../../model/role';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User } from '../../../model/users/userModel';
+import { User } from '../../../model/users/userModel';
 
 
 //icons
