@@ -4,6 +4,7 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from './statementModel'
 import { updateArray } from '../../functions/general/helpers';
+import { useCallback, useMemo } from 'react';
 
 // Define a type for the slice state
 interface StatementsState {
@@ -55,7 +56,7 @@ export const { setStatement, setStatementSubscription } = statementsSlicer.actio
 
 // Other code such as selectors can use the imported `RootState` type
 export const statementsSelector = (state: RootState) => state.statements.statements;
-export const statementsSubscriptionsSelector = (state: RootState) => state.statements.statementSubscription
+export const statementsSubscriptionsSelector =(state: RootState) => state.statements.statementSubscription;
 export const statementSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId);
 export const statementSubsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter(statementSub => statementSub.parentId === statementId).sort((a, b) => a.createdAt - b.createdAt);
 export const statementNotificationSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId)?.notification || false;

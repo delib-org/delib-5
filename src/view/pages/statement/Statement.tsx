@@ -39,13 +39,12 @@ const Statement: FC = () => {
 
     const statement = useAppSelector(statementSelector(statementId));
     const statementSubs = useAppSelector(statementSubsSelector(statementId));
-    const statementSubscription:StatementSubscription|undefined = useAppSelector(statementSubscriptionSelector(statementId));
-    const  role:any  = statementSubscription?.role || Role.member;
-   
-    // const showAskForNotifications = useAppSelector((state) => state.user.askToSubscribeToNotifications.show);
+    const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
+    const role: any = statementSubscription?.role || Role.member;
+
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
 
-
+    //store callbacks
     function updateStoreStatementCB(statement: Statement) {
         dispatch(setStatement(statement))
     }
@@ -53,6 +52,7 @@ const Statement: FC = () => {
         dispatch(setStatementSubscription(statementSubscription))
     }
 
+    //handlers
     function handleShowTalker(_talker: User | null) {
         if (!talker) {
             setTalker(_talker);
@@ -63,8 +63,8 @@ const Statement: FC = () => {
 
     function handleShare() {
         const shareData = {
-            title: "Delib: making creating aggrements easy",
-            text: `Come join me on Delib!: ${statement?.statement}`,
+            title: "דליב: יוצרים הסכמות ביחד",
+            text: `מוזמנים: ${statement?.statement}`,
             url: `https://delib-5.web.app/home/statement/${statementId}`,
         };
         navigator.share(shareData);
@@ -74,7 +74,7 @@ const Statement: FC = () => {
         setStatmentSubscriptionNotificationToDB(statement, role)
     }
 
-
+    //scroll to bottom
     const scrollToBottom = () => {
         if (!messagesEndRef) return;
         if (!messagesEndRef.current) return;
@@ -88,6 +88,7 @@ const Statement: FC = () => {
         }
     }
 
+    //effects
     useEffect(() => { firstTime = true }, [])
 
     useEffect(() => {
@@ -125,9 +126,11 @@ const Statement: FC = () => {
     useEffect(() => {
         scrollToBottom()
     }, [statementSubs]);
+
+    //JSX
     return (
         <>
-        
+
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
             </div> : null}

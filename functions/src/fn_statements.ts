@@ -78,13 +78,19 @@ export async function sendNotificationsCB(e: any) {
       logger.log("token", token);
 
       if(token){
-        const message = {
+        const notifications = {
           notification: {
-            title: 'New message',
+            title: 'הודעה חדשה',
             body: statement.statement
           },
           token: token,
         };
+        const webpush = {
+          fcm_options: {
+            link: "https://dummypage.com"
+          }
+        }
+        const message = {notifications,webpush}
         admin.messaging().send(message)
           .then((response: any) => {
             logger.log("response", response);
