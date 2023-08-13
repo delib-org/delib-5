@@ -4,6 +4,7 @@ import { auth } from '../../../functions/db/auth';
 
 //icons
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import { setStatementisOption } from '../../../functions/db/statements/setStatments';
 
 interface Props {
   statement: Statement
@@ -32,7 +33,7 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
             {statement.statement}
           </div>
           {show ? <div className="statement__bubble__more">
-           <div className="icon"> <LightbulbIcon /></div>
+           <div className="icon" onClick={()=>setStatementisOption(statement)}> <LightbulbIcon /></div>
           </div> : null}
         </div>
       </div>

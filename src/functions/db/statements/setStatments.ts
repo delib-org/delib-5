@@ -91,3 +91,24 @@ export async function setStatmentSubscriptionNotificationToDB(statement: Stateme
         console.error(error);
     }
 }
+
+export async function setStatementisOption(statement:Statement){
+    try {
+        const statementRef = doc(DB, Collections.statements, statement.statementId);
+
+        //get current statement
+        const statementDB = await getDoc(statementRef);
+        if (!statementDB.exists()) throw new Error("Statement not found");
+
+        const statementDBData = statementDB.data() as Statement;
+        const { isOption } = statementDBData;
+        if (isOption){
+            await setDoc(statementRef, {isOption:false},{merge:true});
+        } else {
+            await setDoc(statementRef, {isOption:true},{merge:true});
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
