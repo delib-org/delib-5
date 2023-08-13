@@ -10,6 +10,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import { setEvaluation } from '../../../functions/db/evaluation/setEvaluation';
 
 
 interface Props {
@@ -34,12 +35,12 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
 
       <div className={isMe ? `statement__chatCard statement__chatCard--me` : "statement__chatCard statement__chatCard--other"}>
         <div onClick={() => showImage(statement.creator)} className="statement__chatCard__profile" style={userProfile ? { backgroundImage: `url(${userProfile})` } : {}}></div>
-        <div className={isOption?"statement__bubble statement__bubble--option":"statement__bubble"}>
+        <div className={isOption ? "statement__bubble statement__bubble--option" : "statement__bubble"}>
           <div className={isMe ? "bubble right" : "bubble left"}>
             <div className="statement__bubble__text">
-              {isOption?<ThumbDownOffAltIcon className="icon" />:null}
+              {isOption ? <ThumbDownOffAltIcon className="icon" onClick={() => { setEvaluation(statement, -1) }} /> : null}
               <p onClick={() => setShow(!show)}>{statement.statement}</p>
-              {isOption?<ThumbUpOffAltIcon className="icon"/>:null}
+              {isOption ? <ThumbUpOffAltIcon className="icon" onClick={() => { setEvaluation(statement, 1) }} /> : null}
             </div>
             {show ? <div className="statement__bubble__more">
               <div className="icon" onClick={() => setStatementisOption(statement)}> <LightbulbIcon /></div>
