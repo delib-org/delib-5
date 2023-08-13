@@ -22,7 +22,7 @@ export let deviceToken: string | undefined = undefined;
 getToken(messaging, { vapidKey }).then((currentToken) => {
   if (currentToken) {
     // Send the token to your server and update the UI if necessary
-    console.log(currentToken)
+    console.log('currentToken',currentToken)
     deviceToken = currentToken;
 
     // ...

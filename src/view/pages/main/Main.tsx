@@ -5,7 +5,7 @@ import Fav from '../../components/fav/Fav';
 import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
 import { StatementSubscription } from '../../../model/statements/statementModel';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { setStatementSubscription, statementSubscriptionSelector} from '../../../model/statements/statementsSlice';
+import { setStatementSubscription, statementsSubscriptionsSelector} from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';
 import StatementCard from '../../features/statement/StatementCard';
 import { setUser } from '../../../model/users/userSlice';
@@ -15,7 +15,7 @@ let unsubscribe: Function = () => { };
 
 const Main = () => {
     const navigate = useNavigate();
-    const statements = [...useAppSelector(statementSubscriptionSelector)].sort((a, b) => b.lastUpdate - a.lastUpdate);
+    const statements = [...useAppSelector(statementsSubscriptionsSelector)].sort((a, b) => b.lastUpdate - a.lastUpdate);
     const isLgged = useAuth();
     const dispatch = useAppDispatch();
 
