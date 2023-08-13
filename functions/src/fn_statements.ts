@@ -90,7 +90,7 @@ export async function sendNotificationsCB(e: any) {
             link: "https://dummypage.com"
           }
         }
-        const message = {notifications,webpush}
+        const message:any = {notifications,webpush}
         admin.messaging().send(message)
           .then((response: any) => {
             logger.log("response", response);

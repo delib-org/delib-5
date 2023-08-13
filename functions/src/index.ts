@@ -7,10 +7,11 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
+import { updateEvaluation } from "./fn_evaluation";
 import { updateSubscribedListnersCB,updateParentWithNewMessageCB, sendNotificationsCB } from "./fn_statements";
 
 // const { onRequest } = require("firebase-functions/v2/https");
-const { onDocumentUpdated,onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onDocumentUpdated,onDocumentCreated,onDocumentWritten } = require("firebase-functions/v2/firestore");
 
 // The Firebase Admin SDK to access Firestore.
 const { initializeApp } = require("firebase-admin/app");
@@ -21,8 +22,12 @@ export const db = getFirestore();
 
 
 // update subscribers when statement is updated
+//statements
 exports.updateSubscribedListners = onDocumentUpdated("/statements/{statementId}",updateSubscribedListnersCB);
 
 exports.updateParentWithNewMessage = onDocumentCreated("/statements/{statementId}",updateParentWithNewMessageCB);
 
 exports.updateNotifications = onDocumentCreated("/statements/{statementId}",sendNotificationsCB);
+
+//evaluations
+exports.updateEvaluation = onDocumentWritten('/evaluations/{evaluationId}', updateEvaluation)

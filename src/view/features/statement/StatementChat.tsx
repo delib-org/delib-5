@@ -42,9 +42,9 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
         <div className={isOption ? "statement__bubble statement__bubble--option" : "statement__bubble"}>
           <div className={isMe ? "bubble right" : "bubble left"}>
             <div className="statement__bubble__text">
-              <Thumbs evaluation={evaluation} upDown='up' statement={statement} />
+              {isOption?<Thumbs evaluation={evaluation} upDown='up' statement={statement} />:null}
               <p onClick={() => setShow(!show)}>{statement.statement}</p>
-              <Thumbs evaluation={evaluation} upDown='down' statement={statement} />
+              {isOption?<Thumbs evaluation={evaluation} upDown='down' statement={statement} />:null}
             </div>
             {show ? <div className="statement__bubble__more">
               <div className="icon" onClick={() => setStatementisOption(statement)}> <LightbulbIcon /></div>
