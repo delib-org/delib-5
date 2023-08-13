@@ -9,6 +9,21 @@
         gap: 15px;
     }
 
+    &__bubble{
+        &__text{
+            cursor: pointer;
+        }
+        &__more{
+            margin-top: 15px;
+            margin-bottom: -3px;
+            opacity: 0.7;
+            .icon{
+                cursor: pointer;
+                user-select: none;
+            }
+        }
+    }
+
     &__chatCard {
         display: flex;
         gap: 10px;
