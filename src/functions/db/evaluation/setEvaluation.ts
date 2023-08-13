@@ -12,9 +12,12 @@ export async function setEvaluation(statement:Statement, evaluation:number):Prom
         if(!parentId) throw new Error("ParentId is undefined");
         const statementId = statement.statementId;
         const user = getUserFromFirebase();
+        console.log(user)
         const userId = user?.uid;
         if(!userId) throw new Error("User is undefined");
         const evaluationId = `${userId}--${statementId}`;
+
+        console.log('evaluatorId',userId);
 
         const evaluationRef = doc(DB, Collections.evaluations, evaluationId);
         await setDoc(evaluationRef,{parentId, evaluationId, statementId, evaluatorId:userId, updatedAt:Timestamp.now().toMillis(), value:evaluation});
