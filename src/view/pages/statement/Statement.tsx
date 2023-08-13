@@ -147,8 +147,8 @@ const Statement: FC = () => {
             <div className="page__main">
                 <div className="wrapper wrapper--chat">
                     {statementSubs?.map((statement) => (
-                        <div key={statement.statementId} onClick={() => handleShowTalker(statement.creator)}>
-                            <StatementChat statement={statement} />
+                        <div key={statement.statementId} >
+                            <StatementChat statement={statement} showImage={handleShowTalker} />
                         </div>
                     ))
                     }
