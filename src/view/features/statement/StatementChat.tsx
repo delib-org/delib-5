@@ -11,6 +11,8 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { setEvaluation } from '../../../functions/db/evaluation/setEvaluation';
+import { useAppSelector } from '../../../functions/hooks/reduxHooks';
+import { evaluationSelector } from '../../../model/evaluations/evaluationsSlice';
 
 
 interface Props {
@@ -19,6 +21,8 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({ statement, showImage }) => {
+  const evaluation = useAppSelector(evaluationSelector(statement.statementId))
+
 
   const [show, setShow] = useState(false)
 
@@ -38,9 +42,9 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
         <div className={isOption ? "statement__bubble statement__bubble--option" : "statement__bubble"}>
           <div className={isMe ? "bubble right" : "bubble left"}>
             <div className="statement__bubble__text">
-              {isOption ? <ThumbDownOffAltIcon className="icon" onClick={() => { setEvaluation(statement, -1) }} /> : null}
+              <Thumbs evaluation={evaluation} upDown='up' statement={statement} />
               <p onClick={() => setShow(!show)}>{statement.statement}</p>
-              {isOption ? <ThumbUpOffAltIcon className="icon" onClick={() => { setEvaluation(statement, 1) }} /> : null}
+              <Thumbs evaluation={evaluation} upDown='down' statement={statement} />
             </div>
             {show ? <div className="statement__bubble__more">
               <div className="icon" onClick={() => setStatementisOption(statement)}> <LightbulbIcon /></div>
@@ -53,4 +57,31 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
   )
 }
 
-export default StatementChat
+interface ThumbsProps {
+  evaluation: number
+  upDown: "up" | "down";
+  statement: Statement
+}
+
+const Thumbs: FC<ThumbsProps> = ({ evaluation, upDown, statement }) => {
+  if (upDown === "up") {
+    if (evaluation > 0) {
+      return (
+        <ThumbUpIcon className="icon" onClick={()=>setEvaluation(statement,0)}/>
+      )
+    } else {
+      return <ThumbUpOffAltIcon className="icon" onClick={()=>setEvaluation(statement,1)}/>
+    }
+  }
+  else {
+    if (evaluation < 0) {
+      return (<ThumbDownIcon className="icon" onClick={()=>setEvaluation(statement,0)}/>)
+    }
+    else {
+      return <ThumbDownOffAltIcon className="icon" onClick={()=>setEvaluation(statement,-1)}/>
+    }
+
+  }
+}
+
+export default StatementChat;
