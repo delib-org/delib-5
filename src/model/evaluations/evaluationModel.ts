@@ -1,12 +1,12 @@
 import {z} from 'zod';
 
 export const EvaluationSchema = z.object({
-    parentStatementId:z.string(),
+    parentId:z.string(),
     evaluationId:z.string(),
     statementId:z.string(),
     evaluatorId:z.string(),
     updatedAt:z.number(),
-    value:z.number()
+    evaluation:z.number()
 });
 
 export type Evaluation = z.infer<typeof EvaluationSchema>;
