@@ -11,11 +11,12 @@ interface Props {
 interface NavObject {
     link: string;
     name: string;
+    id: string;
 }
 
 const navArray: NavObject[] = [
-    { link: "options", name: "Options" },
-    { link: "", name: "Chat" },
+    { link: "options", name: "Options", id: "options" },
+    { link: "", name: "Chat", id:"main" },
 ]
 
 
@@ -28,7 +29,7 @@ const StatementNav: FC<Props> = () => {
     return (
         <nav className="statement__nav">
             {navArray.map((navObject: NavObject) =>
-                <Link to={`${navObject.link}`} className={(page === navObject.link) || (navObject.link === "" && page === undefined) ?
+                <Link key={navObject.id} to={`${navObject.link}`} className={(page === navObject.link) || (navObject.link === "" && page === undefined) ?
                     "statement__nav__button statement__nav__button--selected"
                     :
                     "statement__nav__button"}>

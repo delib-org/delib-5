@@ -23,8 +23,9 @@ import { Evaluation } from '../../../model/evaluations/evaluationModel';
 import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlice';
 import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluation';
 import StatementNav from '../../features/statement/StatementNav';
+import StatementMain from '../../features/statement/StatementMain';
 
-let firstTime = true
+
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
 let unsubStatementSubscription: Function = () => { };
@@ -38,7 +39,7 @@ const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const dispatch = useAppDispatch();
     const { statementId } = useParams();
-    const messagesEndRef = useRef(null)
+  
 
 
     //check if the user is registered
@@ -84,22 +85,9 @@ const Statement: FC = () => {
         setStatmentSubscriptionNotificationToDB(statement, role)
     }
 
-    //scroll to bottom
-    const scrollToBottom = () => {
-        if (!messagesEndRef) return;
-        if (!messagesEndRef.current) return;
-        if (firstTime) {
-            //@ts-ignore
-            messagesEndRef.current.scrollIntoView({ behavior: "auto" })
-            firstTime = false
-        } else {
-            //@ts-ignore
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
-        }
-    }
+    
 
-    //effects
-    useEffect(() => { firstTime = true }, [])
+    
 
     useEffect(() => {
         if (statementId) {
@@ -134,9 +122,7 @@ const Statement: FC = () => {
         }
     }, [statement])
 
-    useEffect(() => {
-        scrollToBottom()
-    }, [statementSubs]);
+
 
     //JSX
     return (
@@ -156,21 +142,7 @@ const Statement: FC = () => {
                 </div>
                 {statement?<StatementNav statement={statement} />:null} 
             </div>
-            <div className="page__main">
-
-                <div className="wrapper wrapper--chat">
-                    {statementSubs?.map((statement) => (
-                        <div key={statement.statementId} >
-                            <StatementChat statement={statement} showImage={handleShowTalker} />
-                        </div>
-                    ))
-                    }
-                    <div ref={messagesEndRef} />
-                </div>
-            </div>
-            <div className="page__footer">
-                {statement ? <StatementInput statement={statement} /> : null}
-            </div>
+           {statement?<StatementMain statement={statement} statementsSub={statementSubs} handleShowTalker={handleShowTalker}/>:null}
 
         </>
     )
