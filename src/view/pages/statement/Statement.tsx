@@ -22,6 +22,7 @@ import { setEvaluation } from '../../../functions/db/evaluation/setEvaluation';
 import { Evaluation } from '../../../model/evaluations/evaluationModel';
 import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlice';
 import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluation';
+import StatementNav from '../../features/statement/StatementNav';
 
 let firstTime = true
 let unsub: Function = () => { }
@@ -153,8 +154,10 @@ const Statement: FC = () => {
                     <h1>{statement?.statement}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
+                <StatementNav />
             </div>
             <div className="page__main">
+               
                 <div className="wrapper wrapper--chat">
                     {statementSubs?.map((statement) => (
                         <div key={statement.statementId} >
