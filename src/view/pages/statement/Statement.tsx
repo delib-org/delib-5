@@ -58,7 +58,7 @@ const Statement: FC = () => {
         dispatch(setStatementSubscription(statementSubscription))
     }
 
-    function updateEvaluationsCB(evaluation:Evaluation){
+    function updateEvaluationsCB(evaluation: Evaluation) {
         dispatch(setEvaluationToStore(evaluation))
     }
 
@@ -154,10 +154,10 @@ const Statement: FC = () => {
                     <h1>{statement?.statement}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
-                <StatementNav />
+                {statement?<StatementNav statement={statement} />:null} 
             </div>
             <div className="page__main">
-               
+
                 <div className="wrapper wrapper--chat">
                     {statementSubs?.map((statement) => (
                         <div key={statement.statementId} >

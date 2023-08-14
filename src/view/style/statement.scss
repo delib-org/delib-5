@@ -9,15 +9,44 @@
         gap: 15px;
     }
 
-    &__bubble{
-        &__text{
+    &__nav {
+        display: flex;
+        width: 100vw;
+        max-width: 75ch;
+        margin: 0 auto;
+
+        a{
+            text-decoration: none;
+            box-sizing: border-box;
+            transition: all 0.2s ease-in-out;
+        }
+
+            &__button {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 5px;
+                border-bottom:2px solid rgba(0, 0, 0, 0);
+
+
+                &--selected{
+                    border-bottom:2px solid var(--accent);
+                }
+            }
+        
+    }
+
+    &__bubble {
+        &__text {
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap:10px;
+            gap: 10px;
             justify-content: space-between;
         }
-        &__more{
+
+        &__more {
             display: flex;
             justify-content: space-around;
             gap: 20px;
@@ -25,23 +54,25 @@
             margin-top: 15px;
             margin-bottom: -3px;
             opacity: 0.7;
-            .icon{
+
+            .icon {
                 cursor: pointer;
                 user-select: none;
             }
         }
 
-        &__proCon{
+        &__proCon {
             display: flex;
             align-items: center;
             gap: 4px;
             margin: 20px 0px;
-            .icon{
+
+            .icon {
                 transform: scaleX(-1);
             }
         }
 
-        &--option{
+        &--option {
             box-shadow: 0px 0pc 30px rgba(250, 245, 101, 0.877);
         }
     }
@@ -99,7 +130,7 @@
         box-sizing: border-box;
 
         align-items: center;
-        background: linear-gradient(90deg, rgba(232,232,232,0) 0%, rgba(232,232,232,1) 35%, rgba(232,232,232,1) 100%);
+        background: linear-gradient(90deg, rgba(232, 232, 232, 0) 0%, rgba(232, 232, 232, 1) 35%, rgba(232, 232, 232, 1) 100%);
 
         >* {
             margin: 5px;
