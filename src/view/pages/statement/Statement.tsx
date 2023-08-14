@@ -18,11 +18,17 @@ import ShareIcon from '../../icons/ShareIcon';
 import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import { setEvaluation } from '../../../functions/db/evaluation/setEvaluation';
+import { Evaluation } from '../../../model/evaluations/evaluationModel';
+import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlice';
+import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluation';
+import StatementNav from '../../features/statement/StatementNav';
 
 let firstTime = true
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
 let unsubStatementSubscription: Function = () => { };
+let unsubEvaluations: Function = () => { };
 
 // const askNotification = ("Notification" in window && Notification.permission !== "granted")
 
@@ -50,6 +56,10 @@ const Statement: FC = () => {
     }
     function updateStatementSubscriptionCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription))
+    }
+
+    function updateEvaluationsCB(evaluation:Evaluation){
+        dispatch(setEvaluationToStore(evaluation))
     }
 
     //handlers
@@ -97,13 +107,14 @@ const Statement: FC = () => {
             unsub = listenToStatement(statementId, updateStoreStatementCB);
             unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB);
             unsubStatementSubscription = listenToStatementSubscription(statementId, updateStatementSubscriptionCB);
-
+            unsubEvaluations = listenToEvaluations(statementId, updateEvaluationsCB);
         }
 
         return () => {
             unsub();
             unsubSubStatements();
             unsubStatementSubscription();
+            unsubEvaluations();
         }
     }, [statementId])
 
@@ -143,12 +154,14 @@ const Statement: FC = () => {
                     <h1>{statement?.statement}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
+                <StatementNav />
             </div>
             <div className="page__main">
+               
                 <div className="wrapper wrapper--chat">
                     {statementSubs?.map((statement) => (
-                        <div key={statement.statementId} onClick={() => handleShowTalker(statement.creator)}>
-                            <StatementChat statement={statement} />
+                        <div key={statement.statementId} >
+                            <StatementChat statement={statement} showImage={handleShowTalker} />
                         </div>
                     ))
                     }

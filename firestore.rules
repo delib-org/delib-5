@@ -13,6 +13,11 @@ service cloud.firestore {
       allow read;
       allow write: if request.auth.uid != null;
     }
+
+     match /evaluations/{evluationId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
     
     match /posts/{postId=**}{
       allow read;

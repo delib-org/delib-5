@@ -3,7 +3,8 @@ import { UserSchema } from '../users/userModel';
 
 export enum StatementType {
     STATEMENT = 'statement',
-    GROUP = 'GROUP'
+    GROUP = 'GROUP',
+    OPTION = 'option'
 };
 
 const statementType = z.enum([StatementType.STATEMENT, StatementType.GROUP]);
@@ -21,6 +22,9 @@ export const StatementSchema = z.object({
     lsetUpdate:z.number().optional(),
     createdAt:z.number(),
     type:statementType,
+    isOption:z.boolean().optional(),
+    pro:z.number().optional(),
+    con:z.number().optional(),
 });
 
 export type Statement = z.infer<typeof StatementSchema>;
