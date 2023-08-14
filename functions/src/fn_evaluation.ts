@@ -33,8 +33,7 @@ export async function updateEvaluation(event: any) {
         const statementEvaluatorDB = await statementEvaluatorsRef.doc(`${dataAfter.evaluatorId}--${parentId}`).get();
 
         const totalEvaluators = await updateNumberOfEvaluators(statementEvaluatorDB, statementEvaluatorsRef, dataAfter, parentId, parentRef);
-        logger.log("totalEvaluators", totalEvaluators);
-        const _totalEvaluations = await setNewEvaluation(statementRef, evaluationDeferneces);
+        const _totalEvaluations = await setNewEvaluation(statementRef, evaluationDeferneces, evaluation, previousEvaluation);
 
         const consensus = await calculateConsensus(_totalEvaluations, totalEvaluators);
 
@@ -75,7 +74,7 @@ export async function updateEvaluation(event: any) {
         }
     }
 
-    async function setNewEvaluation(statementRef: any, evaluationDeferneces: number): Promise<number> {
+    async function setNewEvaluation(statementRef: any, evaluationDeferneces: number, evaluation: number, previousEvaluation: number): Promise<number> {
         let newTotalEvaluations: number = 0;
         await db.runTransaction(async (t: any) => {
             try {
@@ -86,13 +85,21 @@ export async function updateEvaluation(event: any) {
                 }
 
                 newTotalEvaluations = statementDB.data().totalEvaluations;
+                const oldPro = statementDB.data().pro || 0;
+                const oldCon = statementDB.data().con || 0;
+                logger.info('statementDB.data()', statementDB.data());
+                logger.info(`oldPro: ${oldPro}, oldCon: ${oldCon}`);
+
+                const { newCon, newPro } = updateProCon(oldPro, oldCon, evaluation, previousEvaluation);
+                logger.info(`newPro: ${newPro}, newCon: ${newCon}`);
+
                 if (newTotalEvaluations === undefined)
                     newTotalEvaluations = 0;
 
 
                 newTotalEvaluations += evaluationDeferneces;
 
-                t.update(statementRef, { totalEvaluations: newTotalEvaluations });
+                t.update(statementRef, { totalEvaluations: newTotalEvaluations, con: newCon, pro: newPro });
 
                 // return newTotalEvaluations
             } catch (error) {
@@ -101,6 +108,30 @@ export async function updateEvaluation(event: any) {
             }
         });
         return newTotalEvaluations;
+
+        function updateProCon(oldPro: number, oldCon: number, evaluation: number, previousEvaluation: number): { newPro: number, newCon: number } {
+            try {
+                let newPro = oldPro, newCon = oldCon;
+
+                if (previousEvaluation > 0) {
+                    newPro = oldPro - Math.abs(previousEvaluation);
+                } else if (previousEvaluation < 0) {
+                    newCon = oldCon - Math.abs(previousEvaluation);
+                }
+
+                if (evaluation > 0) {
+                    newPro += evaluation;
+                } else if (evaluation < 0) {
+                    newCon += Math.abs(evaluation);
+                }
+
+
+                return { newPro, newCon };
+            } catch (error) {
+                logger.error(error);
+                return { newPro: oldPro, newCon: oldCon };
+            }
+        }
     }
 
     async function updateNumberOfEvaluators(statementEvaluatorDB: any, statementEvaluatorsRef: any, dataAfter: any, parentId: any, parentRef: any) {
@@ -130,12 +161,12 @@ export async function updateEvaluation(event: any) {
                         logger.error(error);
                     }
                 });
-            } else{
+            } else {
                 const parentStatementDB = await parentRef.get();
                 if (!parentStatementDB.exists) {
                     throw new Error("parentStatementRef does not exist");
-                }   
-                totalEvaluators = parentStatementDB.data().totalEvaluators ||0;
+                }
+                totalEvaluators = parentStatementDB.data().totalEvaluators || 0;
             }
             return totalEvaluators;
         } catch (error) {
