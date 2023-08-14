@@ -14,11 +14,14 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap:10px
+            gap:10px;
+            justify-content: space-between;
         }
         &__more{
             display: flex;
             justify-content: space-around;
+            gap: 20px;
+            align-items: center;
             margin-top: 15px;
             margin-bottom: -3px;
             opacity: 0.7;
@@ -28,8 +31,18 @@
             }
         }
 
+        &__proCon{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin: 20px 0px;
+            .icon{
+                transform: scaleX(-1);
+            }
+        }
+
         &--option{
-            box-shadow: 0px 0pc 30px yellow;
+            box-shadow: 0px 0pc 30px rgba(250, 245, 101, 0.877);
         }
     }
 
