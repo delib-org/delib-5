@@ -5,26 +5,10 @@ import { db } from "./index";
 export async function updateEvaluation(event: any) {
     try {
 
-        // const evaluationId = event.params.evaluationId;
+        // get data from event
 
-        const dataAfter = event.data.after.data();
-        const evaluation = dataAfter.evaluation;
-        if (evaluation === undefined) throw new Error("evaluation is not defined");
-
-        const dataBefore = event.data.before.data();
-        let previousEvaluation = 0;
-        if (dataBefore) previousEvaluation = dataBefore.evaluation || 0;
-
-        const evaluationDeferneces = evaluation - previousEvaluation;
-
-        const statementId = dataAfter.statementId;
-        if (!statementId) throw new Error("statementId is not defined");
-        const statementRef = db.collection("statements").doc(statementId);
-
-        const parentId = dataAfter.parentId;
-        if (!parentId)
-            throw new Error("parentId is not defined");
-
+        const { parentId, dataAfter, statementRef, evaluationDeferneces, evaluation, previousEvaluation, error } = getInfo();
+        if (error) throw error;
 
         //get parent statement
         const parentRef = db.collection("statements").doc(parentId);
@@ -32,6 +16,7 @@ export async function updateEvaluation(event: any) {
         const statementEvaluatorsRef = db.collection("statementEvaluators");
         const statementEvaluatorDB = await statementEvaluatorsRef.doc(`${dataAfter.evaluatorId}--${parentId}`).get();
 
+        //calculate and update
         const totalEvaluators = await updateNumberOfEvaluators(statementEvaluatorDB, statementEvaluatorsRef, dataAfter, parentId, parentRef);
         const _totalEvaluations = await setNewEvaluation(statementRef, evaluationDeferneces, evaluation, previousEvaluation);
 
@@ -49,6 +34,37 @@ export async function updateEvaluation(event: any) {
     } catch (error) {
         logger.error(error);
         return;
+    }
+
+    //inner functions
+
+    function getInfo() {
+        try {
+            const dataAfter = event.data.after.data();
+            const evaluation = dataAfter.evaluation;
+            if (evaluation === undefined) throw new Error("evaluation is not defined");
+
+            const dataBefore = event.data.before.data();
+            let previousEvaluation = 0;
+            if (dataBefore) previousEvaluation = dataBefore.evaluation || 0;
+            if(isNaN(previousEvaluation)) throw new Error("previousEvaluation is not a number");    
+            if(isNaN(evaluation)) throw new Error("evaluation is not a number");
+
+            const evaluationDeferneces:number = evaluation - previousEvaluation || 0;
+            if(!evaluationDeferneces) throw new Error("evaluationDeferneces is not defined");
+
+            const statementId = dataAfter.statementId;
+            if (!statementId) throw new Error("statementId is not defined");
+            const statementRef = db.collection("statements").doc(statementId);
+
+            const parentId = dataAfter.parentId;
+            if (!parentId)
+                throw new Error("parentId is not defined");
+            return { parentId, dataAfter, statementRef, evaluationDeferneces, evaluation, previousEvaluation };
+        } catch (error: any) {
+            logger.error(error);
+            return { error: error.message };
+        }
     }
 
     async function calculateConsensus(_totalEvaluations: number, totalEvaluatorEvaluations: any) {
@@ -74,10 +90,14 @@ export async function updateEvaluation(event: any) {
         }
     }
 
-    async function setNewEvaluation(statementRef: any, evaluationDeferneces: number, evaluation: number, previousEvaluation: number): Promise<number> {
+    async function setNewEvaluation(statementRef: any, evaluationDeferneces: number | undefined, evaluation: number, previousEvaluation: number|undefined): Promise<number> {
         let newTotalEvaluations: number = 0;
         await db.runTransaction(async (t: any) => {
             try {
+                if(!evaluationDeferneces) throw new Error("evaluationDeferneces is not defined");
+                if(!evaluation) throw new Error("evaluation is not defined");
+                if(!previousEvaluation) throw new Error("previousEvaluation is not defined");
+
                 const statementDB = await t.get(statementRef);
 
                 if (!statementDB.exists) {
