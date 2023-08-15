@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Statement } from "../../../model/statements/statementModel"
-import { Screen } from "../../../model/system";
+import { NavObject, Screen } from "../../../model/system";
 
 
 interface Props {
@@ -9,11 +9,7 @@ interface Props {
 
 }
 
-interface NavObject {
-    link: Screen;
-    name: string;
-    id: string;
-}
+
 
 const navArray: NavObject[] = [
     { link: Screen.OPTIONS, name: "פתרונות", id: "options" },

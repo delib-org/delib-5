@@ -164,6 +164,36 @@
             outline: none;
         }
     }
+
+    &__options{
+        display:flex;
+        flex-direction:column;
+        &__main{
+            display:flex;
+            flex-direction:column;
+            flex:auto;
+        }
+        &__nav{
+            display: flex;
+            width: 100vw;
+            max-width: 75ch;
+            margin: 0 auto;
+            
+            
+            &__button{
+                flex:1;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                padding:5px 5px 20px 5px;
+                border-bottom:2px solid rgba(0, 0, 0, 0);
+                &--selected{
+                    border-bottom:2px solid var(--accent);
+                    font-weight:bolder;
+                }
+            }
+        }
+    }
 }
 
 .bubble {

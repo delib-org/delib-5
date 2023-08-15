@@ -24,7 +24,7 @@ import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluat
 import StatementNav from '../../features/statement/StatementNav';
 import StatementMain from '../../features/statement/StatementMain';
 import { Screen } from '../../../model/system';
-import StatementOptions from './StatementOptions';
+import StatementOptions from '../../features/statement/StatementOptions';
 import { userSelector } from '../../../model/users/userSlice';
 
 

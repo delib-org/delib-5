@@ -52,7 +52,13 @@ const router = createBrowserRouter([
             children:[
               {
                 path: ":page",
-                element: <Statement />
+                element: <Statement />,
+                children:[
+                  {
+                    path: ":sort",
+                    element: <Statement />,
+                  }
+                ]
               }
             ]
           }
