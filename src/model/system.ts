@@ -6,6 +6,7 @@ export enum Screen{
     OPTIONS_CONSENSUS = 'options-consensus',
     OPTIONS_NEW = 'options-new',
     OPTIONS_RANDOM = 'options-random',
+    OPTIONS_UPDATED = 'options-updated',
 }
 
 export interface NavObject {

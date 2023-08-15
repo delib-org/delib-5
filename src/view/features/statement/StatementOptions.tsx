@@ -45,11 +45,13 @@ function sortSubStatements(subStatements: Statement[], sort: string | undefined)
     try {
         switch (sort) {
             case Screen.OPTIONS_CONSENSUS:
-                return subStatements.sort((a: Statement, b: Statement) => b.consensus! - a.consensus!);
+                return subStatements.sort((a: Statement, b: Statement) => b.consensus - a.consensus);
             case Screen.OPTIONS_NEW:
                 return subStatements.sort((a: Statement, b: Statement) => b.createdAt - a.createdAt);
             case Screen.OPTIONS_RANDOM:
                 return subStatements.sort(() => Math.random() - 0.5);
+                case Screen.OPTIONS_UPDATED:
+                    return subStatements.sort((a: Statement, b: Statement) => b.lsetUpdate - a.lsetUpdate);
             default:
                 return subStatements;
         }

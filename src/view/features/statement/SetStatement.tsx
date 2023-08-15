@@ -26,8 +26,7 @@ const SetStatement = () => {
             newStatement.type = StatementType.GROUP;
             newStatement.creator = user;
             newStatement.createdAt = new Date().getTime();
-
-            StatementSchema.parse(newStatement)
+            newStatement.consensus = 0;
 
             setStatmentToDB(newStatement);
             ev.currentTarget.reset();

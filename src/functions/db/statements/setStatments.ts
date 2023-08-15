@@ -9,6 +9,8 @@ import { getUserPermissionToNotifications } from "../../notifications";
 
 export async function setStatmentToDB(statement: Statement) {
     try {
+        statement.consensus = 0;
+        statement.lastUpdate = Timestamp.now().toMillis();
         StatementSchema.parse(statement);
 
         const statementId = statement.statementId;

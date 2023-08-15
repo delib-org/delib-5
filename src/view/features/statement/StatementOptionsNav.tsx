@@ -14,8 +14,8 @@ interface Props {
 const navArray: NavObject[] = [
     { link: Screen.OPTIONS_CONSENSUS, name: "הסכמה", id: Screen.OPTIONS_CONSENSUS },
     { link: Screen.OPTIONS_NEW, name: "חדש", id: Screen.OPTIONS_NEW },
-    { link: Screen.OPTIONS_RANDOM, name: "אקראי", id: Screen.OPTIONS_RANDOM }
-   
+    { link: Screen.OPTIONS_RANDOM, name: "אקראי", id: Screen.OPTIONS_RANDOM },
+   { link: Screen.OPTIONS_UPDATED, name: "עידכון", id: Screen.OPTIONS_UPDATED },
 ]
 
 

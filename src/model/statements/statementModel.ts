@@ -19,13 +19,13 @@ export const StatementSchema = z.object({
     parentId:z.string(),
     hasChildren:z.boolean().optional(),
     lastMessage:z.string().optional(),
-    lsetUpdate:z.number().optional(),
+    lastUpdate:z.number(),
     createdAt:z.number(),
     type:statementType,
     isOption:z.boolean().optional(),
     pro:z.number().optional(),
     con:z.number().optional(),
-    consensus:z.number().optional(),
+    consensus:z.number(),
 });
 
 export type Statement = z.infer<typeof StatementSchema>;
