@@ -14,7 +14,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
-import { setStatementElementHight, setStatementOrder, statementOrderSelector } from '../../../model/statements/statementsSlice';
+import { setStatementElementHight } from '../../../model/statements/statementsSlice';
 
 
 
@@ -43,9 +43,9 @@ const StatementOptionCard: FC<Props> = ({ statement, showImage, top }) => {
     const { isOption } = statement;
 
     useEffect(() => {
-        if (newTop !== top) {
-            setNewTop(top);
-        }
+
+        setNewTop(top);
+
     }, [top]);
 
     useEffect(() => {

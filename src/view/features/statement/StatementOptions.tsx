@@ -32,15 +32,22 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
         }, [sort])
 
         let topSum = 0;
+        let tops: number[] = [0];
 
         return (
             <div className="page__main statement__options">
 
                 <div className="wrapper wrapper--chat statement__options__main">
-                    {_subStatements?.map((statementSub: Statement) => {
-                        if (statementSub.elementHight)
-                            topSum += (statementSub.elementHight +10);
-                        return <StatementOptionCard key={statementSub.statementId} statement={statementSub} showImage={handleShowTalker} top={topSum}/>
+                    {_subStatements?.map((statementSub: Statement, i: number) => {
+
+                        //get the top of the element
+                        if (statementSub.elementHight) {
+                            topSum += ((statementSub.elementHight) + 10);
+                            tops.push(topSum)
+                            console.log(tops)
+                        }
+
+                        return <StatementOptionCard key={statementSub.statementId} statement={statementSub} showImage={handleShowTalker} top={tops[i]} />
                     })}
 
                 </div>
