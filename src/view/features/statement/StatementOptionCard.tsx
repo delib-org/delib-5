@@ -49,7 +49,7 @@ const StatementOptionCard: FC<Props> = ({ statement, showImage, top }) => {
     }, [top]);
 
     useEffect(() => {
-        console.log(elementRef.current?.clientHeight)
+      
         dispatch(setStatementElementHight({ statementId: statement.statementId, height: elementRef.current?.clientHeight }))
 
     }, [])
