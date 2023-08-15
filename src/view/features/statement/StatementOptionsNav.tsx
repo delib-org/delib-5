@@ -23,7 +23,7 @@ const StatementOptionsNav: FC<Props> = () => {
 
     const { sort } = useParams();
 
-console.log(sort);
+
     return (
         <nav className="statement__options__nav">
             {navArray.map((navObject: NavObject) =>

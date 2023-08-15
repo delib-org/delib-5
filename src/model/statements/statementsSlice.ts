@@ -73,6 +73,16 @@ export const statementsSlicer = createSlice({
         console.error(error);
       }
     },
+    setStatementElementHight: (state, action: PayloadAction<{ statementId: string, height: number | undefined }>) => {
+      try {
+        const { statementId, height } = action.payload;
+        const statement = state.statements.find(statement => statement.statementId === statementId);
+        if (statement)
+          statement.elementHight = height;
+      } catch (error) {
+        console.error(error);
+      }
+    },
     setScreen: (state, action: PayloadAction<StatementScreen>) => {
       try {
         state.screen = action.payload;
@@ -83,7 +93,7 @@ export const statementsSlicer = createSlice({
   },
 })
 
-export const { setStatement, setStatementSubscription, setStatementOrder, setScreen } = statementsSlicer.actions
+export const { setStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight } = statementsSlicer.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const screenSelector = (state: RootState) => state.statements.screen;
@@ -94,4 +104,6 @@ export const statementSubsSelector = (statementId: string | undefined) => (state
 export const statementNotificationSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId)?.notification || false;
 export const statementSubscriptionSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId) || undefined;
 export const statementOrderSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId)?.order || 0;
+export const statementElementHightSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId)?.elementHight || 0;
+
 export default statementsSlicer.reducer

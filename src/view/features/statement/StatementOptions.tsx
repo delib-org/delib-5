@@ -18,7 +18,8 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
     try {
         const dispatch = useAppDispatch();
         const { sort } = useParams();
-        const _subStatements = sortSubStatements(subStatements, sort);
+        const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
+        const _subStatements = sortSubStatements(__substatements, sort);
 
         function dispatchCB(statement: Statement, order: number) {
             dispatch(setStatementOrder({ statementId: statement.statementId, order: order }))
@@ -30,14 +31,17 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
             })
         }, [sort])
 
+        let topSum = 0;
+
         return (
             <div className="page__main statement__options">
 
                 <div className="wrapper wrapper--chat statement__options__main">
-                    {_subStatements?.map((statementSub: Statement, i: number) => (
-                        <StatementOptionCard key={statementSub.statementId} order={i} statement={statementSub} showImage={handleShowTalker} />
-                    ))
-                    }
+                    {_subStatements?.map((statementSub: Statement) => {
+                        if (statementSub.elementHight)
+                            topSum += (statementSub.elementHight +10);
+                        return <StatementOptionCard key={statementSub.statementId} statement={statementSub} showImage={handleShowTalker} top={topSum}/>
+                    })}
 
                 </div>
                 <StatementOptionsNav statement={statement} />
@@ -68,7 +72,7 @@ function sortSubStatements(subStatements: Statement[], sort: string | undefined)
                 _subStatements = subStatements.sort(() => Math.random() - 0.5);
                 break;
             case Screen.OPTIONS_UPDATED:
-                _subStatements = subStatements.sort((a: Statement, b: Statement) => b.lsetUpdate - a.lsetUpdate);
+                _subStatements = subStatements.sort((a: Statement, b: Statement) => b.lastUpdate - a.lastUpdate);
                 break;
             default:
                 return _subStatements;

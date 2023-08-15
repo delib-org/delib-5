@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState, useRef } from 'react'
 import { Statement } from '../../../model/statements/statementModel'
 import { auth } from '../../../functions/db/auth';
 import { setStatementisOption } from '../../../functions/db/statements/setStatments';
@@ -14,7 +14,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
-import { setStatementOrder, statementOrderSelector } from '../../../model/statements/statementsSlice';
+import { setStatementElementHight, setStatementOrder, statementOrderSelector } from '../../../model/statements/statementsSlice';
 
 
 
@@ -22,17 +22,19 @@ import { setStatementOrder, statementOrderSelector } from '../../../model/statem
 interface Props {
     statement: Statement
     showImage: Function;
+    top: number;
 }
 
-let previusOrder = 0;
 
-const StatementOptionCard: FC<Props> = ({ statement, showImage }) => {
+
+const StatementOptionCard: FC<Props> = ({ statement, showImage, top }) => {
+    const dispatch = useAppDispatch();
     const evaluation = useAppSelector(evaluationSelector(statement.statementId))
-    const order = useAppSelector(statementOrderSelector(statement.statementId))
-
+    // const order = useAppSelector(statementOrderSelector(statement.statementId))
+    const elementRef = useRef<HTMLDivElement>(null);
 
     const [show, setShow] = useState(false)
-    const [newOrder, setNewOrder] = useState(order);
+    const [newTop, setNewTop] = useState(top);
     const userId = auth.currentUser?.uid;
     const userProfile = statement.creator.photoURL;
     const creatorId = statement.creatorId;
@@ -40,28 +42,40 @@ const StatementOptionCard: FC<Props> = ({ statement, showImage }) => {
     const isMe = userId === creatorId;
     const { isOption } = statement;
 
-    useEffect(() => { 
-        if (newOrder !== order) {
-            setNewOrder(order);
-        }   
-    }, [order])
+    useEffect(() => {
+        if (newTop !== top) {
+            setNewTop(top);
+        }
+    }, [top]);
+
+    useEffect(() => {
+        console.log(elementRef.current?.clientHeight)
+        dispatch(setStatementElementHight({ statementId: statement.statementId, height: elementRef.current?.clientHeight }))
+
+    }, [])
+
+    //get element height
+
+
 
 
     return (
         <>
             <div
                 className={isMe ? `statement__options__card statement__options__card--me` : "statement__options__card statement__options__card--other"}
-                style={{ top: `${newOrder * 100}px` }}
+                style={{ top: `${newTop}px` }}
+                ref={elementRef}
             >
                 <div onClick={() => showImage(statement.creator)} className="statement__chatCard__profile" style={userProfile ? { backgroundImage: `url(${userProfile})` } : {}}></div>
                 <div className="statement__options__card__bubble">
 
                     <div className="statement__options__card__bubble__text">
                         {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null}
+                        {statement.consensus}
                         <p onClick={() => setShow(!show)}>{statement.statement}</p>
                         {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null}
                     </div>
-                    {show ? <div className="statement__bubble__more">
+                    {true ? <div className="statement__bubble__more">
                         <div className="icon" onClick={() => setStatementisOption(statement)}> <LightbulbIcon /></div>
                         {isOption ? <div className="statement__bubble__proCon">
                             <span>{statement.pro ? statement.pro : 0}</span>
