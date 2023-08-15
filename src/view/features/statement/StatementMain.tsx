@@ -4,13 +4,13 @@ import StatementChat from './StatementChat';
 import StatementInput from '../../pages/statement/StatementInput';
 interface Props {
     statement: Statement;
-    statementsSub: Statement[];
+    subStatements: Statement[];
     handleShowTalker: Function;
 }
 
 let firstTime = true;
 
-const StatementMain: FC<Props> = ({ statement, statementsSub, handleShowTalker }) => {
+const StatementMain: FC<Props> = ({ statement, subStatements, handleShowTalker }) => {
 
     const messagesEndRef = useRef(null)
 
@@ -33,14 +33,14 @@ const StatementMain: FC<Props> = ({ statement, statementsSub, handleShowTalker }
 
     useEffect(() => {
         scrollToBottom()
-    }, [statementsSub]);
+    }, [subStatements]);
 
     return (
         <>
             <div className="page__main">
 
                 <div className="wrapper wrapper--chat">
-                    {statementsSub?.map((statementSub: Statement) => (
+                    {subStatements?.map((statementSub: Statement) => (
                         <div key={statementSub.statementId} >
                             <StatementChat statement={statementSub} showImage={handleShowTalker} />
                         </div>

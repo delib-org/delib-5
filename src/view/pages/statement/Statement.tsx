@@ -24,6 +24,9 @@ import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlic
 import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluation';
 import StatementNav from '../../features/statement/StatementNav';
 import StatementMain from '../../features/statement/StatementMain';
+import { isFloat64Array } from 'util/types';
+import { Screen } from '../../../model/system';
+import StatementOptions from './StatementOptions';
 
 
 let unsub: Function = () => { }
@@ -38,14 +41,15 @@ const Statement: FC = () => {
 
     const [talker, setTalker] = useState<User | null>(null);
     const dispatch = useAppDispatch();
-    const { statementId } = useParams();
-  
+    const { statementId, page } = useParams();
+    const screen:string|undefined = page;
+
 
 
     //check if the user is registered
 
     const statement = useAppSelector(statementSelector(statementId));
-    const statementSubs = useAppSelector(statementSubsSelector(statementId));
+    const subStatements = useAppSelector(statementSubsSelector(statementId));
     const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
     const role: any = statementSubscription?.role || Role.member;
 
@@ -85,9 +89,9 @@ const Statement: FC = () => {
         setStatmentSubscriptionNotificationToDB(statement, role)
     }
 
-    
 
-    
+
+
 
     useEffect(() => {
         if (statementId) {
@@ -140,12 +144,32 @@ const Statement: FC = () => {
                     <h1>{statement?.statement}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
-                {statement?<StatementNav statement={statement} />:null} 
+                {statement ? <StatementNav statement={statement} /> : null}
             </div>
-           {statement?<StatementMain statement={statement} statementsSub={statementSubs} handleShowTalker={handleShowTalker}/>:null}
+            {switchScreens(screen, statement, subStatements, handleShowTalker)}
 
         </>
     )
 }
 
-export default React.memo(Statement);
+export default Statement;
+
+function switchScreens(screen: string | undefined, statement: Statement | undefined, subStatements: Statement[], handleShowTalker: Function) {
+    try {
+        if (!statement) return null;
+
+        switch (screen) {
+            case Screen.HOME:
+                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+            case Screen.CHAT:
+                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+            case Screen.OPTIONS:
+               return <StatementOptions statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+            default:
+                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+        }
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
