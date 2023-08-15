@@ -16,16 +16,15 @@ interface NavObject {
 }
 
 const navArray: NavObject[] = [
-    { link: Screen.OPTIONS, name: "Options", id: "options" },
-    { link: Screen.CHAT, name: "Chat", id:"main" },
+    { link: Screen.OPTIONS, name: "פתרונות", id: "options" },
+    { link: Screen.CHAT, name: "שיחה", id:"main" },
 ]
 
 
 const StatementNav: FC<Props> = () => {
 
-    const { statementId, page } = useParams();
+    const { page } = useParams();
 
-    console.log(statementId, page)
 
     return (
         <nav className="statement__nav">

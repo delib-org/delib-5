@@ -15,7 +15,7 @@ export function listenToEvaluations(parentId: string, updateCallBack: Function):
             try {
                 evaluationsDB.forEach((evaluationDB) => {
                     try {
-                        console.log(evaluationDB.data())
+                    
                         //set evaluation to store
                         EvaluationSchema.parse(evaluationDB.data());
                         updateCallBack(evaluationDB.data());

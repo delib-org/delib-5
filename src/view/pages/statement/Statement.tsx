@@ -18,15 +18,14 @@ import ShareIcon from '../../icons/ShareIcon';
 import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { setEvaluation } from '../../../functions/db/evaluation/setEvaluation';
 import { Evaluation } from '../../../model/evaluations/evaluationModel';
 import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlice';
 import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluation';
 import StatementNav from '../../features/statement/StatementNav';
 import StatementMain from '../../features/statement/StatementMain';
-import { isFloat64Array } from 'util/types';
 import { Screen } from '../../../model/system';
 import StatementOptions from './StatementOptions';
+import { userSelector } from '../../../model/users/userSlice';
 
 
 let unsub: Function = () => { }
@@ -42,7 +41,7 @@ const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const dispatch = useAppDispatch();
     const { statementId, page } = useParams();
-    const screen:string|undefined = page;
+    const screen: string | undefined = page;
 
 
 
@@ -52,7 +51,7 @@ const Statement: FC = () => {
     const subStatements = useAppSelector(statementSubsSelector(statementId));
     const statementSubscription: StatementSubscription | undefined = useAppSelector(statementSubscriptionSelector(statementId));
     const role: any = statementSubscription?.role || Role.member;
-
+    const user = useAppSelector(userSelector);
     const hasNotifications = useAppSelector(statementNotificationSelector(statementId));
 
     //store callbacks
@@ -95,20 +94,30 @@ const Statement: FC = () => {
 
     useEffect(() => {
         if (statementId) {
-
             unsub = listenToStatement(statementId, updateStoreStatementCB);
-            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB);
-            unsubStatementSubscription = listenToStatementSubscription(statementId, updateStatementSubscriptionCB);
-            unsubEvaluations = listenToEvaluations(statementId, updateEvaluationsCB);
         }
 
         return () => {
             unsub();
+
+        }
+    }, [statementId])
+
+    useEffect(() => {
+        if (user && statementId) {
+            unsubSubStatements = listenToStatementsOfStatment(statementId, updateStoreStatementCB);
+            unsubStatementSubscription = listenToStatementSubscription(statementId, updateStatementSubscriptionCB);
+            unsubEvaluations = listenToEvaluations(statementId, updateEvaluationsCB)
+        }
+
+        return () => {
             unsubSubStatements();
             unsubStatementSubscription();
             unsubEvaluations();
         }
-    }, [statementId])
+    }, [user])
+
+    useEffect(() => { }, [statementId])
 
     useEffect(() => {
         if (statement) {
@@ -164,7 +173,7 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
             case Screen.CHAT:
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
             case Screen.OPTIONS:
-               return <StatementOptions statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+                return <StatementOptions statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
             default:
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
         }
