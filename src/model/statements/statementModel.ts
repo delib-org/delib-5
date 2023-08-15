@@ -26,6 +26,7 @@ export const StatementSchema = z.object({
     pro:z.number().optional(),
     con:z.number().optional(),
     consensus:z.number(),
+    order:z.number().optional(),
 });
 
 export type Statement = z.infer<typeof StatementSchema>;

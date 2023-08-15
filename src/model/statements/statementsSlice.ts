@@ -15,14 +15,19 @@ enum StatementScreen {
 interface StatementsState {
   statements: Statement[];
   statementSubscription: StatementSubscription[],
-  screen:StatementScreen
+  screen: StatementScreen
+}
+
+interface StatementOrder {
+  statementId: string,
+  order: number
 }
 
 // Define the initial state using that type
 const initialState: StatementsState = {
   statements: [],
   statementSubscription: [],
-  screen:StatementScreen.chat
+  screen: StatementScreen.chat
 }
 
 export const statementsSlicer = createSlice({
@@ -56,7 +61,19 @@ export const statementsSlicer = createSlice({
         console.error(error);
       }
     },
-    setScreen:(state, action: PayloadAction<StatementScreen>) => {
+    setStatementOrder: (state, action: PayloadAction<StatementOrder>) => {
+      try {
+        const { statementId, order } = action.payload;
+        const statement = state.statements.find(statement => statement.statementId === statementId);
+        if (statement)
+          statement.order = order;
+
+
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    setScreen: (state, action: PayloadAction<StatementScreen>) => {
       try {
         state.screen = action.payload;
       } catch (error) {
@@ -66,15 +83,15 @@ export const statementsSlicer = createSlice({
   },
 })
 
-export const { setStatement, setStatementSubscription, setScreen } = statementsSlicer.actions
+export const { setStatement, setStatementSubscription, setStatementOrder, setScreen } = statementsSlicer.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const screenSelector = (state: RootState) => state.statements.screen;
 export const statementsSelector = (state: RootState) => state.statements.statements;
-export const statementsSubscriptionsSelector =(state: RootState) => state.statements.statementSubscription;
+export const statementsSubscriptionsSelector = (state: RootState) => state.statements.statementSubscription;
 export const statementSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId);
 export const statementSubsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter(statementSub => statementSub.parentId === statementId).sort((a, b) => a.createdAt - b.createdAt);
 export const statementNotificationSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId)?.notification || false;
-export const statementSubscriptionSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId)||undefined;
-
+export const statementSubscriptionSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId) || undefined;
+export const statementOrderSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId)?.order || 0;
 export default statementsSlicer.reducer

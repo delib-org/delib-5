@@ -15,27 +15,27 @@
         max-width: 75ch;
         margin: 0 auto;
 
-        a{
+        a {
             text-decoration: none;
             box-sizing: border-box;
             transition: all 0.2s ease-in-out;
         }
 
-            &__button {
-                flex: 1;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 5px;
-                border-bottom:2px solid rgba(0, 0, 0, 0);
+        &__button {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0);
 
 
-                &--selected{
-                    border-bottom:2px solid var(--accent);
-                    font-weight: bolder;
-                }
+            &--selected {
+                border-bottom: 2px solid var(--accent);
+                font-weight: bolder;
             }
-        
+        }
+
     }
 
     &__bubble {
@@ -165,31 +165,59 @@
         }
     }
 
-    &__options{
-        display:flex;
-        flex-direction:column;
-        &__main{
-            display:flex;
-            flex-direction:column;
-            flex:auto;
+    &__options {
+        display: flex;
+        flex-direction: column;
+
+        &__main {
+            display: flex;
+            flex-direction: column;
+            flex: auto;
+            position: relative;
         }
-        &__nav{
+
+        &__card {
+            transition: all 1s ease-in-out;
+            display: flex;
+            gap: 5px;
+            position: absolute;
+            width: 100%;
+
+            &__bubble {
+                flex: auto;
+                padding: 10px;
+                border-radius: 10px;
+                background-color: white;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+                &__text {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px;
+                }
+            }
+        }
+
+        &__nav {
+            background-color: var(--primary);
             display: flex;
             width: 100vw;
             max-width: 75ch;
             margin: 0 auto;
-            
-            
-            &__button{
-                flex:1;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                padding:5px 5px 20px 5px;
-                border-bottom:2px solid rgba(0, 0, 0, 0);
-                &--selected{
-                    border-bottom:2px solid var(--accent);
-                    font-weight:bolder;
+            z-index: 100;
+
+            &__button {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 5px 5px 20px 5px;
+                border-bottom: 2px solid rgba(0, 0, 0, 0);
+
+                &--selected {
+                    border-bottom: 2px solid var(--accent);
+                    font-weight: bolder;
                 }
             }
         }
