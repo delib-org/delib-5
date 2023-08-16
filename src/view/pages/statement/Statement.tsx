@@ -1,16 +1,14 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from '../../../model/statements/statementModel';
-import StatementInput from './StatementInput';
-import StatementChat from '../../features/statement/StatementChat';
 import { Role } from '../../../model/role';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
 import { User } from '../../../model/users/userModel';
-import { User } from '../../../model/users/userModel';
+
 
 
 //icons
@@ -115,7 +113,7 @@ const Statement: FC = () => {
             unsubStatementSubscription();
             unsubEvaluations();
         }
-    }, [user])
+    }, [user, statementId])
 
     useEffect(() => { }, [statementId])
 
@@ -146,7 +144,7 @@ const Statement: FC = () => {
             </div> : null}
             <div className="page__header">
                 <div className='page__header__wrapper'>
-                    <Link to="/home"><ArrowBackIosIcon /></Link>
+                    <Link to={statement?.parentId === "top" ? "/home" : `/home/statement/${statement?.parentId}`}><ArrowBackIosIcon /></Link>
                     <div onClick={handleRegisterToNotifications}>
                         {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon />}
                     </div>

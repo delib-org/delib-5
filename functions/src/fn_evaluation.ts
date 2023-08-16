@@ -7,7 +7,7 @@ export async function updateEvaluation(event: any) {
 
         // get data from event
 
-        const { parentId, dataAfter, statementRef, evaluationDeferneces, evaluation, previousEvaluation, error } = getInfo();
+        const { parentId, dataAfter, statementRef, evaluationDeferneces, evaluation, previousEvaluation, error } = getEvaluationInfo();
         if (error) throw error;
 
         //get parent statement
@@ -18,6 +18,7 @@ export async function updateEvaluation(event: any) {
 
         //calculate and update
         const totalEvaluators = await updateNumberOfEvaluators(statementEvaluatorDB, statementEvaluatorsRef, dataAfter, parentId, parentRef);
+    
         const _totalEvaluations = await setNewEvaluation(statementRef, evaluationDeferneces, evaluation, previousEvaluation);
 
         const consensus = await calculateConsensus(_totalEvaluations, totalEvaluators);
@@ -38,7 +39,7 @@ export async function updateEvaluation(event: any) {
 
     //inner functions
 
-    function getInfo() {
+    function getEvaluationInfo() {
         try {
             const dataAfter = event.data.after.data();
             const evaluation = dataAfter.evaluation;
@@ -56,7 +57,7 @@ export async function updateEvaluation(event: any) {
             const statementId = dataAfter.statementId;
             if (!statementId) throw new Error("statementId is not defined");
             const statementRef = db.collection("statements").doc(statementId);
-
+        
             const parentId = dataAfter.parentId;
             if (!parentId)
                 throw new Error("parentId is not defined");
@@ -72,7 +73,7 @@ export async function updateEvaluation(event: any) {
         try {
 
 
-            const proevaluation = (() => {
+            const proEvaluation = (() => {
                 if (_totalEvaluations < 0) {
                     return -1;
                 }
@@ -80,8 +81,11 @@ export async function updateEvaluation(event: any) {
             })();
 
             const totalEvaluations = beforeLogCalculation(Math.abs(_totalEvaluations));
-            const totalLogEvaluations = getBaseLog(totalEvaluations, 1.3);
-            const consensus = proevaluation * (totalLogEvaluations / totalEvaluatorEvaluations);
+      
+            const totalLogEvaluations = Math.log2(totalEvaluations);
+      
+            const consensus = proEvaluation * (totalLogEvaluations / totalEvaluatorEvaluations);
+        
 
             return consensus;
         } catch (error) {
@@ -91,12 +95,13 @@ export async function updateEvaluation(event: any) {
     }
 
     async function setNewEvaluation(statementRef: any, evaluationDeferneces: number | undefined, evaluation: number, previousEvaluation: number | undefined): Promise<number> {
+      
         let newTotalEvaluations: number = 0;
         await db.runTransaction(async (t: any) => {
             try {
                 if (!evaluationDeferneces) throw new Error("evaluationDeferneces is not defined");
-                if (!evaluation) throw new Error("evaluation is not defined");
-                if (!previousEvaluation) throw new Error("previousEvaluation is not defined");
+                if (evaluation === undefined) throw new Error("evaluation is not defined");
+                if (previousEvaluation === undefined) throw new Error("previousEvaluation is not defined error");
 
                 const statementDB = await t.get(statementRef);
 
@@ -107,11 +112,10 @@ export async function updateEvaluation(event: any) {
                 newTotalEvaluations = statementDB.data().totalEvaluations;
                 const oldPro = statementDB.data().pro || 0;
                 const oldCon = statementDB.data().con || 0;
-                logger.info('statementDB.data()', statementDB.data());
-                logger.info(`oldPro: ${oldPro}, oldCon: ${oldCon}`);
+              
 
                 const { newCon, newPro } = updateProCon(oldPro, oldCon, evaluation, previousEvaluation);
-                logger.info(`newPro: ${newPro}, newCon: ${newCon}`);
+            
 
                 if (newTotalEvaluations === undefined)
                     newTotalEvaluations = 0;
@@ -131,21 +135,16 @@ export async function updateEvaluation(event: any) {
 
         function updateProCon(oldPro: number, oldCon: number, evaluation: number, previousEvaluation: number): { newPro: number, newCon: number } {
             try {
-                let newPro = oldPro, newCon = oldCon;
+                logger.info(`oldPro: ${oldPro}, oldCon: ${oldCon}`);
+                let newPro = oldPro;
+                let newCon = oldCon;
 
-                if (previousEvaluation > 0) {
-                    newPro = oldPro - Math.abs(previousEvaluation);
-                } else if (previousEvaluation < 0) {
-                    newCon = oldCon - Math.abs(previousEvaluation);
-                }
+                const { pro, con } = clacProCon( previousEvaluation,evaluation);
+                logger.info(`pro: ${pro}, con: ${con}`);
+                newPro += pro;
+                newCon += con;
 
-                if (evaluation > 0) {
-                    newPro += evaluation;
-                } else if (evaluation < 0) {
-                    newCon += Math.abs(evaluation);
-                }
-                if (newPro < 0) newPro = 0;
-                if (newCon < 0) newCon = 0;
+                logger.info(`newPro: ${newPro}, newCon: ${newCon}`);
 
                 return { newPro, newCon };
             } catch (error) {
@@ -195,9 +194,9 @@ export async function updateEvaluation(event: any) {
             return 0;
         }
     }
-    function getBaseLog(x: number, baseLog: number): number {
-        return Math.log(baseLog) / Math.log(x);
-    }
+    // function getBaseLog(x: number, baseLog: number): number {
+    //     return Math.log(baseLog) / Math.log(x);
+    // }
 }
 
 function beforeLogCalculation(totalEvaluations: number) {
@@ -205,4 +204,25 @@ function beforeLogCalculation(totalEvaluations: number) {
         return 1
     }
     return totalEvaluations
+}
+
+function clacProCon(prev: number, curr: number): { pro: number, con: number } {
+    try {
+        let pro = 0, con = 0;
+        if (prev > 0) {
+            pro = -prev
+        } else if (prev < 0) {
+            con = prev
+        }
+
+        if (curr > 0) {
+            pro += curr
+        } else if (curr < 0) {
+            con -= curr
+        }
+        return { pro, con };
+    } catch (error) {
+        console.error(error);
+        return { pro: 0, con: 0 };
+    }
 }

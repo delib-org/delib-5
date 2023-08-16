@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { Statement } from '../../../model/statements/statementModel'
 import { auth } from '../../../functions/db/auth';
-import { setStatementisOption } from '../../../functions/db/statements/setStatments';
+import { setStatementisOption, setStatmentGroupToDB } from '../../../functions/db/statements/setStatments';
 import { setEvaluation } from '../../../functions/db/evaluation/setEvaluation';
 import { useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { evaluationSelector } from '../../../model/evaluations/evaluationsSlice';
@@ -14,6 +14,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({ statement, showImage }) => {
+  const navigate = useNavigate();
   const evaluation = useAppSelector(evaluationSelector(statement.statementId))
 
 
@@ -35,6 +37,15 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
 
   const isMe = userId === creatorId;
   const { isOption } = statement;
+
+  function handleCreateSubStatements(){
+    setStatmentGroupToDB(statement);
+    
+   
+    navigate(`/home/statement/${statement.statementId}`)
+    //if no kids change it to group type GROUP
+
+  }
 
 
   return (
@@ -56,7 +67,7 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
                 <ThumbsUpDownIcon className="icon" />
                 <span>{statement.con ? statement.con : 0}</span>
               </div> : null}
-              <div className="icon" onClick={() => setStatementisOption(statement)}> <ChatIcon /></div>
+              <div className="icon" onClick={() => handleCreateSubStatements()}> <ChatIcon /></div>
             </div> : null}
           </div>
         </div>

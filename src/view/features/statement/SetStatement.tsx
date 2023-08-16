@@ -1,13 +1,17 @@
 import React from 'react'
-import { StatementSchema, StatementType } from '../../../model/statements/statementModel';
+import { StatementType } from '../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { auth } from '../../../functions/db/auth';
 import { UserSchema } from '../../../model/users/userModel';
 
+//icons
+import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
+
 const SetStatement = () => {
+    const navigate = useNavigate();
     const { statementId } = useParams();
-    function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
+    async function handleSetStatment(ev: React.FormEvent<HTMLFormElement>) {
         try {
 
             ev.preventDefault();
@@ -18,7 +22,7 @@ const SetStatement = () => {
             const user = { displayName, email, photoURL, uid };
             UserSchema.parse(user);
 
-           
+
             const newStatement: any = Object.fromEntries(data.entries());
             newStatement.statementId = crypto.randomUUID();
             newStatement.creatorId = auth.currentUser?.uid;
@@ -28,19 +32,32 @@ const SetStatement = () => {
             newStatement.createdAt = new Date().getTime();
             newStatement.consensus = 0;
 
-            setStatmentToDB(newStatement);
-            ev.currentTarget.reset();
+            const _statementId = await setStatmentToDB(newStatement);
+
+            if (_statementId)
+                navigate(`/home/statement/${_statementId}`);
+            else
+                throw new Error("statement not found");
         } catch (error) {
             console.error(error)
         }
     }
     return (
-        <div>
-            <Link to={"/home"}> <button>Back</button></Link>
-            <form onSubmit={handleSetStatment}>
-                <input type="text" name="statement" placeholder='title' />
-                <input type="submit" value="ADD" />
-            </form>
+        <div className='page setStatement'>
+            <div className="page__header setStatement__header">
+                <span></span>
+                <h1>הוספת קבוצה חדשה</h1>
+                <Link to={"/home"} className='setStatement__back'> <ArrowBackIosIcon /></Link>
+            </div>
+            <div className="page__main">
+
+                <form onSubmit={handleSetStatment} className='setStatement__form'>
+                    <input type="text" name="statement" placeholder='כותרת הקבוצה' />
+                    <div className="btnBox">
+                        <button type="submit">הוספה</button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }

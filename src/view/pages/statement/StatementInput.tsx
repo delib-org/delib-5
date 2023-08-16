@@ -70,8 +70,10 @@ function getNewStatment(value?: string, statement?: Statement) {
             creatorId: userId,
             creator,
             createdAt: new Date().getTime(),
+            lastUpdate: new Date().getTime(),
             parentId: statement.statementId,
             type: StatementType.STATEMENT,
+            consensus: 0,
         };
         return newStatement;
     } catch (error) {

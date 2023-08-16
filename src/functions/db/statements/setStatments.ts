@@ -1,5 +1,5 @@
 import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
-import { Statement, StatementSchema, StatementSubscription } from "../../../model/statements/statementModel";
+import { Statement, StatementSchema, StatementSubscription, StatementType } from "../../../model/statements/statementModel";
 import { DB, deviceToken } from "../config";
 import { Collections } from "../collections";
 import { Role } from "../../../model/role";
@@ -9,6 +9,7 @@ import { getUserPermissionToNotifications } from "../../notifications";
 
 export async function setStatmentToDB(statement: Statement) {
     try {
+
         statement.consensus = 0;
         statement.lastUpdate = Timestamp.now().toMillis();
         StatementSchema.parse(statement);
@@ -23,12 +24,15 @@ export async function setStatmentToDB(statement: Statement) {
         //add subscription
         await setStatmentSubscriptionToDB(statement, Role.admin)
         const canGetNotifications = await getUserPermissionToNotifications();
-        console.log(canGetNotifications)
+
         if (canGetNotifications)
             await setStatmentSubscriptionNotificationToDB(statement, Role.admin);
 
+        return statementId;
+
     } catch (error) {
         console.error(error);
+        return undefined;
     }
 }
 
@@ -94,7 +98,7 @@ export async function setStatmentSubscriptionNotificationToDB(statement: Stateme
     }
 }
 
-export async function setStatementisOption(statement:Statement){
+export async function setStatementisOption(statement: Statement) {
     try {
         const statementRef = doc(DB, Collections.statements, statement.statementId);
 
@@ -104,12 +108,24 @@ export async function setStatementisOption(statement:Statement){
 
         const statementDBData = statementDB.data() as Statement;
         const { isOption } = statementDBData;
-        if (isOption){
-            await setDoc(statementRef, {isOption:false},{merge:true});
+        if (isOption) {
+            await setDoc(statementRef, { isOption: false }, { merge: true });
         } else {
-            await setDoc(statementRef, {isOption:true},{merge:true});
+            await setDoc(statementRef, { isOption: true }, { merge: true });
         }
 
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function setStatmentGroupToDB(statement: Statement) {
+    try {
+        if (statement.type === StatementType.GROUP) return;
+
+        const statementId = statement.statementId;
+        const statementRef = doc(DB, Collections.statements, statementId);
+        await setDoc(statementRef, { type: StatementType.GROUP }, { merge: true });
     } catch (error) {
         console.error(error);
     }
