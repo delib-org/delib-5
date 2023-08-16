@@ -24,24 +24,25 @@ const Start = () => {
             className='page splashPage'
         >
             <div className='centerElement'>
-                <div id='login__splashName' className='opacity07'>
-                    Delib
+                <div id='login__splashName' >
+                   <h1>Delib 5</h1> 
                 </div>
                 <div id='login__splashSubName' className='opacity07'>
-                    יוצרים הסכמות
+                    <h2>יוצרים הסכמות</h2>
                 </div>
-                <h1 className='login__callForAction'>call for action</h1>
+                {/* <h1 className='login__callForAction'>call for action</h1>
                 <div className='anonymousLogin'>
                     <input type='text' className='inputLogin' placeholder='כינוי' />
                     <div className="buttons loginButton" >
                         <div>התחברות עם משתמש זמני</div>
                     </div>
                 </div>
-                <p> -- או -- </p>
+                <p> -- או -- </p> */}
                 <div className="buttons loginButton" onClick={googleLogin}>
                     <div>התחברות עם גוגל</div>
                 </div>
-
+                <br />
+                <a href="http://delib.org" style={{color:'white', marginTop:'30px', textDecoration:"none"}}><h2>מבית המכון לדמוקרטיה דיונית</h2></a>
             </div>
         </div >
     )

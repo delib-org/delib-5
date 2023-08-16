@@ -49,6 +49,18 @@ const router = createBrowserRouter([
             path: "statement/:statementId",
             element: <Statement />,
             errorElement: <ErrorPage/>,
+            children:[
+              {
+                path: ":page",
+                element: <Statement />,
+                children:[
+                  {
+                    path: ":sort",
+                    element: <Statement />,
+                  }
+                ]
+              }
+            ]
           }
         ]
       }

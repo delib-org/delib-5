@@ -4,6 +4,8 @@
 @import "./statementCard.scss";
 @import "./statement.scss";
 @import "./profileImage.scss";
+@import "./popup.scss";
+@import "./setStatement.scss";
 
 :root {
     --mainBackground: #32527b;
@@ -78,11 +80,15 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
+    h1, h2, p{
+        text-align: center;
+    }
 
     &__header {
         box-shadow: 0px 3px 9px rgba(0, 0, 0, 0.486);
         z-index: 100;
         width: 100vw;
+        background-color: var(--white);
 
         &__wrapper {
             display: flex;
@@ -170,12 +176,18 @@ body {
     box-sizing: border-box;
     cursor: pointer;
     user-select: none;
+    h2 {
+        color: var(--black);
+        font-size: var(--size15);
+    }
+    p {
+        color: var(--gray1);
+        font-size: var(--size13);
+    }
+    
 }
 
-.card h2 {
-    color: var(--black);
-    font-size: var(--size15);
-}
+
 
 /*  --- title ---- */
 
@@ -192,37 +204,43 @@ body {
     max-width: 600px;
     word-wrap: break-word;
     height: fit-content;
+    p {
+        font-size: (var(--size15));
+    }
+
+    &__btnRegister {
+        height: 32px;
+        width: fit-content;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 0px 16px;
+        color: var(--white);
+        border-radius: 20px;
+        transition: all 500ms;
+        &--select {
+            color: white;
+            border: 2px solid white;
+            font-size: 1rem;
+        }
+
+        &--unselect {
+            background-color: #2889d9;
+            color: #ffffff45;
+            border: 2px solid #ffffff45;
+            font-size: 1rem;
+        }
+    }
 }
 
-.title p {
-    font-size: (var(--size15));
-}
 
-.title__btnRegister {
-    height: 32px;
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    padding: 0px 16px;
-    color: var(--white);
-    border-radius: 20px;
-    transition: all 500ms;
-}
 
-.title__btnRegister--select {
-    color: white;
-    border: 2px solid white;
-    font-size: 1rem;
-}
 
-.title__btnRegister--unselect {
-    background-color: #2889d9;
-    color: #ffffff45;
-    border: 2px solid #ffffff45;
-    font-size: 1rem;
-}
+
+
+
+
 
 @media (max-width: 600px) {
     .title {
@@ -232,10 +250,6 @@ body {
 
 
 
-.card p {
-    color: var(--gray1);
-    font-size: var(--size13);
-}
 
 .cardTitle {
     color: var(--textHeader);
@@ -433,13 +447,7 @@ body {
     margin-left: 20px;
 }
 
-.popupHeader {
-    background: var(--subBackground);
-    padding: 5px;
-    border-radius: 5px 5px 0px 0px;
-    font-size: 1.2rem;
-    font-weight: 600;
-}
+
 
 
 

@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { statementsSlicer } from './statements/statementsSlice'
 import { userSlicer } from './users/userSlice'
+import { evaluationsSlicer } from './evaluations/evaluationsSlice'
 // ...
 
 export const store = configureStore({
   reducer: {
     statements: statementsSlicer.reducer,
+    evaluations: evaluationsSlicer.reducer,
     user: userSlicer.reducer
   },
 })

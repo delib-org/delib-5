@@ -9,6 +9,75 @@
         gap: 15px;
     }
 
+    &__nav {
+        display: flex;
+        width: 100vw;
+        max-width: 75ch;
+        margin: 0 auto;
+
+        a {
+            text-decoration: none;
+            box-sizing: border-box;
+            transition: all 0.2s ease-in-out;
+        }
+
+        &__button {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0);
+
+
+            &--selected {
+                border-bottom: 2px solid var(--accent);
+                font-weight: bolder;
+            }
+        }
+
+    }
+
+    &__bubble {
+        &__text {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        &__more {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            align-items: center;
+            margin-top: 15px;
+            margin-bottom: -3px;
+            opacity: 0.7;
+
+            .icon {
+                cursor: pointer;
+                user-select: none;
+            }
+        }
+
+        &__proCon {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin: 20px 0px;
+
+            .icon {
+                transform: scaleX(-1);
+            }
+        }
+
+        &--option {
+            box-shadow: 0px 0pc 30px rgba(250, 245, 101, 0.877);
+        }
+    }
+
     &__chatCard {
         display: flex;
         gap: 10px;
@@ -62,7 +131,7 @@
         box-sizing: border-box;
 
         align-items: center;
-        background: linear-gradient(90deg, rgba(232,232,232,0) 0%, rgba(232,232,232,1) 35%, rgba(232,232,232,1) 100%);
+        background: linear-gradient(90deg, rgba(232, 232, 232, 0) 0%, rgba(232, 232, 232, 1) 35%, rgba(232, 232, 232, 1) 100%);
 
         >* {
             margin: 5px;
@@ -93,6 +162,64 @@
             color: gray;
             resize: none;
             outline: none;
+        }
+    }
+
+    &__options {
+        display: flex;
+        flex-direction: column;
+
+        &__main {
+            display: flex;
+            flex-direction: column;
+            flex: auto;
+            position: relative;
+        }
+
+        &__card {
+            transition: all 1s ease-in-out;
+            display: flex;
+            gap: 5px;
+            position: absolute;
+            width: 90%;
+
+            &__bubble {
+                flex: auto;
+                padding: 10px;
+                border-radius: 10px;
+                background-color: white;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+                &__text {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px;
+                }
+            }
+        }
+
+        &__nav {
+            background-color: var(--white);
+            display: flex;
+            width: 100vw;
+            max-width: 75ch;
+            margin: 0 auto;
+            z-index: 100;
+
+            &__button {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 5px 5px 20px 5px;
+                border-bottom: 2px solid rgba(0, 0, 0, 0);
+
+                &--selected {
+                    border-bottom: 2px solid var(--accent);
+                    font-weight: bolder;
+                }
+            }
         }
     }
 }

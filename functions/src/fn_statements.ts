@@ -32,9 +32,11 @@ export async function updateSubscribedListnersCB(event: any) {
 
 export async function updateParentWithNewMessageCB(e: any) {
   try {
+   
     //get parentId
     const statement = e.data.data();
     const parentId = statement.parentId;
+    logger.log("updateParentWithNewMessageCB", parentId);
     if (!parentId) throw new Error("parentId not found");
     if (parentId !== "top") {
       //get parent
@@ -58,29 +60,37 @@ export async function updateParentWithNewMessageCB(e: any) {
 export async function sendNotificationsCB(e: any) {
   try {
     const statement = e.data.data();
-    logger.log("statement", statement);
+   
     const parentId = statement.parentId;
+   
     if (!parentId) throw new Error("parentId not found");
 
     //get all subscribers to this statement
-    const subscribersRef = db.collection("statementsNotifications");
-    const q = subscribersRef.where("statementId", "==", parentId).where("subscribed", "==", true);
+    const subscribersRef = db.collection("statementsSubscribe");
+    const q = subscribersRef.where("statementId", "==", parentId).where("notification", "==", true);
 
     const subscribersDB = await q.get();
-
+    logger.log("subscribersDB size", subscribersDB.docs.length);
 
     //send push notifications to all subscribers
     subscribersDB.docs.forEach((doc: any) => {
       const token = doc.data().token;
+      logger.log("token", token);
 
       if(token){
-        const message = {
+        const notifications = {
           notification: {
-            title: 'New message',
+            title: 'הודעה חדשה',
             body: statement.statement
           },
           token: token,
         };
+        const webpush = {
+          fcm_options: {
+            link: "https://dummypage.com"
+          }
+        }
+        const message:any = {notifications,webpush}
         admin.messaging().send(message)
           .then((response: any) => {
             logger.log("response", response);

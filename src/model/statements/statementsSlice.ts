@@ -5,16 +5,29 @@ import { RootState } from '../store'
 import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from './statementModel'
 import { updateArray } from '../../functions/general/helpers';
 
+
+enum StatementScreen {
+  chat = "chat",
+  options = "options",
+}
+
 // Define a type for the slice state
 interface StatementsState {
   statements: Statement[];
-  statementSubscription: StatementSubscription[]
+  statementSubscription: StatementSubscription[],
+  screen: StatementScreen
+}
+
+interface StatementOrder {
+  statementId: string,
+  order: number
 }
 
 // Define the initial state using that type
 const initialState: StatementsState = {
   statements: [],
-  statementSubscription: []
+  statementSubscription: [],
+  screen: StatementScreen.chat
 }
 
 export const statementsSlicer = createSlice({
@@ -47,16 +60,50 @@ export const statementsSlicer = createSlice({
       } catch (error) {
         console.error(error);
       }
+    },
+    setStatementOrder: (state, action: PayloadAction<StatementOrder>) => {
+      try {
+        const { statementId, order } = action.payload;
+        const statement = state.statements.find(statement => statement.statementId === statementId);
+        if (statement)
+          statement.order = order;
+
+
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    setStatementElementHight: (state, action: PayloadAction<{ statementId: string, height: number | undefined }>) => {
+      try {
+        const { statementId, height } = action.payload;
+        const statement = state.statements.find(statement => statement.statementId === statementId);
+        if (statement)
+          statement.elementHight = height;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    setScreen: (state, action: PayloadAction<StatementScreen>) => {
+      try {
+        state.screen = action.payload;
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
 })
 
-export const { setStatement, setStatementSubscription } = statementsSlicer.actions
+export const { setStatement, setStatementSubscription, setStatementOrder, setScreen, setStatementElementHight } = statementsSlicer.actions
 
 // Other code such as selectors can use the imported `RootState` type
+export const screenSelector = (state: RootState) => state.statements.screen;
 export const statementsSelector = (state: RootState) => state.statements.statements;
-export const statementSubscriptionSelector = (state: RootState) => state.statements.statementSubscription
+export const statementsSubscriptionsSelector = (state: RootState) => state.statements.statementSubscription;
 export const statementSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId);
 export const statementSubsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.filter(statementSub => statementSub.parentId === statementId).sort((a, b) => a.createdAt - b.createdAt);
+export const statementNotificationSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId)?.notification || false;
+export const statementSubscriptionSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statementSubscription.find(statementSub => statementSub.statementId === statementId) || undefined;
+export const statementOrderSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId)?.order || 0;
+export const statementElementHightSelector = (statementId: string | undefined) => (state: RootState) => state.statements.statements.find(statement => statement.statementId === statementId)?.elementHight || 0;
 
 export default statementsSlicer.reducer

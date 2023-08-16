@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { Collections } from "../collections";
-import { Statement, StatementSubscription, StatementType } from "../../../model/statements/statementModel";
+import { Statement, StatementSubscription, StatementSubscriptionSchema, StatementType } from "../../../model/statements/statementModel";
 import { DB } from "../config";
 import { auth } from "../auth";
 
@@ -29,6 +29,27 @@ export async function getStatmentsSubsciptions(): Promise<StatementSubscription[
     } catch (error) {
         console.error(error);
         return [];
+    }
+}
+
+export function listenToStatementSubscription(statementId: string, updateStore: Function) {
+    try {
+        if(!statementId) throw new Error("Statement id is undefined");
+        const user = auth.currentUser;
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
+        const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
+
+        
+        return onSnapshot(statementsSubscribeRef, (statementSubscriptionDB) => {
+            const statementSubscription = statementSubscriptionDB.data() as StatementSubscription;
+            StatementSubscriptionSchema.parse(statementSubscription);
+
+            updateStore(statementSubscription);
+        });
+    } catch (error) {
+        console.error(error);
+        return () => { };
     }
 }
 
