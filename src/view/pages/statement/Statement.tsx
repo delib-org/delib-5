@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
@@ -113,7 +113,7 @@ const Statement: FC = () => {
             unsubStatementSubscription();
             unsubEvaluations();
         }
-    }, [user,statementId])
+    }, [user, statementId])
 
     useEffect(() => { }, [statementId])
 
@@ -144,7 +144,7 @@ const Statement: FC = () => {
             </div> : null}
             <div className="page__header">
                 <div className='page__header__wrapper'>
-                    <Link to={statement?.parentId === "top"?"/home":`/home/statement/${statement?.parentId}`}><ArrowBackIosIcon /></Link>
+                    <Link to={statement?.parentId === "top" ? "/home" : `/home/statement/${statement?.parentId}`}><ArrowBackIosIcon /></Link>
                     <div onClick={handleRegisterToNotifications}>
                         {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon />}
                     </div>

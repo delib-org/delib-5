@@ -1,8 +1,7 @@
-import { isEqual } from 'lodash';
+
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { Statement, StatementSchema, StatementSubscription, StatementSubscriptionSchema } from './statementModel'
 import { updateArray } from '../../functions/general/helpers';
 import { Evaluation, EvaluationSchema } from './evaluationModel';
 
@@ -40,7 +39,7 @@ export const { setEvaluationToStore } = evaluationsSlicer.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const evaluationsSelector = (state: RootState) => state.evaluations.userEvaluations;
-export const evaluationsParentSelector = (parentId: string | undefined) => (state: RootState) => state.evaluations.userEvaluations.filter(evaluation => evaluation.parentStatementId === parentId);
+export const evaluationsParentSelector = (parentId: string | undefined) => (state: RootState) => state.evaluations.userEvaluations.filter(evaluation => evaluation.parentId === parentId);
 export const evaluationSelector = (statementId: string | undefined) => (state: RootState) => state.evaluations.userEvaluations.find(evaluation => evaluation.statementId === statementId)?.evaluation || 0;
 
 
