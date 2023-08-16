@@ -7,7 +7,7 @@ export async function updateEvaluation(event: any) {
 
         // get data from event
 
-        const { parentId, dataAfter, statementRef, evaluationDeferneces, evaluation, previousEvaluation, error } = getInfo();
+        const { parentId, dataAfter, statementRef, evaluationDeferneces, evaluation, previousEvaluation, error } = getEvaluationInfo();
         if (error) throw error;
 
         //get parent statement
@@ -18,6 +18,7 @@ export async function updateEvaluation(event: any) {
 
         //calculate and update
         const totalEvaluators = await updateNumberOfEvaluators(statementEvaluatorDB, statementEvaluatorsRef, dataAfter, parentId, parentRef);
+        logger.info('previousEvaluation updateEvaluation', previousEvaluation);
         const _totalEvaluations = await setNewEvaluation(statementRef, evaluationDeferneces, evaluation, previousEvaluation);
 
         const consensus = await calculateConsensus(_totalEvaluations, totalEvaluators);
@@ -38,7 +39,7 @@ export async function updateEvaluation(event: any) {
 
     //inner functions
 
-    function getInfo() {
+    function getEvaluationInfo() {
         try {
             const dataAfter = event.data.after.data();
             const evaluation = dataAfter.evaluation;
@@ -56,7 +57,7 @@ export async function updateEvaluation(event: any) {
             const statementId = dataAfter.statementId;
             if (!statementId) throw new Error("statementId is not defined");
             const statementRef = db.collection("statements").doc(statementId);
-
+            logger.info('previousEvaluation getEvaluationInfo', previousEvaluation);  
             const parentId = dataAfter.parentId;
             if (!parentId)
                 throw new Error("parentId is not defined");
@@ -72,7 +73,7 @@ export async function updateEvaluation(event: any) {
         try {
 
 
-            const proevaluation = (() => {
+            const proEvaluation = (() => {
                 if (_totalEvaluations < 0) {
                     return -1;
                 }
@@ -80,8 +81,11 @@ export async function updateEvaluation(event: any) {
             })();
 
             const totalEvaluations = beforeLogCalculation(Math.abs(_totalEvaluations));
-            const totalLogEvaluations = getBaseLog(totalEvaluations, 1.3);
-            const consensus = proevaluation * (totalLogEvaluations / totalEvaluatorEvaluations);
+            logger.info(`totalEvaluations: ${totalEvaluations}, totalEvaluatorEvaluations: ${totalEvaluatorEvaluations}, proEvaluation: ${proEvaluation}`);
+            const totalLogEvaluations = Math.log2(totalEvaluations);
+            logger.info(`totalLogEvaluations: ${totalLogEvaluations}`);
+            const consensus = proEvaluation * (totalLogEvaluations / totalEvaluatorEvaluations);
+            logger.info(`consensus: ${consensus}`);
 
             return consensus;
         } catch (error) {
@@ -91,12 +95,13 @@ export async function updateEvaluation(event: any) {
     }
 
     async function setNewEvaluation(statementRef: any, evaluationDeferneces: number | undefined, evaluation: number, previousEvaluation: number | undefined): Promise<number> {
+        logger.info('previousEvaluation setNewEvaluation', previousEvaluation);
         let newTotalEvaluations: number = 0;
         await db.runTransaction(async (t: any) => {
             try {
                 if (!evaluationDeferneces) throw new Error("evaluationDeferneces is not defined");
                 if (!evaluation) throw new Error("evaluation is not defined");
-                if (!previousEvaluation) throw new Error("previousEvaluation is not defined");
+                if (previousEvaluation === undefined) throw new Error("previousEvaluation is not defined error");
 
                 const statementDB = await t.get(statementRef);
 
@@ -131,6 +136,8 @@ export async function updateEvaluation(event: any) {
 
         function updateProCon(oldPro: number, oldCon: number, evaluation: number, previousEvaluation: number): { newPro: number, newCon: number } {
             try {
+
+                logger.info('previousEvaluation updateProCon', previousEvaluation);
                 let newPro = oldPro, newCon = oldCon;
 
                 if (previousEvaluation > 0) {
@@ -195,9 +202,9 @@ export async function updateEvaluation(event: any) {
             return 0;
         }
     }
-    function getBaseLog(x: number, baseLog: number): number {
-        return Math.log(baseLog) / Math.log(x);
-    }
+    // function getBaseLog(x: number, baseLog: number): number {
+    //     return Math.log(baseLog) / Math.log(x);
+    // }
 }
 
 function beforeLogCalculation(totalEvaluations: number) {
