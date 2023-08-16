@@ -71,7 +71,6 @@ const StatementOptionCard: FC<Props> = ({ statement, showImage, top }) => {
 
                     <div className="statement__options__card__bubble__text">
                         {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null}
-                        {statement.consensus}
                         <p onClick={() => setShow(!show)}>{statement.statement}</p>
                         {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null}
                     </div>
