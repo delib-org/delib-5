@@ -137,7 +137,7 @@ const Statement: FC = () => {
 
     //JSX
     return (
-        <>
+        <div className='page'>
 
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
@@ -155,7 +155,7 @@ const Statement: FC = () => {
             </div>
             {switchScreens(screen, statement, subStatements, handleShowTalker)}
 
-        </>
+        </div>
     )
 }
 

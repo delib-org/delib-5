@@ -47,8 +47,8 @@ const Main = () => {
     return (
         <div className='page'>
             <div className="page__header">
-                <h1>דליב 5</h1>
-                <h2>מערכת יצירת הסכמות</h2>
+                <h1>Delib 5.08</h1>
+                <h2> יוצרים הסכמות </h2>
                 <button onClick={handleLogout}>Logout</button>
             </div>
             <div className="page__main">

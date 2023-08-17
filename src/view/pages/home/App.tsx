@@ -17,9 +17,9 @@ function App() {
  
   }, [user])
   return (
-    <div className="page">
+    <>
       <Outlet />
-    </div>
+    </>
   )
 }
 
