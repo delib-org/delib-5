@@ -5,13 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:h": "vite --host",
+    "devf": "cd functions && npm run build:watch",
     "deve": "firebase emulators:start",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "deploy:h":"npm run build && firebase deploy --only hosting",
-    "deploy:f":"cd functions && npm run build && firebase deploy --only functions",
-    "deploy":"npm run deploy:h && npm run deploy:f"
+    "deploy:h": "npm run build && firebase deploy --only hosting",
+    "deploy:f": "cd functions && npm run build && firebase deploy --only functions",
+    "deploy": "npm run deploy:h && npm run deploy:f"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -19,6 +21,8 @@
     "@mui/icons-material": "^5.13.7",
     "@mui/material": "^5.13.7",
     "@reduxjs/toolkit": "^1.9.5",
+    "deep-equal": "^2.2.2",
+    "delib-npm": "^1.0.35",
     "firebase": "^10.0.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",

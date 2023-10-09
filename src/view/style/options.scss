@@ -1,0 +1,107 @@
+.options {
+    display: flex;
+    flex-direction: column;
+
+    &__wrapper {
+        display: flex;
+        flex-direction: column;
+        flex: auto;
+        position: relative;
+        box-sizing: border-box;
+        padding: 0px;
+    }
+
+    &__card {
+        transition: all 1s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        position: absolute;
+        width: 100%;
+        background-color: var(--white);
+        border-radius: 10px;
+        padding: 20px;
+        box-sizing: border-box;
+
+        &__text{
+            text-align: left;
+            p{
+                text-align: right;
+            }
+        }
+
+        &__main{
+            display: grid;
+            grid-template-columns: 30px auto 30px;
+            // grid-template-rows: 40px;
+            align-items: center;    
+            gap: 10px;
+        }
+
+        &__more{
+            margin-top: 0px;
+            display: grid;
+            grid-template-columns: auto 30px 60px 30px;
+            align-items: center;
+        }
+
+
+
+       
+
+
+        //     &__text {
+        //         display: flex;
+        //         justify-content: space-between;
+        //         align-items: center;
+        //         padding: 10px;
+
+        //         &__statement {
+        //             display: flex;
+        //             width: 100%;
+        //             align-items: center;
+
+        //             .text {
+        //                 flex: auto;
+        //                 text-align: right;
+        //                 padding: 10px 20px;
+        //                 word-wrap: break-word;
+        //                 width: -webkit-fill-available;
+        //             }
+
+        //             .icon {
+        //                 padding: 10px;
+        //             }
+        //         }
+        //     }
+        // }
+    }
+
+    &__nav {
+        background-color: var(--white);
+        display: flex;
+        width: 100vw;
+        max-width: 75ch;
+        margin: 0 auto;
+        z-index: 100;
+        box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
+
+        a {
+            text-decoration: none;
+        }
+
+        &__button {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px 5px 20px 5px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0);
+
+            &--selected {
+                border-top: 2px solid var(--accent);
+                font-weight: bolder;
+            }
+        }
+    }
+}

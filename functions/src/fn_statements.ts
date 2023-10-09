@@ -1,12 +1,12 @@
 const { logger } = require("firebase-functions");
-import { Timestamp } from "firebase-admin/firestore";
+import { Timestamp, FieldValue } from "firebase-admin/firestore";
 import { db } from "./index";
 import admin = require('firebase-admin');
 
 export async function updateSubscribedListnersCB(event: any) {
 
 
-  //get all subscribers
+  //get statement
   const { statementId } = event.params;
   const statement = event.data.after.data();
 
@@ -47,7 +47,9 @@ export async function updateParentWithNewMessageCB(e: any) {
       //update parent
       const lastMessage = statement.statement;
       const lastUpdate = Timestamp.now().toMillis();
-      parentRef.update({ lastMessage, lastUpdate });
+      parentRef.update({ lastMessage, lastUpdate, totalSubStatements:FieldValue.increment(1) });
+      //increment totalSubStatements
+    
     }
     return
   } catch (error) {
@@ -59,11 +61,29 @@ export async function updateParentWithNewMessageCB(e: any) {
 
 export async function sendNotificationsCB(e: any) {
   try {
+  
     const statement = e.data.data();
    
     const parentId = statement.parentId;
    
     if (!parentId) throw new Error("parentId not found");
+
+    //get parent statement
+    const parentRef = db.doc(`statements/${parentId}`);
+    const parentDB = await parentRef.get();
+    const parent = parentDB.data();
+    //remove * from statement and bring only the fiest paragraph (pargraph are created by /n)
+
+    const _title  = parent.statement.replace(/\*/g, "");
+
+    //bring only the first pargarpah
+    const _titleArr = _title.split("\n");
+    const _titleFirstParagraph = _titleArr[0];
+
+    //limit to 20 chars
+    const __first20Chars = _titleFirstParagraph.substring(0, 20);
+
+    const title = parent && parent.statement?`בשיחה: ${__first20Chars}`:`הודעה חדשה`;
 
     //get all subscribers to this statement
     const subscribersRef = db.collection("statementsSubscribe");
@@ -75,27 +95,33 @@ export async function sendNotificationsCB(e: any) {
     //send push notifications to all subscribers
     subscribersDB.docs.forEach((doc: any) => {
       const token = doc.data().token;
-      logger.log("token", token);
+      logger.log("token:", token);
 
       if(token){
-        const notifications = {
-          notification: {
-            title: 'הודעה חדשה',
-            body: statement.statement
+        // const notifications = {
+        //   notification: {
+        //     title: 'הודעה חדשה',
+        //     body: statement.statement
+        //   },
+        //   token: token,
+        //   fcm_options: {
+        //     link: "http://delib.org"
+        //   }
+        // };
+       
+        const message:any = {
+          data:{
+            title,
+            body: statement.statement,
+            url: `https://delib-5.web.app/home/statement/${parentId}`
           },
-          token: token,
+          token
         };
-        const webpush = {
-          fcm_options: {
-            link: "https://dummypage.com"
-          }
-        }
-        const message:any = {notifications,webpush}
         admin.messaging().send(message)
           .then((response: any) => {
-            logger.log("response", response);
+            
             // Response is a message ID string.
-            // logger.log('Successfully sent message:', response);
+            logger.log('Successfully sent message:', response);
           })
           .catch((error: any) => {
             logger.error('Error sending message:', error);

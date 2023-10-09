@@ -5,25 +5,32 @@ import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHo
 import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
 import { Statement, StatementSubscription } from '../../../model/statements/statementModel';
 import { Role } from '../../../model/role';
-import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB } from '../../../functions/db/statements/setStatments';
+import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
-import { User } from '../../../model/users/userModel';
+import { User, Screen } from 'delib-npm';
+import { userSelector } from '../../../model/users/userSlice';
+
+import { Evaluation } from '../../../model/evaluations/evaluationModel';
+import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlice';
+import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluation';
 
 
+
+
+import StatementNav from './components/nav/StatementNav';
+import StatementMain from './components/StatementMain';
+import StatementOptions from './components/StatementOptions';
+import StatementVote from './components/StatementVote';
 
 //icons
 import ShareIcon from '../../icons/ShareIcon';
 import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
-import { Evaluation } from '../../../model/evaluations/evaluationModel';
-import { setEvaluationToStore } from '../../../model/evaluations/evaluationsSlice';
-import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluation';
-import StatementNav from '../../features/statement/StatementNav';
-import StatementMain from '../../features/statement/StatementMain';
-import { Screen } from '../../../model/system';
-import StatementOptions from '../../features/statement/StatementOptions';
-import { userSelector } from '../../../model/users/userSlice';
+import { SetStatementComp } from './components/set/SetStatementComp';
+import StatmentRooms from './components/rooms/StatmentRooms';
+
+
 
 
 let unsub: Function = () => { }
@@ -31,17 +38,14 @@ let unsubSubStatements: Function = () => { };
 let unsubStatementSubscription: Function = () => { };
 let unsubEvaluations: Function = () => { };
 
-// const askNotification = ("Notification" in window && Notification.permission !== "granted")
-
 
 const Statement: FC = () => {
 
     const [talker, setTalker] = useState<User | null>(null);
+    const [title, setTitle] = useState<string>('קבוצה');
     const dispatch = useAppDispatch();
     const { statementId, page } = useParams();
     const screen: string | undefined = page;
-
-
 
     //check if the user is registered
 
@@ -120,6 +124,11 @@ const Statement: FC = () => {
     useEffect(() => {
         if (statement) {
 
+            const __title = statement.statement.split('\n')[0] || statement.statement;
+            const _title = __title.replace('*', '');
+            setTitle(_title);
+
+
             (async () => {
 
                 const isSubscribed = await getIsSubscribed(statementId)
@@ -127,17 +136,23 @@ const Statement: FC = () => {
                 // if isSubscribed is false, then subscribe
                 if (!isSubscribed) {
                     // subscribe
-                    setStatmentSubscriptionToDB(statement, Role.member)
+                    setStatmentSubscriptionToDB(statement, Role.member, true)
                 }
             })();
+
+
+            //update subscribed field
+            updateSubscriberForStatementSubStatements(statement);
+
         }
     }, [statement])
 
+    //first line of the statement and remove * from the title
 
 
     //JSX
     return (
-        <>
+        <div className='page'>
 
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
@@ -146,16 +161,16 @@ const Statement: FC = () => {
                 <div className='page__header__wrapper'>
                     <Link to={statement?.parentId === "top" ? "/home" : `/home/statement/${statement?.parentId}`}><ArrowBackIosIcon /></Link>
                     <div onClick={handleRegisterToNotifications}>
-                        {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon />}
+                        {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon htmlColor='lightgray' />}
                     </div>
-                    <h1>{statement?.statement}</h1>
+                    <h1>{title}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>
                 </div>
                 {statement ? <StatementNav statement={statement} /> : null}
             </div>
             {switchScreens(screen, statement, subStatements, handleShowTalker)}
 
-        </>
+        </div>
     )
 }
 
@@ -172,6 +187,12 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
             case Screen.OPTIONS:
                 return <StatementOptions statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+            case Screen.VOTE:
+                return <StatementVote statement={statement} subStatements={subStatements} />
+                case Screen.GROUPS:
+                    return <StatmentRooms statement={statement} subStatements={subStatements} />
+            case Screen.SETTINGS:
+                return <SetStatementComp />
             default:
                 return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
         }

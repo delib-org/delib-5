@@ -1,34 +1,40 @@
-import { Timestamp, doc, getDoc, setDoc } from "firebase/firestore";
-import { Statement, StatementSchema, StatementSubscription, StatementType } from "../../../model/statements/statementModel";
+import { z } from "zod";
+import { Timestamp, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { Statement, StatementSchema, StatementSubscription, StatementType, UserSchema } from "delib-npm";
 import { DB, deviceToken } from "../config";
-import { Collections } from "../collections";
+import { Collections } from "delib-npm";
 import { Role } from "../../../model/role";
 import { getUserFromFirebase } from "../users/usersGeneral";
 
 import { getUserPermissionToNotifications } from "../../notifications";
 
-export async function setStatmentToDB(statement: Statement) {
+const TextSchema = z.string().min(2);
+
+export async function setStatmentToDB(statement: Statement, addSubscription: boolean = true) {
     try {
 
+        TextSchema.parse(statement.statement);
         statement.consensus = 0;
+     
+        console.log(statement.type);
         statement.lastUpdate = Timestamp.now().toMillis();
         StatementSchema.parse(statement);
-
-        const statementId = statement.statementId;
+        UserSchema.parse(statement.creator)
 
         //set statement
-
-        const statementRef = doc(DB, Collections.statements, statementId);
-        await setDoc(statementRef, statement);
+        const statementRef = doc(DB, Collections.statements, statement.statementId);
+        await setDoc(statementRef, statement, { merge: true });
 
         //add subscription
-        await setStatmentSubscriptionToDB(statement, Role.admin)
-        const canGetNotifications = await getUserPermissionToNotifications();
+        if (addSubscription) {
+            await setStatmentSubscriptionToDB(statement, Role.admin, true);
+            const canGetNotifications = await getUserPermissionToNotifications();
 
-        if (canGetNotifications)
-            await setStatmentSubscriptionNotificationToDB(statement, Role.admin);
+            if (canGetNotifications)
+                await setStatmentSubscriptionNotificationToDB(statement, Role.admin);
 
-        return statementId;
+        }
+        return statement.statementId;
 
     } catch (error) {
         console.error(error);
@@ -74,6 +80,7 @@ export async function setStatmentSubscriptionNotificationToDB(statement: Stateme
         const user = getUserFromFirebase();
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
+
         const statementsSubscribeId = `${user.uid}--${statementId}`;
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
         const statementSubscriptionDB = await getDoc(statementsSubscribeRef);
@@ -130,3 +137,19 @@ export async function setStatmentGroupToDB(statement: Statement) {
         console.error(error);
     }
 }
+
+export async function updateSubscriberForStatementSubStatements(statement: Statement) {
+    try {
+        const user = getUserFromFirebase();
+        if (!user) throw new Error("User not logged in");
+        if (!user.uid) throw new Error("User not logged in");
+
+        const statementsSubscribeId = `${user.uid}--${statement.statementId}`;
+        const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
+        const newSubStatmentsRead = { totalSubStatementsRead: statement.totalSubStatements || 0 }
+
+        await updateDoc(statementsSubscribeRef, newSubStatmentsRead);
+    } catch (error) {
+        console.error(error);
+    }
+} 

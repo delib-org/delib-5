@@ -8,14 +8,18 @@
  */
 
 import { updateEvaluation } from "./fn_evaluation";
+import { countRoomJoiners } from "./fn_rooms";
+import { addSignature, removeSignature } from "./fn_signatures";
 import { updateSubscribedListnersCB,updateParentWithNewMessageCB, sendNotificationsCB } from "./fn_statements";
+import { updateVote } from "./fn_vote";
 
 // const { onRequest } = require("firebase-functions/v2/https");
-const { onDocumentUpdated,onDocumentCreated,onDocumentWritten } = require("firebase-functions/v2/firestore");
+const { onDocumentUpdated,onDocumentCreated,onDocumentWritten,onDocumentDeleted } = require("firebase-functions/v2/firestore");
 
 // The Firebase Admin SDK to access Firestore.
 const { initializeApp } = require("firebase-admin/app");
-const { getFirestore } = require("firebase-admin/firestore");
+const { getFirestore } = require("firebase-admin/firestore")
+import { Collections } from "delib-npm";
 
 initializeApp();
 export const db = getFirestore();
@@ -31,3 +35,14 @@ exports.updateNotifications = onDocumentCreated("/statements/{statementId}",send
 
 //evaluations
 exports.updateEvaluation = onDocumentWritten('/evaluations/{evaluationId}', updateEvaluation)
+
+//votes
+exports.addVote = onDocumentWritten('/votes/{voteId}', updateVote);
+// exports.removeVote = onDocumentDeleted('/votes/{voteId}', removeVote);
+
+exports.changeSignature = onDocumentCreated('/statementsSignatures/{signatureId}', addSignature);
+
+exports.deleteSignature = onDocumentDeleted('/statementsSignatures/{signatureId}', removeSignature);
+
+//rooms
+exports.countRoomJoiners = onDocumentWritten(`${Collections.statementRoomsAsked}/{requestId}`, countRoomJoiners);

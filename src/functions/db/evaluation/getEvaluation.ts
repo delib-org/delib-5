@@ -1,6 +1,6 @@
 import { collection, onSnapshot, query, where } from "@firebase/firestore";
 import { DB } from "../config";
-import { Collections } from "../collections";
+import { Collections } from "delib-npm";
 import { getUserFromFirebase } from "../users/usersGeneral";
 import { EvaluationSchema } from "../../../model/evaluations/evaluationModel";
 

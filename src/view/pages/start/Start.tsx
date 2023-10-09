@@ -5,6 +5,9 @@ import { useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { userSelector } from '../../../model/users/userSlice';
 import { getIntialLocationSessionStorage } from '../../../functions/general/helpers';
 
+//img
+import Logo from '../../../assets/logo/logo-128px.png';
+
 const Start = () => {
     const navigate = useNavigate();
     const user = useAppSelector(userSelector)
@@ -26,10 +29,12 @@ const Start = () => {
             <div className='centerElement'>
                 <div id='login__splashName' >
                    <h1>Delib 5</h1> 
+                   <img src={Logo} alt="Delib logo"/>
                 </div>
                 <div id='login__splashSubName' className='opacity07'>
                     <h2>יוצרים הסכמות</h2>
                 </div>
+                
                 {/* <h1 className='login__callForAction'>call for action</h1>
                 <div className='anonymousLogin'>
                     <input type='text' className='inputLogin' placeholder='כינוי' />

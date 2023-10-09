@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react'
-import { Statement } from '../../../model/statements/statementModel'
+import { Statement } from 'delib-npm';
 import StatementChat from './StatementChat';
-import StatementInput from '../../pages/statement/StatementInput';
+import StatementInput from '../../../pages/statement/StatementInput';
 interface Props {
     statement: Statement;
     subStatements: Statement[];

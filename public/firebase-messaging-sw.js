@@ -28,14 +28,49 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  // Customize notification here
-  const notificationTitle = 'Background Message Title';
-  const notificationOptions = {
-    body: 'Background Message body.',
-    icon: 'https://i1.sndcdn.com/avatars-000103501656-iji6a5-t500x500.jpg'
-  };
+  try {
+    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+    // Customize notification here
+    if (!payload.data) throw new Error('no data');
+    const { title, body, url } = payload.data;
+    const notificationTitle = title || 'Background Message Title';
+    const notificationOptions = {
+      body,
+      icon: 'https://delib-5.web.app/assets/logo-128px-a9e7b0f8.png',
+      data: { url },
+      badge: 'https://delib-5.web.app/assets/logo-128px-a9e7b0f8.png',
+      dir: 'rtl',
+      tag: 'confirm-notification',
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
-  navigator.setAppBadge(1);
+
+    };
+
+    self.registration.showNotification(notificationTitle, notificationOptions);
+    // navigator.setAppBadge(1);
+    //play sound  
+
+    // const notificationSound = new Audio('https://delib-5.web.app/assets/sound/sweet_notification.mp3');
+    // notificationSound.play();
+
+
+    self.addEventListener('notificationclick', function (event) {
+      console.log(event.notification)
+      event.notification.close();
+      if (event.action === 'explore') {
+        clients.openWindow(event.notification.data.url);
+
+
+      } else if (event.action === 'close') {
+        console.log('close')
+      } else {
+        clients.openWindow(event.notification.data.url);
+      }
+
+
+
+
+    });
+  } catch (error) {
+    console.log(error)
+  }
 });
