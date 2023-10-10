@@ -1,7 +1,7 @@
 import { FC } from "react"
 import { Link, useParams } from "react-router-dom"
 import { Statement } from "delib-npm";
-import { NavObject, Screen } from "../../../../model/system";
+import { NavObject, Screen } from "../../../../../model/system";
 
 
 interface Props {

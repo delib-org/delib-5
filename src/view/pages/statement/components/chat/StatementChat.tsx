@@ -1,18 +1,18 @@
 import { FC, useState } from 'react'
 import { Statement } from 'delib-npm'
-import { auth } from '../../../../functions/db/auth';
-import { setEvaluation } from '../../../../functions/db/evaluation/setEvaluation';
-import { useAppSelector } from '../../../../functions/hooks/reduxHooks';
-import { evaluationSelector } from '../../../../model/evaluations/evaluationsSlice';
-import StatementChatIcon from './StatementChatIcon';
+import { auth } from '../../../../../functions/db/auth';
+import { setEvaluation } from '../../../../../functions/db/evaluation/setEvaluation';
+import { useAppSelector } from '../../../../../functions/hooks/reduxHooks';
+import { evaluationSelector } from '../../../../../model/evaluations/evaluationsSlice';
+import StatementChatIcon from '../StatementChatIcon';
 
 //icons
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import StatementChatSetOption from './StatementChatSetOption';
-import Text from '../../../components/text/Text';
+import StatementChatSetOption from '../StatementChatSetOption';
+import Text from '../../../../components/text/Text';
 
 
 

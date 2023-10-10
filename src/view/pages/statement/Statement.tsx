@@ -19,8 +19,8 @@ import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluat
 
 import StatementNav from './components/nav/StatementNav';
 import StatementMain from './components/StatementMain';
-import StatementOptions from './components/StatementOptions';
-import StatementVote from './components/StatementVote';
+import StatementOptions from './components/options/StatementOptions';
+import StatementVote from './components/vote/StatementVote';
 
 //icons
 import ShareIcon from '../../icons/ShareIcon';

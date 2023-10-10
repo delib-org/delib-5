@@ -123,6 +123,10 @@ button, .btn {
         }
     }
 
+    &--up{
+        bottom: 13vh !important;
+    }
+
     &>div {
         z-index: 100;
         transform: scale(1);

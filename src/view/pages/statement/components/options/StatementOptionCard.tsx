@@ -1,8 +1,8 @@
 import { FC, useEffect, useState, useRef } from 'react'
 import { Statement } from 'delib-npm';
-import { setEvaluation } from '../../../../functions/db/evaluation/setEvaluation';
-import { useAppDispatch, useAppSelector } from '../../../../functions/hooks/reduxHooks';
-import { evaluationSelector } from '../../../../model/evaluations/evaluationsSlice';
+import { setEvaluation } from '../../../../../functions/db/evaluation/setEvaluation';
+import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
+import { evaluationSelector } from '../../../../../model/evaluations/evaluationsSlice';
 
 //icons
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -10,11 +10,11 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
-import { setStatementElementHight } from '../../../../model/statements/statementsSlice';
-import StatementChatIcon from './StatementChatIcon';
-import StatementChatSetOption from './StatementChatSetOption';
-import Text from '../../../components/text/Text';
-import Edit from '../../../components/edit/Edit';
+import { setStatementElementHight } from '../../../../../model/statements/statementsSlice';
+import StatementChatIcon from '../StatementChatIcon';
+import StatementChatSetOption from '../StatementChatSetOption';
+import Text from '../../../../components/text/Text';
+import Edit from '../../../../components/edit/Edit';
 
 
 
