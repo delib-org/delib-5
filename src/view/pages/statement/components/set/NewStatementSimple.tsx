@@ -78,12 +78,12 @@ const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowMod
 
 
     return (
-        <div className='wrapper'>
-
+       <>
+            
             {!isLoading ? <form onSubmit={handleAddStatment} className='setStatement__form'>
-                <label htmlFor="statement">כותרת</label>
-                <input type="text" name="statement" placeholder='כותרת הקבוצה' />
-                <textarea name="description" placeholder='תיאור הקבוצה'></textarea>
+               <h2>הוספת אפשרות</h2>
+                <input type="text" name="statement" placeholder='כותרת' />
+                <textarea name="description" placeholder='תיאור'></textarea>
 
 
                 <div className="btnBox">
@@ -96,7 +96,7 @@ const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowMod
                     <h2>מעדכן...</h2>
                     <Loader />
                 </div>}
-        </div>
+       </>
 
     );
 };
