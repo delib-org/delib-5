@@ -20,13 +20,21 @@ To install emulators, first make sure you firebase CLI is installed.
 
 ```firebase --version```
 
-If the efirebase cli is not install, run:
+If the firebase cli is not install, run:
 ```npm install -g firebase-tools``` or ```sudo npm install -g firebase-tools``` if you asre on a macOS.
+
+if you still get an error try to give permission to your self as a manager with this command and then run all above commands
+
+```Set-ExecutionPolicy RemoteSigned -Scope CurrentUser```
+
+run the commend below and login to your google account
+
+```firebase login``` 
 
 Then initlise the emualtors by running:
 ```firebase init emulators```
 
-To run the emulators, run ```npm run deve``` in the root direcotry.
+To run the emulators, run ```npm run dev``` in the root direcotry.
 To run client run ```npm run dev``` in the root directory
 
 
