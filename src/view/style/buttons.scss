@@ -110,8 +110,21 @@ button, .btn {
 
     &--fixed {
         position: fixed;
-        right: 6vw;
-        bottom: 11vh;
+        right:  calc(50vw - 37ch);
+        bottom: 8vh;
+
+        @media (max-width: 500px) {
+            right:  calc(50vw - 22ch);
+           
+        }
+        @media (max-width: 300px) {
+            right:  calc(50vw - 15ch);
+           
+        }
+    }
+
+    &--up{
+        bottom: 13vh !important;
     }
 
     &>div {

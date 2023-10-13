@@ -1,8 +1,8 @@
 import { Timestamp, doc, setDoc } from "@firebase/firestore";
-import { Statement } from "../../../model/statements/statementModel";
+import { Statement } from "delib-npm";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
-import { Collections } from "../collections";
+import { Collections } from "delib-npm";
 
 export async function setEvaluation(statement:Statement, evaluation:number):Promise<void> {
     try {

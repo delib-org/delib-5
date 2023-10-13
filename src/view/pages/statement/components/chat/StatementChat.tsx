@@ -1,20 +1,19 @@
 import { FC, useState } from 'react'
-import { Statement } from '../../../model/statements/statementModel'
-import { auth } from '../../../functions/db/auth';
-import { setStatementisOption, setStatmentGroupToDB } from '../../../functions/db/statements/setStatments';
-import { setEvaluation } from '../../../functions/db/evaluation/setEvaluation';
-import { useAppSelector } from '../../../functions/hooks/reduxHooks';
-import { evaluationSelector } from '../../../model/evaluations/evaluationsSlice';
+import { Statement } from 'delib-npm'
+import { auth } from '../../../../../functions/db/auth';
+import { setEvaluation } from '../../../../../functions/db/evaluation/setEvaluation';
+import { useAppSelector } from '../../../../../functions/hooks/reduxHooks';
+import { evaluationSelector } from '../../../../../model/evaluations/evaluationsSlice';
+import StatementChatIcon from '../StatementChatIcon';
 
 //icons
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
-import ChatIcon from '@mui/icons-material/Chat';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
-import { useNavigate } from 'react-router-dom';
+import StatementChatSetOption from '../StatementChatSetOption';
+import Text from '../../../../components/text/Text';
+
 
 
 
@@ -25,7 +24,6 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({ statement, showImage }) => {
-  const navigate = useNavigate();
   const evaluation = useAppSelector(evaluationSelector(statement.statementId))
 
 
@@ -38,37 +36,30 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
   const isMe = userId === creatorId;
   const { isOption } = statement;
 
-  function handleCreateSubStatements(){
-    setStatmentGroupToDB(statement);
-    
-   
-    navigate(`/home/statement/${statement.statementId}`)
-    //if no kids change it to group type GROUP
 
-  }
 
 
   return (
     <>
 
       <div className={isMe ? `statement__chatCard statement__chatCard--me` : "statement__chatCard statement__chatCard--other"}>
-        <div onClick={() => showImage(statement.creator)} className="statement__chatCard__profile" style={userProfile ? { backgroundImage: `url(${userProfile})` } : {}}></div>
+        <div className="statement__chatCard__left">
+        
+          <div onClick={() => showImage(statement.creator)} className="statement__chatCard__profile" style={userProfile ? { backgroundImage: `url(${userProfile})` } : {}}></div>
+          <StatementChatSetOption statement={statement} />
+        </div>
+      
         <div className={isOption ? "statement__bubble statement__bubble--option" : "statement__bubble"}>
           <div className={isMe ? "bubble right" : "bubble left"}>
             <div className="statement__bubble__text">
               {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null}
-              <p onClick={() => setShow(!show)}>{statement.statement}</p>
+              <div onClick={() => setShow(!show)}><Text text={statement.statement}/></div>
               {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null}
             </div>
-            {show ? <div className="statement__bubble__more">
-              <div className="icon" onClick={() => setStatementisOption(statement)}> <LightbulbIcon /></div>
-              {isOption ? <div className="statement__bubble__proCon">
-                <span>{statement.pro ? statement.pro : 0}</span>
-                <ThumbsUpDownIcon className="icon" />
-                <span>{statement.con ? statement.con : 0}</span>
-              </div> : null}
-              <div className="icon" onClick={() => handleCreateSubStatements()}> <ChatIcon /></div>
-            </div> : null}
+            <div className="statement__bubble__more">
+              
+              <StatementChatIcon statement={statement} />
+            </div>
           </div>
         </div>
       </div>
@@ -102,5 +93,7 @@ const Thumbs: FC<ThumbsProps> = ({ evaluation, upDown, statement }) => {
 
   }
 }
+
+
 
 export default StatementChat;

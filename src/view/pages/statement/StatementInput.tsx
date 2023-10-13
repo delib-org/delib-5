@@ -1,9 +1,9 @@
 import { FC } from 'react'
-import { Statement, StatementType } from '../../../model/statements/statementModel'
+import { Statement } from 'delib-npm';
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
-import { auth } from '../../../functions/db/auth';
+
 import SendIcon from '@mui/icons-material/Send';
-import { getUserFromFirebase } from '../../../functions/db/users/usersGeneral';
+import { getNewStatment } from '../../../functions/general/helpers';
 
 interface Props {
     statement: Statement
@@ -13,27 +13,43 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
     function handleAddStatement(e: any) {
         try {
+            console.log('handleAddStatement')
             e.preventDefault();
             const value = e.target.newStatement.value;
+            //remove white spaces and \n
+            const _value = value.replace(/\s+/g, ' ').trim();
+            console.log(_value)
+            if (!_value) throw new Error('No value');
 
-            const newStatement: Statement|undefined = getNewStatment(value, statement);
-            if(!newStatement) throw new Error('No statement');
+            const newStatement: Statement | undefined = getNewStatment({ value, statement });
+            if (!newStatement) throw new Error('No statement');
             setStatmentToDB(newStatement);
             e.target.reset();
         } catch (error) {
             console.error(error);
         }
-      
+
     }
 
 
     function handleInput(e: any) {
         try {
+            let _isMobile = false;
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) _isMobile = true;
 
-            if (e.key === 'Enter' && !e.shiftKey) {
+            if (e.key === 'Enter' && !e.shiftKey && !_isMobile) {
+
+                const _value = e.target.value.replace(/\s+/g, ' ').trim();
+                if (!_value) {
+                    e.target.value = '';
+                    return;
+                };
+
                 // submit form
-                const newStatement: Statement|undefined = getNewStatment(e.target.value, statement);
-                if(!newStatement) throw new Error('No statement');
+                const newStatement: Statement | undefined = getNewStatment({ value: e.target.value, statement });
+
+                if (!newStatement) throw new Error('No statement');
+
                 setStatmentToDB(newStatement);
                 e.target.value = '';
             }
@@ -46,40 +62,13 @@ const StatementInput: FC<Props> = ({ statement }) => {
     return (
 
         <form onSubmit={handleAddStatement} name="theForm" className="page__footer statement__input">
-            <textarea name='newStatement' onKeyUp={handleInput} />
+            <textarea name='newStatement' onKeyUp={handleInput} required />
             <button className="fav"><div><SendIcon>Submit</SendIcon></div></button>
         </form>
 
     )
 }
 
-function getNewStatment(value?: string, statement?: Statement) {
-         
-    try {
-        if(!statement) throw new Error('No statement');
-        if (!value) throw new Error('No value');
-        const userId = auth.currentUser?.uid;
-        if (!userId) throw new Error('User not logged in');
 
-        const creator = getUserFromFirebase();
-        if (!creator) throw new Error('User not logged in');
-
-        const newStatement: Statement = {
-            statement: value,
-            statementId: crypto.randomUUID(),
-            creatorId: userId,
-            creator,
-            createdAt: new Date().getTime(),
-            lastUpdate: new Date().getTime(),
-            parentId: statement.statementId,
-            type: StatementType.STATEMENT,
-            consensus: 0,
-        };
-        return newStatement;
-    } catch (error) {
-        console.error(error);
-        return undefined
-    }
-}
 
 export default StatementInput

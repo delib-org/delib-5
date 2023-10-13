@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { User } from '../../../model/users/userModel'
+import { User } from 'delib-npm'
 
 interface Props {
     user: User | null

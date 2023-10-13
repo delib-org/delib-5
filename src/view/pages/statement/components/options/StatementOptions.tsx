@@ -1,21 +1,27 @@
-import { FC, useEffect } from 'react';
-import { Statement } from '../../../model/statements/statementModel';
+import { FC, useEffect, useState } from 'react';
+import { Statement } from 'delib-npm';
 import StatementOptionsNav from './StatementOptionsNav';
 import { useParams } from 'react-router';
-import { Screen } from '../../../model/system';
+import { Screen } from '../../../../../model/system';
 import StatementOptionCard from './StatementOptionCard';
-import { useAppDispatch } from '../../../functions/hooks/reduxHooks';
-import { setStatementOrder } from '../../../model/statements/statementsSlice';
+import { useAppDispatch } from '../../../../../functions/hooks/reduxHooks';
+import { setStatementOrder } from '../../../../../model/statements/statementsSlice';
+import Modal from '../../../../components/modal/Modal';
+import NewSetStatementSimple from '../set/NewStatementSimple';
+// import Fav from '../../components/fav/Fav';
 
 
 interface Props {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: Function;
+    showNav?: boolean;
 }
 
-const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalker }) => {
+const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalker, showNav }) => {
     try {
+        const [showModal, setShowModal] = useState(false);
+        if (showNav === undefined) showNav = true;
         const dispatch = useAppDispatch();
         const { sort } = useParams();
         const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
@@ -31,27 +37,34 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
             })
         }, [sort])
 
-        let topSum = 0;
-        let tops: number[] = [0];
-
+        let topSum = 50;
+        let tops: number[] = [topSum];
+        console.log(_subStatements)
         return (
-            <div className="page__main statement__options">
+            <div className="page__main options">
+                <div className="wrapper options__wrapper">
 
-                <div className="wrapper wrapper--chat statement__options__main">
                     {_subStatements?.map((statementSub: Statement, i: number) => {
 
                         //get the top of the element
                         if (statementSub.elementHight) {
                             topSum += ((statementSub.elementHight) + 10);
                             tops.push(topSum)
-                            console.log(tops)
+
                         }
 
                         return <StatementOptionCard key={statementSub.statementId} statement={statementSub} showImage={handleShowTalker} top={tops[i]} />
                     })}
 
                 </div>
-                <StatementOptionsNav statement={statement} />
+                {/* <Fav onclick={handleAddStatment} /> */}
+                {showNav ? <StatementOptionsNav statement={statement} /> : null}
+                {showModal ? <Modal>
+                    <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
+                </Modal> : null}
+                <div className="fav fav--fixed" onClick={() => setShowModal(true)}>
+                    <div>+</div>
+                </div>
             </div>
         )
     } catch (error) {

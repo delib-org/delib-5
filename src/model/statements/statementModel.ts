@@ -1,5 +1,6 @@
 import {z} from 'zod';
 import { UserSchema } from '../users/userModel';
+import { ScreenSchema } from '../system';
 
 export enum StatementType {
     STATEMENT = 'statement',
@@ -7,7 +8,7 @@ export enum StatementType {
     OPTION = 'option'
 };
 
-const statementType = z.enum([StatementType.STATEMENT, StatementType.GROUP]);
+const statementType = z.enum([StatementType.STATEMENT, StatementType.GROUP, StatementType.OPTION]);
 
 
 
@@ -28,6 +29,11 @@ export const StatementSchema = z.object({
     consensus:z.number(),
     order:z.number().optional(),
     elementHight:z.number().optional(),
+    votes:z.number().optional(),
+    selections:z.any().optional(),
+    voted:z.number().optional(),
+    totalSubStatements:z.number().optional(),
+    subScreens:z.array(ScreenSchema).optional(),
 });
 
 export type Statement = z.infer<typeof StatementSchema>;
@@ -40,7 +46,8 @@ export const StatementSubscriptionSchema = z.object({
     statementsSubscribeId:z.string(),
     statement:StatementSchema,
     notification:z.boolean().optional(),
-    token:z.string().optional()
+    token:z.string().optional(),
+    totalSubStatementsRead:z.number().optional(),
 });
 
 export type StatementSubscription = z.infer<typeof StatementSubscriptionSchema>;

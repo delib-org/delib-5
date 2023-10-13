@@ -13,6 +13,21 @@ service cloud.firestore {
       allow read;
       allow write: if request.auth.uid != null;
     }
+    
+    match /statementsSignatures/{signatureId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    match /statementRoomsAsked/{requestId=**}{
+    	allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    match /statementLobbyRooms/{statementId=**}{
+    	allow read: if request.auth.uid != null;
+
+    }
 
      match /evaluations/{evluationId=**}{
       allow read: if request.auth.uid != null;
@@ -20,6 +35,11 @@ service cloud.firestore {
     }
 
      match /statementEvaluators/{statementEvaluatorsId=**}{
+      allow read: if request.auth.uid != null;
+      allow write: if request.auth.uid != null;
+    }
+
+    match /votes/{voteId=**}{
       allow read: if request.auth.uid != null;
       allow write: if request.auth.uid != null;
     }
