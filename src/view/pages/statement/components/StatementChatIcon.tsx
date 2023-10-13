@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import ChatIcon from '@mui/icons-material/Chat';
+import ChatIcon from '../../../../assets/chat.svg';
 import { setStatmentGroupToDB } from '../../../../functions/db/statements/setStatments';
 import { Statement, StatementSubscription, StatementType } from 'delib-npm';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,8 @@ const StatementChatIcon: FC<Props> = ({ statement }) => {
                 {statement.type === StatementType.GROUP && (messages - messagesRead)>0 ? <div className="redCircle">
                     {messages - messagesRead<10?messages - messagesRead:`9+`}
                 </div> : null}
-                <ChatIcon htmlColor={statement.totalSubStatements && statement.totalSubStatements >0?"blue":'lightgray'} />
+                {/* <ChatIcon htmlColor={statement.totalSubStatements && statement.totalSubStatements >0?"blue":'lightgray'} /> */}
+                <img src={ChatIcon} alt="chat icon" style={{opacity:statement.totalSubStatements && statement.totalSubStatements >0?1:0.5}} />
             </div>
             <div className='text'>{statement.lastMessage}</div>
         </div>

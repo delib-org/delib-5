@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+// import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import edit from '../../../assets/edit.svg';
 import { Statement } from 'delib-npm';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../../functions/db/auth';
@@ -22,7 +23,7 @@ const Edit: FC<Props> = ({ statement }) => {
     return (
         <>
             {user?.uid === statement.creatorId ?
-                <div className='clickable' onClick={handleEdit}><ModeEditOutlineOutlinedIcon htmlColor='#444'/></div>
+                <div className='clickable' onClick={handleEdit}><img src={edit} alt="edit"/></div>
                 : <div />}
         </>
     )

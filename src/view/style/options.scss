@@ -23,31 +23,56 @@
         padding: 20px;
         box-sizing: border-box;
 
-        &__text{
+        &__text {
             text-align: left;
-            p{
+
+            p {
                 text-align: right;
             }
         }
 
-        &__main{
+        &__main {
             display: grid;
             grid-template-columns: 30px auto 30px;
             // grid-template-rows: 40px;
-            align-items: center;    
+            align-items: center;
             gap: 10px;
         }
 
-        &__more{
+        &__more {
             margin-top: 0px;
             display: grid;
-            grid-template-columns: auto 30px 60px 30px;
+            grid-template-columns: 100px 60px 60px auto;
             align-items: center;
+
+            &__vote {
+                display: flex;
+                border-radius: 1rem;
+                gap: 0px;
+
+                >div {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: .4rem;
+                }
+                &__up{
+                    img{
+                        transform: translateX(7px);
+                    }
+                }
+
+                &__down {
+                    img {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
         }
 
 
 
-       
+
 
 
         //     &__text {
