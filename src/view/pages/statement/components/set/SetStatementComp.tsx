@@ -22,6 +22,7 @@ interface Props {
 
 
 export const SetStatementComp: FC<Props> = ({ simple }) => {
+    
     const navigate = useNavigate();
     const { statementId } = useParams();
     const statement = useAppSelector(statementSelector(statementId));
@@ -112,7 +113,7 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
                         {navArray
                             .filter(navObj => navObj.link !== Screen.SETTINGS)
                             .map((navObj) =>
-                                <FormControlLabel key={navObj.id} control={<Checkbox name={navObj.link} defaultChecked={isSubPageChecked(statement, navObj.link)} />} label={navObj.name} />
+                                <FormControlLabel key={navObj.id} control={<Checkbox name={navObj.link} defaultChecked={isSubPageChecked(statement, navObj)} />} label={navObj.name} />
                             )}
 
                     </FormGroup>
@@ -132,12 +133,15 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
     );
 };
 
-function isSubPageChecked(statement: Statement | undefined, screen: Screen) {
+function isSubPageChecked(statement: Statement | undefined, navObj: NavObject) {
     try {
-        if (!statement) return true;
+        if (!statement){
+            if(navObj.default === false) return false;
+            else return true;
+        }
         const subScreens = statement.subScreens as Screen[];
         if (subScreens === undefined) return true;
-        if (subScreens?.includes(screen)) return true;
+        if (subScreens?.includes(navObj.link)) return true;
     } catch (error) {
         console.error(error);
         return true;
