@@ -1,18 +1,12 @@
 import { FC, useState } from 'react'
 import { Statement } from 'delib-npm'
 import { auth } from '../../../../../functions/db/auth';
-import { setEvaluation } from '../../../../../functions/db/evaluation/setEvaluation';
-import { useAppSelector } from '../../../../../functions/hooks/reduxHooks';
-import { evaluationSelector } from '../../../../../model/evaluations/evaluationsSlice';
 import StatementChatIcon from '../StatementChatIcon';
 
 //icons
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import StatementChatSetOption from '../StatementChatSetOption';
+
 import Text from '../../../../components/text/Text';
+import StatementChatSetOption from '../StatementChatSetOption';
 
 
 
@@ -24,7 +18,7 @@ interface Props {
 }
 
 const StatementChat: FC<Props> = ({ statement, showImage }) => {
-  const evaluation = useAppSelector(evaluationSelector(statement.statementId))
+  // const evaluation = useAppSelector(evaluationSelector(statement.statementId))
 
 
   const [show, setShow] = useState(false)
@@ -67,32 +61,32 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
   )
 }
 
-interface ThumbsProps {
-  evaluation: number
-  upDown: "up" | "down";
-  statement: Statement
-}
+// interface ThumbsProps {
+//   evaluation: number
+//   upDown: "up" | "down";
+//   statement: Statement
+// }
 
-const Thumbs: FC<ThumbsProps> = ({ evaluation, upDown, statement }) => {
-  if (upDown === "up") {
-    if (evaluation > 0) {
-      return (
-        <ThumbUpIcon className="icon" onClick={() => setEvaluation(statement, 0)} />
-      )
-    } else {
-      return <ThumbUpOffAltIcon className="icon" onClick={() => setEvaluation(statement, 1)} />
-    }
-  }
-  else {
-    if (evaluation < 0) {
-      return (<ThumbDownIcon className="icon" onClick={() => setEvaluation(statement, 0)} />)
-    }
-    else {
-      return <ThumbDownOffAltIcon className="icon" onClick={() => setEvaluation(statement, -1)} />
-    }
+// const Thumbs: FC<ThumbsProps> = ({ evaluation, upDown, statement }) => {
+//   if (upDown === "up") {
+//     if (evaluation > 0) {
+//       return (
+//         <ThumbUpIcon className="icon" onClick={() => setEvaluation(statement, 0)} />
+//       )
+//     } else {
+//       return <ThumbUpOffAltIcon className="icon" onClick={() => setEvaluation(statement, 1)} />
+//     }
+//   }
+//   else {
+//     if (evaluation < 0) {
+//       return (<ThumbDownIcon className="icon" onClick={() => setEvaluation(statement, 0)} />)
+//     }
+//     else {
+//       return <ThumbDownOffAltIcon className="icon" onClick={() => setEvaluation(statement, -1)} />
+//     }
 
-  }
-}
+//   }
+// }
 
 
 

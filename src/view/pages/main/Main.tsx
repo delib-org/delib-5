@@ -10,6 +10,10 @@ import useAuth from '../../../functions/hooks/authHooks';
 import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
 import StatementCard from '../statement/components/StatementCard';
+import { install } from '../../../main';
+
+//install
+
 
 let unsubscribe: Function = () => { };
 
@@ -20,6 +24,7 @@ const Main = () => {
     const dispatch = useAppDispatch();
 
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+    // const [isApp, setIsApp] = useState(false);
 
     function updateStoreStSubCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription));
@@ -27,25 +32,8 @@ const Main = () => {
 
     useEffect(() => {
 
-        //@ts-ignore
-        if (window.navigator && (window.navigator.standalone || window.navigator.userAgentData || window.navigator.getInstalledRelatedApps)) {
-            alert("The web app is installed as a PWA.");
-        } else {
-            alert("The web app is not installed as a PWA.");
-        }
-
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-
-            e.preventDefault();
-
-            console.log('beforeinstallprompt fired');
-           
-
-            setDeferredPrompt(e);
-            // Update UI notify the user they can install the PWA
-            // showInstallPromotion();
-        });
+       setDeferredPrompt(install.deferredPrompt);
+      
     }, [])
 
     useEffect(() => {
@@ -57,13 +45,14 @@ const Main = () => {
             unsubscribe()
         }
     }, [isLgged])
-    // Access the client
-
+   
 
 
     function handleInstallApp() {
         try {
+            const deferredPrompt = install.deferredPrompt;
             console.log('handleInstallApp')
+            console.log(deferredPrompt)
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult: any) => {
@@ -93,7 +82,7 @@ const Main = () => {
                 <h2> יוצרים הסכמות </h2>
                 <div className="btns">
                     <button onClick={handleLogout}>התנתקות</button>
-                    <button onClick={handleInstallApp}>התקנת האפליקציה</button>
+                    {deferredPrompt?<button onClick={handleInstallApp}>התקנת האפליקציה</button>:null}
                 </div>
             </div>
             <div className="page__main">
