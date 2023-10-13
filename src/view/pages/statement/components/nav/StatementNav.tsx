@@ -62,6 +62,7 @@ export function showNavElements(statement:Statement|undefined, navArray: NavObje
         }
         if (subScreens.length > 0) {
             _navArray = _navArray
+            //@ts-ignore
             .filter((navObj: NavObject) => subScreens.includes(navObj.link))
             
             if(isAdmin(statement.creatorId)){

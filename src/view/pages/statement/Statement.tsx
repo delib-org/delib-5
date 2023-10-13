@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
-import { Statement, StatementSubscription } from '../../../model/statements/statementModel';
+import { Statement, StatementSubscription } from 'delib-npm';
 import { Role } from '../../../model/role';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';

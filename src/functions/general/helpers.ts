@@ -1,5 +1,4 @@
 import { Statement, StatementType } from "delib-npm";
-import { string } from "zod";
 import { auth } from "../db/auth";
 import { getUserFromFirebase } from "../db/users/usersGeneral";
 

@@ -1,6 +1,6 @@
 import {z} from 'zod';
 import { UserSchema } from '../users/userModel';
-import { Screen, ScreenSchema } from '../system';
+import { ScreenSchema } from '../system';
 
 export enum StatementType {
     STATEMENT = 'statement',

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
 
 import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
-import { StatementSubscription } from '../../../model/statements/statementModel';
+import { StatementSubscription } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';

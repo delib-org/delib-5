@@ -8,7 +8,10 @@ Deliberation stands as an informed and inclusive mode of discussion dedicated to
 For more information and a roadmap, please look at the [wiki in this repository](https://github.com/delib-org/delib-5/wiki).
 
 ## Installation
-The technological stack consists of React-Redux-PWA (built with Vite) and Firebase. To install Delib on you local machine, you will have to install the client ```/clint``` and the ```/functions``` node modules:
+
+The technological stack consists of React-Redux-PWA (built with Vite) and Firebase. To be able to work efficientyl it is better to get femilier with firebase and React, before turning to delib developemnt. 
+
+To install Delib on you local machine, you will have to install the client ```/clint``` and the ```/functions``` node modules:
 
 Go to the root directory and run ```npm i```. 
 
@@ -23,10 +26,19 @@ To install emulators, first make sure you firebase CLI is installed.
 If the efirebase cli is not install, run:
 ```npm install -g firebase-tools``` or ```sudo npm install -g firebase-tools``` if you asre on a macOS.
 
+In firebase console, create a new project and copy the project id.
+
+in ```.firebaserc``` change the project id to the project id you just created.
+
+Then run ```firebase login``` and login with your google account.
+
+Then run ```firebase use <project-id>``` to select the project you just created.
+
+Then run ```firebase init emulators``` and install all the emulators.
+# Development mode
+
 Then initlise the emualtors by running:
 ```firebase init emulators``` and install all the maulators.
-
-# Development mode
 
 make sure that the **devlopment** is uncommented in ```/src/functions/db/config.js```
 

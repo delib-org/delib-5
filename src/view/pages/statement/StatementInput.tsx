@@ -1,9 +1,8 @@
 import { FC } from 'react'
-import { Statement, StatementType } from 'delib-npm';
+import { Statement } from 'delib-npm';
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
-import { auth } from '../../../functions/db/auth';
+
 import SendIcon from '@mui/icons-material/Send';
-import { getUserFromFirebase } from '../../../functions/db/users/usersGeneral';
 import { getNewStatment } from '../../../functions/general/helpers';
 
 interface Props {

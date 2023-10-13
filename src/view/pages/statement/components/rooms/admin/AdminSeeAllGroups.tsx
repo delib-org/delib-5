@@ -65,19 +65,18 @@ function divideItoTopics(participants: RoomAskToJoin[]) {
 
 function divideIntoRooms(participants: RoomAskToJoin[], maxPerRoom: number) {
     try {
-        const rooms = [[]];
+        const rooms:any = [[]];
        
         let count = 0;
         const _participants = [...participants].sort(() => Math.random() - 0.5);
-        debugger;
+       
         for (let index = 0; index < _participants.length; index++) {
             const participant = _participants[index];
             if (count < maxPerRoom) {
-                rooms[0].push(participant);
+                rooms[count].push(participant);
                 count++;
             } else {
                 rooms.push([]);
-                room = [];
                 count = 0;
             }
         }
