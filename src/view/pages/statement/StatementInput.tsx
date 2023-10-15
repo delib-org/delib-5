@@ -62,7 +62,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
     return (
 
         <form onSubmit={handleAddStatement} name="theForm" className="page__footer statement__input">
-            <textarea name='newStatement' onKeyUp={handleInput} required />
+            <textarea name='newStatement' onKeyUp={handleInput} required autoFocus={true} />
             <button className="fav"><div><SendIcon>Submit</SendIcon></div></button>
         </form>
 

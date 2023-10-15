@@ -71,9 +71,9 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                 {true ? <div className="options__card__more">
                     <div className="options__card__more__vote">
                         <div className="options__card__more__vote__up">
-                        <span>{statement.pro ? statement.pro : 0}</span>
+                            <span>{statement.pro ? statement.pro : 0}</span>
                             {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null}
-                           
+
                         </div>
                         <div className="options__card__more__vote__down">
                             {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null}
@@ -83,8 +83,11 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
 
                     <StatementChatSetOption statement={statement} />
                     <Edit statement={statement} />
-                    <StatementChatIcon statement={statement} />
+
                 </div> : null}
+                <div className="options__card__chat">
+                    <StatementChatIcon statement={statement} />
+                </div>
 
             </div>
 

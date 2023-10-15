@@ -28,7 +28,7 @@
 
             p {
                 text-align: right;
-                padding: 10px 20px;
+               
                 word-wrap: break-word;
                 width: -webkit-fill-available;
             }
@@ -46,8 +46,9 @@
         &__more {
             margin-top: 0px;
             display: grid;
-            grid-template-columns: 7.14rem 4.3rem 4.3rem auto;
+            grid-template-columns: 7.14rem 4.3rem 4.3rem;
             align-items: center;
+
 
             &__vote {
                 display: flex;
@@ -72,6 +73,12 @@
                     }
                 }
             }
+        }
+
+        &__chat{
+            display: flex;
+         
+           
         }
 
 
