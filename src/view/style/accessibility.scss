@@ -6,6 +6,7 @@
     left: 0px;
     box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.44);
     border-radius: 0px 100px 100px 0px;
+    transition: all .5s ease-in-out; 
 
     &__fonts {
 
@@ -18,6 +19,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            user-select: none;
+           
         }
 
         &__control {
@@ -28,6 +31,7 @@
             cursor: pointer;
             user-select: none;
             color: white;
+            font-size: 1.5rem;
         }
     }
 
@@ -39,5 +43,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        user-select: none;
+        cursor: pointer;
     }
 }
