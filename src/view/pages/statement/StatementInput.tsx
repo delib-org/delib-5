@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Statement } from 'delib-npm';
+import { Screen, Statement } from 'delib-npm';
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
 
 import SendIcon from '@mui/icons-material/Send';
@@ -23,6 +23,8 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
             const newStatement: Statement | undefined = getNewStatment({ value, statement });
             if (!newStatement) throw new Error('No statement');
+            newStatement.subScreens =[Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
+            console.log(newStatement)
             setStatmentToDB(newStatement);
             e.target.reset();
         } catch (error) {
@@ -50,6 +52,9 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
                 if (!newStatement) throw new Error('No statement');
 
+                newStatement.subScreens =[Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
+                console.log(newStatement)
+                
                 setStatmentToDB(newStatement);
                 e.target.value = '';
             }
