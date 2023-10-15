@@ -8,7 +8,7 @@ const Text: FC<Props> = ({ text }) => {
     const textId = `${Math.random()}`.replace('.', '')
     //convert sentences, devided by /n to paragraphs
     const paragraphs = text.split('\n').filter(p => p).map((paragraph: string, i: number) => {
-        
+       
         if (paragraph.startsWith('*')) return <p key={`${textId}--${i}`}><b>{paragraph.replace('*', '')}</b></p>
 
         //if paragraph has * at some point and has some * at some other point make the string between the * bold
@@ -23,10 +23,12 @@ const Text: FC<Props> = ({ text }) => {
         }
 
 
-        
+
 
         return <p key={`${textId}--${i}`}>{paragraph}</p>
     })
+
+    console.log(paragraphs)
 
     return (
         <>{paragraphs}</>

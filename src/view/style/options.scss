@@ -28,12 +28,16 @@
 
             p {
                 text-align: right;
+                padding: 10px 20px;
+                word-wrap: break-word;
+                width: -webkit-fill-available;
             }
         }
 
         &__main {
             display: grid;
-            grid-template-columns: 30px auto 30px;
+            width: 100%;
+            grid-template-columns: auto;
             // grid-template-rows: 40px;
             align-items: center;
             gap: 10px;
@@ -42,7 +46,7 @@
         &__more {
             margin-top: 0px;
             display: grid;
-            grid-template-columns: 100px 60px 60px auto;
+            grid-template-columns: 7.14rem 4.3rem 4.3rem auto;
             align-items: center;
 
             &__vote {
@@ -64,7 +68,7 @@
 
                 &__down {
                     img {
-                        transform: rotate(180deg);
+                        transform: rotate(0deg);
                     }
                 }
             }
