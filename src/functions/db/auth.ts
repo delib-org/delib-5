@@ -1,8 +1,9 @@
 
-import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { app } from "./config";
 import { parseUserFromFirebase, User } from "delib-npm";
 import { setUserToDB } from "./users/setUsersDB";
+import { getUserFontSizeFromDB } from "./users/getUserDB";
 
 
 const provider = new GoogleAuthProvider();
@@ -38,9 +39,9 @@ export function googleLogin() {
             // ...
         });
 }
-export function listenToAuth(cb: Function) {
+export function listenToAuth(cb: Function, cbFontSize: Function) {
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         try {
 
             if (user) {
@@ -48,14 +49,17 @@ export function listenToAuth(cb: Function) {
                 // https://firebase.google.com/docs/reference/js/auth.user
                 const _user: User | undefined = parseUserFromFirebase(user)
                 console.log('User is signed in')
-                if(!_user) throw new Error('user is undefined')
+                if (!_user) throw new Error('user is undefined')
                 cb(_user)
 
-                //save updated user to db
+                const fontSize = await getUserFontSizeFromDB() || 14;
 
-                setUserToDB(_user)
+                document.documentElement.style.fontSize = fontSize + 'px';
+                document.body.style.fontSize = fontSize + 'px';
+                cbFontSize(fontSize);
 
-                //    console.log(user)
+                setUserToDB(_user);
+
             } else {
                 // User is signed out
                 console.log('User is signed out')
@@ -79,3 +83,16 @@ export function logOut() {
 
 }
 
+//fireabse anounymous login
+// import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+// const auth = getAuth();
+export function signAnonymously() {
+    signInAnonymously(auth)
+        .then((user) => {
+            console.log(user)
+            console.info('user signed in anounymously')
+        })
+        .catch((error) => {
+          console.error(error)
+        });
+}

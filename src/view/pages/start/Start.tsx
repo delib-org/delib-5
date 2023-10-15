@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { googleLogin } from '../../../functions/db/auth'
+import { googleLogin, signAnonymously } from '../../../functions/db/auth'
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { userSelector } from '../../../model/users/userSlice';
@@ -43,8 +43,13 @@ const Start = () => {
                     </div>
                 </div>
                 <p> -- או -- </p> */}
+                <div className="btns">
                 <div className="buttons loginButton" onClick={googleLogin}>
                     <div>התחברות עם גוגל</div>
+                </div>
+                <div className="btn loginButton" onClick={signAnonymously}>
+                    התחברות עם שם זמני
+                </div>
                 </div>
                 <br />
                 <a href="http://delib.org" style={{color:'white', marginTop:'30px', textDecoration:"none"}}><h2>מבית המכון לדמוקרטיה דיונית</h2></a>

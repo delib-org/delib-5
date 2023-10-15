@@ -28,8 +28,6 @@ const Text: FC<Props> = ({ text }) => {
         return <p key={`${textId}--${i}`}>{paragraph}</p>
     })
 
-    console.log(paragraphs)
-
     return (
         <>{paragraphs}</>
     )

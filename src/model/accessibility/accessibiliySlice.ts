@@ -2,12 +2,6 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 
-import { updateArray } from '../../functions/general/helpers';
-
-import { Statement, StatementSchema } from "delib-npm";
-
-
-
 
 // Define a type for the slice state
 interface AccessibiliyState {
@@ -26,18 +20,31 @@ export const accessibilitySlicer = createSlice({
     reducers: {
         increaseFontSize: (state, action: PayloadAction<number>) => {
             try {
-
+               
                 state.fontSize += action.payload;
+                if(state.fontSize <10) state.fontSize = 10;
+                if(state.fontSize >30) state.fontSize = 30;
 
             } catch (error) {
                 console.error(error);
             }
         },
+        setFontSize: (state, action: PayloadAction<number>) => {
+            try {
+                
+                state.fontSize = action.payload;
+                if(state.fontSize <10) state.fontSize = 10;
+                if(state.fontSize >30) state.fontSize = 30;
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
 
     },
 })
 
-export const { increaseFontSize } = accessibilitySlicer.actions
+export const { increaseFontSize,setFontSize } = accessibilitySlicer.actions
 
 export const fontSizeSelector = (state: RootState) => state.accessibiliy.fontSize;
 

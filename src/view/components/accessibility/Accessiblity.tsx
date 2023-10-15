@@ -2,6 +2,7 @@ import AccessibleIcon from '@mui/icons-material/Accessible';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { fontSizeSelector, increaseFontSize } from '../../../model/accessibility/accessibiliySlice';
 import { useEffect, useState } from 'react';
+import { updateUserFontSize } from '../../../functions/db/users/setUsersDB';
 
 const Accessiblity = () => {
     const dispatch = useAppDispatch();
@@ -15,6 +16,7 @@ const Accessiblity = () => {
 
     function handleChangeFontSize(number: number) {
         dispatch(increaseFontSize(number))
+        updateUserFontSize(fontSize + number);
 
     }
 
@@ -29,8 +31,8 @@ const Accessiblity = () => {
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
-                console.log("close")
-            }, 14000); // 7000 milliseconds (2 seconds)
+             
+            }, 14000); 
         }
     }
 
