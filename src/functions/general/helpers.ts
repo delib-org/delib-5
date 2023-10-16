@@ -1,8 +1,5 @@
 import { Statement, StatementType, User } from "delib-npm";
-import { auth } from "../db/auth";
-import { getUserFromFirebase } from "../db/users/usersGeneral";
-import { useAppSelector } from "../hooks/reduxHooks";
-import { userSelector } from "../../model/users/userSlice";
+
 
 export function updateArray(
   currentArray: Array<any>,

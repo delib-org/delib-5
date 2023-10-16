@@ -1,12 +1,10 @@
 import { FC, useState } from 'react';
 import { StatementType } from '../../../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
-
-import { auth } from '../../../../../functions/db/auth';
-import { UserSchema } from '../../../../../model/users/userModel';
 import Loader from '../../../../components/loaders/Loader';
-
-import {Statement, parseUserFromFirebase } from 'delib-npm';
+import {Statement, UserSchema } from 'delib-npm';
+import { useAppSelector } from '../../../../../functions/hooks/reduxHooks';
+import { userSelector } from '../../../../../model/users/userSlice';
 
 interface Props {
     parentStatement: Statement;
@@ -17,7 +15,7 @@ interface Props {
 
 const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowModal }) => {
 
-
+ const user = useAppSelector(userSelector);
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -35,11 +33,11 @@ const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowMod
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
             const _statement = `${title}\n${description}`;
-            const _user = auth.currentUser;
+            const _user = user;
             if (!_user) throw new Error("user not found");
             const { displayName, email, photoURL, uid } = _user;
-            const user = { displayName, email, photoURL, uid };
-            UserSchema.parse(user);
+            const userObj = { displayName, email, photoURL, uid };
+            UserSchema.parse(userObj);
 
 
             const newStatement: any = Object.fromEntries(data.entries());
@@ -48,10 +46,10 @@ const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowMod
 
             newStatement.statement = _statement;
             newStatement.statementId = crypto.randomUUID();
-            newStatement.creatorId = _user.uid;
+            newStatement.creatorId = userObj.uid;
             newStatement.parentId = parentStatement.statementId;
             newStatement.type = StatementType.GROUP;
-            newStatement.creator =  parseUserFromFirebase(_user);
+            newStatement.creator =  user;
             if(isOption) newStatement.isOption = true;
 
             newStatement.lastUpdate = new Date().getTime();

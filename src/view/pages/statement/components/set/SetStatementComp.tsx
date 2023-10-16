@@ -3,7 +3,7 @@ import { StatementType } from '../../../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth } from '../../../../../functions/db/auth';
-import { UserSchema, User } from 'delib-npm';
+import { UserSchema } from 'delib-npm';
 import Loader from '../../../../components/loaders/Loader';
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
 import { setStatement, statementSelector } from '../../../../../model/statements/statementsSlice';
@@ -27,7 +27,7 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
     const navigate = useNavigate();
     const { statementId } = useParams();
     const statement = useAppSelector(statementSelector(statementId));
-    const user:User = useAppSelector(userSelector);
+    const user = useAppSelector(userSelector);
     const dispatch = useAppDispatch();
 
     const [isLoading, setIsLoading] = useState(false);

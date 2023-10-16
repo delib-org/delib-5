@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { googleLogin, signAnonymously } from '../../../functions/db/auth'
+import { googleLogin } from '../../../functions/db/auth'
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { userSelector } from '../../../model/users/userSlice';

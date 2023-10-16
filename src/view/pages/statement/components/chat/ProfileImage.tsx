@@ -1,6 +1,6 @@
 import { Statement } from 'delib-npm';
 import { FC } from 'react';
-import anonymous from '../../../../../assets/anonymous1.png'
+
 
 interface Props {
     statement: Statement;
