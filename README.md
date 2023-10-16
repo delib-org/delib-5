@@ -40,6 +40,8 @@ Then run ```firebase init emulators``` and install all the emulators.
 Then initlise the emualtors by running:
 ```firebase init emulators``` and install all the maulators.
 
+
+
 make sure that the **devlopment** is uncommented in ```/src/functions/db/config.js```
 
 To run the emulators, run ```npm run deve``` in the root direcotry.
