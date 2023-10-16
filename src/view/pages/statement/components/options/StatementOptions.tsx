@@ -39,7 +39,7 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
 
         let topSum = 50;
         let tops: number[] = [topSum];
-        console.log(_subStatements)
+    
         return (
             <div className="page__main options">
                 <div className="wrapper options__wrapper">

@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { googleLogin } from '../../../functions/db/auth'
+import { useEffect, useState } from 'react';
+import { googleLogin, signAnonymously } from '../../../functions/db/auth'
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { userSelector } from '../../../model/users/userSlice';
@@ -7,10 +7,12 @@ import { getIntialLocationSessionStorage } from '../../../functions/general/help
 
 //img
 import Logo from '../../../assets/logo/logo-128px.png';
+import EnterName from './EnterName';
 
 const Start = () => {
     const navigate = useNavigate();
     const user = useAppSelector(userSelector)
+    const [showNameModul, setShowNameModul] = useState(false);
  
     useEffect(() => {
         if (user){
@@ -43,12 +45,18 @@ const Start = () => {
                     </div>
                 </div>
                 <p> -- או -- </p> */}
+                <div className="btns">
                 <div className="buttons loginButton" onClick={googleLogin}>
                     <div>התחברות עם גוגל</div>
+                </div>
+                <div className="btn loginButton" onClick={()=>setShowNameModul(true)}>
+                    התחברות עם שם זמני
+                </div>
                 </div>
                 <br />
                 <a href="http://delib.org" style={{color:'white', marginTop:'30px', textDecoration:"none"}}><h2>מבית המכון לדמוקרטיה דיונית</h2></a>
             </div>
+            {showNameModul?<EnterName setShowNameModul={setShowNameModul}/>:null}
         </div >
     )
 }

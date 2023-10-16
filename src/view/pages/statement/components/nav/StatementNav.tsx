@@ -16,7 +16,7 @@ export const navArray: NavObject[] = [
     { link: Screen.CHAT, name: "שיחה", id: "main" },
     { link: Screen.OPTIONS, name: "פתרונות", id: "options" },
     { link: Screen.VOTE, name: "הצבעה", id: "vote" },
-    { link: Screen.GROUPS, name: "חדרים", id: "rooms" },
+    { link: Screen.GROUPS, name: "חדרים", id: "rooms", default: false},
     { link: Screen.SETTINGS, name: "הגדרות", id: "settings"}
 ]
 

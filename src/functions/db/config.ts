@@ -37,7 +37,7 @@ getToken(messaging, { vapidKey }).then((currentToken) => {
 });
 
 //development
-console.log("runing on development mode")
+console.info("runing on development mode")
 import { getAuth } from "firebase/auth";
 import { connectFirestoreEmulator  } from "firebase/firestore";
 import { connectAuthEmulator } from "firebase/auth";
