@@ -1,4 +1,4 @@
-import { Collections, Statement, RoomAskToJoin, getRequestIdToJoinRoom, User, RoomsStateSelection } from "delib-npm";
+import { Collections, Statement, RoomAskToJoin, getRequestIdToJoinRoom, RoomsStateSelection } from "delib-npm";
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";

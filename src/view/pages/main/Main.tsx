@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Fav from '../../components/fav/Fav';
 
 import { listenStatmentsSubsciptions } from '../../../functions/db/statements/getStatement';
-import { StatementSubscription } from '../../../model/statements/statementModel';
+import { StatementSubscription } from 'delib-npm';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatementSubscription, statementsSubscriptionsSelector } from '../../../model/statements/statementsSlice';
 import useAuth from '../../../functions/hooks/authHooks';
 import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
 import StatementCard from '../statement/components/StatementCard';
+import { install } from '../../../main';
+
+//install
+
 
 let unsubscribe: Function = () => { };
 
@@ -19,9 +23,18 @@ const Main = () => {
     const isLgged = useAuth();
     const dispatch = useAppDispatch();
 
+    const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+    // const [isApp, setIsApp] = useState(false);
+
     function updateStoreStSubCB(statementSubscription: StatementSubscription) {
         dispatch(setStatementSubscription(statementSubscription));
     }
+
+    useEffect(() => {
+
+       setDeferredPrompt(install.deferredPrompt);
+      
+    }, [])
 
     useEffect(() => {
 
@@ -32,9 +45,27 @@ const Main = () => {
             unsubscribe()
         }
     }, [isLgged])
-    // Access the client
+   
 
 
+    function handleInstallApp() {
+        try {
+            const deferredPrompt = install.deferredPrompt;
+            console.log('handleInstallApp')
+            console.log(deferredPrompt)
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult: any) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the A2HS prompt');
+                    }
+                    setDeferredPrompt(null);
+                });
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     function handleAddStatment() {
         navigate('/home/addStatment')
@@ -49,7 +80,10 @@ const Main = () => {
             <div className="page__header">
                 <h1>דליב</h1>
                 <h2> יוצרים הסכמות </h2>
-                <button onClick={handleLogout}>Logout</button>
+                <div className="btns">
+                    <button onClick={handleLogout}>התנתקות</button>
+                    {deferredPrompt?<button onClick={handleInstallApp}>התקנת האפליקציה</button>:null}
+                </div>
             </div>
             <div className="page__main">
                 <div className="wrapper">

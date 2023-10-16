@@ -2,7 +2,6 @@ import { LobbyRooms, RoomAskToJoin, RoomsStateSelection, Statement } from 'delib
 import { FC, useState, useEffect } from 'react'
 import Modal from '../../../../components/modal/Modal'
 import NewSetStatementSimple from '../set/NewStatementSimple'
-import StatementRoomCard from './StatementRoomCard'
 import { listenToAllRoomsRquest, listenToLobbyRoomJoiners, listenToRoomsRquest } from '../../../../../functions/db/rooms/getRooms'
 import { useAppDispatch } from '../../../../../functions/hooks/reduxHooks'
 import { setAskToJoinRooms, setLobbyRooms } from '../../../../../model/statements/statementsSlice'

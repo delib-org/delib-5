@@ -6,7 +6,7 @@ import { auth } from '../../../../../functions/db/auth';
 import { UserSchema } from '../../../../../model/users/userModel';
 import Loader from '../../../../components/loaders/Loader';
 
-import { NavObject, Screen, Statement, parseUserFromFirebase } from 'delib-npm';
+import {Statement, parseUserFromFirebase } from 'delib-npm';
 
 interface Props {
     parentStatement: Statement;
@@ -78,12 +78,12 @@ const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowMod
 
 
     return (
-        <div className='wrapper'>
+       <>
 
             {!isLoading ? <form onSubmit={handleAddStatment} className='setStatement__form'>
-                <label htmlFor="statement">כותרת</label>
-                <input type="text" name="statement" placeholder='כותרת הקבוצה' />
-                <textarea name="description" placeholder='תיאור הקבוצה'></textarea>
+               <h2>הוספת אפשרות</h2>
+                <input type="text" name="statement" placeholder='כותרת' />
+                <textarea name="description" placeholder='תיאור'></textarea>
 
 
                 <div className="btnBox">
@@ -96,38 +96,38 @@ const NewSetStatementSimple: FC<Props> = ({ parentStatement, isOption,setShowMod
                     <h2>מעדכן...</h2>
                     <Loader />
                 </div>}
-        </div>
+       </>
 
     );
 };
 
 export default NewSetStatementSimple;
 
-function isSubPageChecked(statement: Statement | undefined, screen: Screen) {
-    try {
-        if (!statement) return true;
-        const subScreens = statement.subScreens as Screen[];
-        if (subScreens === undefined) return true;
-        if (subScreens?.includes(screen)) return true;
-    } catch (error) {
-        console.error(error);
-        return true;
-    }
-}
+// function isSubPageChecked(statement: Statement | undefined, screen: Screen) {
+//     try {
+//         if (!statement) return true;
+//         const subScreens = statement.subScreens as Screen[];
+//         if (subScreens === undefined) return true;
+//         if (subScreens?.includes(screen)) return true;
+//     } catch (error) {
+//         console.error(error);
+//         return true;
+//     }
+// }
 
-function parseScreensCheckBoxes(dataObj: Object, navArray: NavObject[]) {
-    try {
-        if (!dataObj) throw new Error("dataObj is undefined");
-        if (!navArray) throw new Error("navArray is undefined");
-        const _navArray = [...navArray];
+// function parseScreensCheckBoxes(dataObj: Object, navArray: NavObject[]) {
+//     try {
+//         if (!dataObj) throw new Error("dataObj is undefined");
+//         if (!navArray) throw new Error("navArray is undefined");
+//         const _navArray = [...navArray];
 
-        const screens = _navArray
-            //@ts-ignore
-            .filter(navObj => dataObj[navObj.link] === "on")
-            .map(navObj => navObj.link);
-        return screens;
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
-}
+//         const screens = _navArray
+//             //@ts-ignore
+//             .filter(navObj => dataObj[navObj.link] === "on")
+//             .map(navObj => navObj.link);
+//         return screens;
+//     } catch (error) {
+//         console.error(error);
+//         return [];
+//     }
+// }

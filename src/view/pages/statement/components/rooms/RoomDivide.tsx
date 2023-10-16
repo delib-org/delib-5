@@ -1,8 +1,7 @@
 import { Statement } from 'delib-npm';
 import { FC } from 'react';
 import {  useAppSelector } from '../../../../../functions/hooks/reduxHooks';
-import { topicParticipantsSelector, userSelectedTopicSelector } from '../../../../../model/statements/statementsSlice';
-import RoomParticpantBadge from './RoomParticpantBadge';
+import {  userSelectedTopicSelector } from '../../../../../model/statements/statementsSlice';
 import { auth } from '../../../../../functions/db/auth';
 import AdminSeeAllGroups from './admin/AdminSeeAllGroups';
 

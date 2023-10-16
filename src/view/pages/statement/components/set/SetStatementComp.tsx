@@ -3,7 +3,7 @@ import { StatementType } from '../../../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
 import { useNavigate, useParams } from 'react-router-dom';
 import { auth } from '../../../../../functions/db/auth';
-import { UserSchema } from '../../../../../model/users/userModel';
+import { UserSchema, User } from 'delib-npm';
 import Loader from '../../../../components/loaders/Loader';
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
 import { setStatement, statementSelector } from '../../../../../model/statements/statementsSlice';
@@ -14,6 +14,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { navArray } from '../nav/StatementNav';
 import { NavObject, Screen, Statement } from 'delib-npm';
+import { userSelector } from '../../../../../model/users/userSlice';
 
 interface Props {
     simple?: boolean
@@ -22,9 +23,11 @@ interface Props {
 
 
 export const SetStatementComp: FC<Props> = ({ simple }) => {
+    
     const navigate = useNavigate();
     const { statementId } = useParams();
     const statement = useAppSelector(statementSelector(statementId));
+    const user:User = useAppSelector(userSelector);
     const dispatch = useAppDispatch();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -53,10 +56,8 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
             //add to title * at the beggining
             if (title && !title.startsWith('*')) title = `*${title}`;
             const _statement = `${title}\n${description}`;
-            const _user = auth.currentUser;
-            if (!_user) throw new Error("user not found");
-            const { displayName, email, photoURL, uid } = _user;
-            const user = { displayName, email, photoURL, uid };
+           
+            
             UserSchema.parse(user);
 
 
@@ -112,7 +113,7 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
                         {navArray
                             .filter(navObj => navObj.link !== Screen.SETTINGS)
                             .map((navObj) =>
-                                <FormControlLabel key={navObj.id} control={<Checkbox name={navObj.link} defaultChecked={isSubPageChecked(statement, navObj.link)} />} label={navObj.name} />
+                                <FormControlLabel key={navObj.id} control={<Checkbox name={navObj.link} defaultChecked={isSubPageChecked(statement, navObj)} />} label={navObj.name} />
                             )}
 
                     </FormGroup>
@@ -132,12 +133,18 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
     );
 };
 
-function isSubPageChecked(statement: Statement | undefined, screen: Screen) {
+function isSubPageChecked(statement: Statement | undefined, navObj: NavObject) {
     try {
-        if (!statement) return true;
+        //in case of a new statement
+        if (!statement){
+            if(navObj.default === false) return false;
+            else return true;
+        }
+        //in case of an existing statement
         const subScreens = statement.subScreens as Screen[];
         if (subScreens === undefined) return true;
-        if (subScreens?.includes(screen)) return true;
+        if (subScreens?.includes(navObj.link)) return true;
+        
     } catch (error) {
         console.error(error);
         return true;

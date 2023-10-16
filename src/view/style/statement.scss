@@ -134,6 +134,11 @@
             background-color: teal;
             background-size: cover;
             background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color:black;
+            text-align: center;
         }
     }
 
@@ -158,8 +163,8 @@
 
         button {
 
-            width: 60px;
-            height: 60px;
+            width: 4rem;
+            height: 4rem;
             border: none;
 
             color: white;
@@ -174,7 +179,7 @@
         }
 
         textarea {
-            border-radius: 30px;
+            border-radius: 4rem;
             min-height: 5ch;
             flex: auto;
             padding: 5px 15px;

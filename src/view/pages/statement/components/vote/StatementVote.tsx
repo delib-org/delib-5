@@ -1,15 +1,17 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {Statement} from 'delib-npm';
 
 
-import StatementOptionsNav from './StatementOptionsNav';
+import StatementOptionsNav from '../options/StatementOptionsNav';
 
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../../../functions/hooks/reduxHooks';
-import { getToVoteOnParent } from '../../../../functions/db/vote/getVotes';
-import { parentVoteSelector, setVoteToStore } from '../../../../model/vote/votesSlice';
-import { setVote } from '../../../../functions/db/vote/setVote';
-import { Screen } from '../../../../model/system';
+import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
+import { getToVoteOnParent } from '../../../../../functions/db/vote/getVotes';
+import { parentVoteSelector, setVoteToStore } from '../../../../../model/vote/votesSlice';
+import { setVote } from '../../../../../functions/db/vote/setVote';
+import { Screen } from '../../../../../model/system';
+import NewSetStatementSimple from '../set/NewStatementSimple';
+import Modal from '../../../../components/modal/Modal';
 
 
 interface Props {
@@ -23,7 +25,9 @@ const padding = 10;
 const StatementVote: FC<Props> = ({ statement, subStatements }) => {
     const dispatch = useAppDispatch();
     const { sort } = useParams();
-    // const [options, setOptions] = useState<Statement[]>([]);
+
+    const [showModal, setShowModal] = useState(false);
+   
     const __options = subStatements.filter((subStatement: Statement) => subStatement.isOption);
     const _options = setSelectionsToOptions(statement, __options);
     const options = sortOptionsIndex(_options, sort);
@@ -55,6 +59,12 @@ const StatementVote: FC<Props> = ({ statement, subStatements }) => {
                 })}
             </div>
             <StatementOptionsNav statement={statement} />
+            {showModal ? <Modal>
+                    <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
+                </Modal> : null}
+            <div className="fav fav--fixed fav--up" onClick={() => setShowModal(true)}>
+                <div>+</div>
+            </div>
         </div>
     )
 }

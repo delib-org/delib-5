@@ -64,6 +64,12 @@ service cloud.firestore {
     	allow read:if request.auth.uid != null;
     	allow write: if request.auth.uid == resource.data.creator.uid
     }
+
+      match /usersV2/{userId=**}{
+        allow read: if request.auth.uid != null;
+        allow write: if request.auth.uid == request.resource.data.uid;
+      }
+
     match /users/{user}{
       allow read;
       allow write: if request.auth.uid != null;

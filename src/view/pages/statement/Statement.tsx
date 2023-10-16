@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
-import { Statement, StatementSubscription } from '../../../model/statements/statementModel';
+import { Statement, StatementSubscription } from 'delib-npm';
 import { Role } from '../../../model/role';
 import { setStatmentSubscriptionNotificationToDB, setStatmentSubscriptionToDB, updateSubscriberForStatementSubStatements } from '../../../functions/db/statements/setStatments';
 import ProfileImage from '../../components/profileImage/ProfileImage';
@@ -19,8 +19,8 @@ import { listenToEvaluations } from '../../../functions/db/evaluation/getEvaluat
 
 import StatementNav from './components/nav/StatementNav';
 import StatementMain from './components/StatementMain';
-import StatementOptions from './components/StatementOptions';
-import StatementVote from './components/StatementVote';
+import StatementOptions from './components/options/StatementOptions';
+import StatementVote from './components/vote/StatementVote';
 
 //icons
 import ShareIcon from '../../icons/ShareIcon';

@@ -19,3 +19,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </Provider>
   </React.StrictMode>,
 )
+
+
+export const install:{deferredPrompt:any}= {
+  deferredPrompt:null
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+
+  e.preventDefault();
+  install.deferredPrompt = e;
+
+});

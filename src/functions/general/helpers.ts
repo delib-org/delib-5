@@ -1,7 +1,8 @@
-import { Statement, StatementType } from "delib-npm";
-import { string } from "zod";
+import { Statement, StatementType, User } from "delib-npm";
 import { auth } from "../db/auth";
 import { getUserFromFirebase } from "../db/users/usersGeneral";
+import { useAppSelector } from "../hooks/reduxHooks";
+import { userSelector } from "../../model/users/userSlice";
 
 export function updateArray(
   currentArray: Array<any>,
@@ -56,41 +57,42 @@ export function getIntialLocationSessionStorage(): string | undefined {
 interface getNewStatmentProps {
   value?: string | undefined | null,
   statement?: Statement,
-  type?: StatementType
+  type?: StatementType,
+  user:User
 }
 
-export function getNewStatment({value, statement, type}:getNewStatmentProps):Statement|undefined{
+export function getNewStatment({ value, statement, type, user }: getNewStatmentProps): Statement | undefined {
 
   try {
-      if (!statement) throw new Error('No statement');
+   
+    if (!statement) throw new Error('No statement');
+    if (!user) throw new Error('No user');
+    if (!value) throw new Error('No value');
+
+
+    const userId = user.uid;
     
-      if (!value) throw new Error('No value');
-      
 
-      const userId = auth.currentUser?.uid;
-      if (!userId) throw new Error('User not logged in');
-      console.log('getNewStatment type', type)
+    const creator = user;
+    if (!creator) throw new Error('User not logged in');
 
-      const creator = getUserFromFirebase();
-      if (!creator) throw new Error('User not logged in');
+    const newStatement: Statement = {
+      statement: value,
+      statementId: crypto.randomUUID(),
+      creatorId: userId,
+      creator,
+      createdAt: new Date().getTime(),
+      lastUpdate: new Date().getTime(),
+      parentId: statement.statementId,
+      type: type || StatementType.STATEMENT,
+      consensus: 0,
+      isOption: type === StatementType.SOLUTION ? true : false,
+    };
 
-      const newStatement: Statement = {
-          statement: value,
-          statementId: crypto.randomUUID(),
-          creatorId: userId,
-          creator,
-          createdAt: new Date().getTime(),
-          lastUpdate: new Date().getTime(),
-          parentId: statement.statementId,
-          type:type || StatementType.STATEMENT,
-          consensus: 0,
-          isOption: type === StatementType.SOLUTION ? true : false,
-      };
-     
 
-      return newStatement;
+    return newStatement;
   } catch (error) {
-      console.error(error);
-      return undefined
+    console.error(error);
+    return undefined
   }
 }

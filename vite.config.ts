@@ -13,9 +13,9 @@ const manifestPlugin:Partial<VitePWAOptions> = {
     globPatterns: ['**/*.{js,css,html,ico,png,svg}']
   },
   manifest: {
-    name: "Delib",
-    short_name: "Delib",
-    description: "Delib: creating agreements",
+    name: "Delib 5",
+    short_name: "Delib 5",
+    description: "Delib: Building Consensus",
     theme_color: "#2B74B1",
     background_color: "#2B74B1",
     display: "standalone",

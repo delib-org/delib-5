@@ -16,7 +16,7 @@ export const navArray: NavObject[] = [
     { link: Screen.CHAT, name: "שיחה", id: "main" },
     { link: Screen.OPTIONS, name: "פתרונות", id: "options" },
     { link: Screen.VOTE, name: "הצבעה", id: "vote" },
-    { link: Screen.GROUPS, name: "חדרים", id: "rooms" },
+    { link: Screen.GROUPS, name: "חדרים", id: "rooms", default: false},
     { link: Screen.SETTINGS, name: "הגדרות", id: "settings"}
 ]
 
@@ -62,6 +62,7 @@ export function showNavElements(statement:Statement|undefined, navArray: NavObje
         }
         if (subScreens.length > 0) {
             _navArray = _navArray
+            //@ts-ignore
             .filter((navObj: NavObject) => subScreens.includes(navObj.link))
             
             if(isAdmin(statement.creatorId)){

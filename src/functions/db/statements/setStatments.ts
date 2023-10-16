@@ -16,7 +16,6 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
         TextSchema.parse(statement.statement);
         statement.consensus = 0;
      
-        console.log(statement.type);
         statement.lastUpdate = Timestamp.now().toMillis();
         StatementSchema.parse(statement);
         UserSchema.parse(statement.creator)
@@ -145,6 +144,7 @@ export async function updateSubscriberForStatementSubStatements(statement: State
         if (!user.uid) throw new Error("User not logged in");
 
         const statementsSubscribeId = `${user.uid}--${statement.statementId}`;
+       
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, statementsSubscribeId);
         const newSubStatmentsRead = { totalSubStatementsRead: statement.totalSubStatements || 0 }
 

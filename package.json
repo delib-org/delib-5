@@ -1,7 +1,7 @@
 {
-  "name": "delib-51",
+  "name": "delib-5",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -22,7 +22,7 @@
     "@mui/material": "^5.13.7",
     "@reduxjs/toolkit": "^1.9.5",
     "deep-equal": "^2.2.2",
-    "delib-npm": "^1.0.35",
+    "delib-npm": "^1.0.59",
     "firebase": "^10.0.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",

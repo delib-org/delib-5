@@ -1,11 +1,13 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Statement } from 'delib-npm';
 import StatementOptionsNav from './StatementOptionsNav';
 import { useParams } from 'react-router';
-import { Screen } from '../../../../model/system';
+import { Screen } from '../../../../../model/system';
 import StatementOptionCard from './StatementOptionCard';
-import { useAppDispatch } from '../../../../functions/hooks/reduxHooks';
-import { setStatementOrder } from '../../../../model/statements/statementsSlice';
+import { useAppDispatch } from '../../../../../functions/hooks/reduxHooks';
+import { setStatementOrder } from '../../../../../model/statements/statementsSlice';
+import Modal from '../../../../components/modal/Modal';
+import NewSetStatementSimple from '../set/NewStatementSimple';
 // import Fav from '../../components/fav/Fav';
 
 
@@ -18,8 +20,8 @@ interface Props {
 
 const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalker, showNav }) => {
     try {
-        console.log(subStatements)
-        if(showNav === undefined) showNav = true;
+        const [showModal, setShowModal] = useState(false);
+        if (showNav === undefined) showNav = true;
         const dispatch = useAppDispatch();
         const { sort } = useParams();
         const __substatements = subStatements.filter((subStatement: Statement) => subStatement.isOption);
@@ -37,18 +39,18 @@ const StatementOptions: FC<Props> = ({ statement, subStatements, handleShowTalke
 
         let topSum = 50;
         let tops: number[] = [topSum];
-console.log(_subStatements)
+    
         return (
             <div className="page__main options">
                 <div className="wrapper options__wrapper">
-                  
+
                     {_subStatements?.map((statementSub: Statement, i: number) => {
 
                         //get the top of the element
                         if (statementSub.elementHight) {
                             topSum += ((statementSub.elementHight) + 10);
                             tops.push(topSum)
-                    
+
                         }
 
                         return <StatementOptionCard key={statementSub.statementId} statement={statementSub} showImage={handleShowTalker} top={tops[i]} />
@@ -56,7 +58,13 @@ console.log(_subStatements)
 
                 </div>
                 {/* <Fav onclick={handleAddStatment} /> */}
-                {showNav?<StatementOptionsNav statement={statement} />:null}
+                {showNav ? <StatementOptionsNav statement={statement} /> : null}
+                {showModal ? <Modal>
+                    <NewSetStatementSimple parentStatement={statement} isOption={true} setShowModal={setShowModal} />
+                </Modal> : null}
+                <div className="fav fav--fixed" onClick={() => setShowModal(true)}>
+                    <div>+</div>
+                </div>
             </div>
         )
     } catch (error) {
