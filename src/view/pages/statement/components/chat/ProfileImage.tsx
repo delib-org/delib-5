@@ -1,5 +1,6 @@
 import { Statement } from 'delib-npm';
 import { FC } from 'react';
+import anonymous from '../../../../../assets/anonymous1.png'
 
 interface Props {
     statement: Statement;
@@ -10,10 +11,16 @@ const ProfileImage:FC<Props>= ({statement, showImage}) => {
     const userProfile = statement.creator.photoURL;
     console.log(statement.creator)
 
+    //from statement.creator.displayName get only first three letters
+    const displayName = statement.creator.displayName.slice(0,6);
+    
+    
+
+
     return (
         <>
-         <div onClick={() => showImage(statement.creator)} className="statement__chatCard__profile" style={userProfile ? { backgroundImage: `url(${userProfile})` } : {backgroundImage:'pink'}}>
-            {userProfile?null:<span>{statement.creator.displayName}</span>}
+         <div onClick={() => showImage(statement.creator)} className="statement__chatCard__profile" style={userProfile ?{ backgroundImage: `url(${userProfile})`} :{backgroundColor:"#dab7fa"}}>
+            {userProfile?null:<span>{displayName}</span>}
          </div>
         </>
     )
