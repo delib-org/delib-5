@@ -4,17 +4,16 @@ import { setEvaluation } from '../../../../../functions/db/evaluation/setEvaluat
 import { useAppDispatch, useAppSelector } from '../../../../../functions/hooks/reduxHooks';
 import { evaluationSelector } from '../../../../../model/evaluations/evaluationsSlice';
 
-//icons
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
+// import ThumbsUpDownIcon from '@mui/icons-material/ThumbsUpDown';
 import { setStatementElementHight } from '../../../../../model/statements/statementsSlice';
 import StatementChatIcon from '../StatementChatIcon';
 import StatementChatSetOption from '../StatementChatSetOption';
 import Text from '../../../../components/text/Text';
 import Edit from '../../../../components/edit/Edit';
+
+//images
+import ThumbDown from '../../../../../assets/voteDown.svg';
+import ThumbUp from '../../../../../assets/voteUp.svg';
 
 
 
@@ -35,7 +34,7 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
 
     const [show, setShow] = useState(false)
     const [newTop, setNewTop] = useState(top);
-    
+
     const { isOption } = statement;
 
     useEffect(() => {
@@ -60,25 +59,35 @@ const StatementOptionCard: FC<Props> = ({ statement, top }) => {
                 ref={elementRef}
             >
                 <div className="options__card__main">
-                    {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null}
+
 
                     <div className='options__card__text text' onClick={() => setShow(!show)}>
                         <Text text={statement.statement} />
                     </div>
 
 
-                    {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null}
+
                 </div>
                 {true ? <div className="options__card__more">
-                    <StatementChatIcon statement={statement} />
-                    <Edit statement={statement} />
-                    {isOption ? <div className="statement__bubble__proCon">
-                        <span>{statement.pro ? statement.pro : 0}</span>
-                        <ThumbsUpDownIcon className="icon" />
-                        <span>{statement.con ? statement.con : 0}</span>
-                    </div> : null}
+                    <div className="options__card__more__vote">
+                        <div className="options__card__more__vote__up">
+                            <span>{statement.pro ? statement.pro : 0}</span>
+                            {isOption ? <Thumbs evaluation={evaluation} upDown='up' statement={statement} /> : null}
+
+                        </div>
+                        <div className="options__card__more__vote__down">
+                            {isOption ? <Thumbs evaluation={evaluation} upDown='down' statement={statement} /> : null}
+                            <span>{statement.con ? statement.con : 0}</span>
+                        </div>
+                    </div>
+
                     <StatementChatSetOption statement={statement} />
+                    <Edit statement={statement} />
+
                 </div> : null}
+                <div className="options__card__chat">
+                    <StatementChatIcon statement={statement} />
+                </div>
 
             </div>
 
@@ -96,18 +105,20 @@ const Thumbs: FC<ThumbsProps> = ({ evaluation, upDown, statement }) => {
     if (upDown === "up") {
         if (evaluation > 0) {
             return (
-                <ThumbUpIcon className="icon" onClick={() => setEvaluation(statement, 0)} />
+                <div className="icon" onClick={() => setEvaluation(statement, 0)} >
+                    <img src={ThumbUp} alt="vote up" />
+                </div>
             )
         } else {
-            return <ThumbUpOffAltIcon className="icon" onClick={() => setEvaluation(statement, 1)} />
+            return <div className="icon" style={{ opacity: 0.5 }} onClick={() => setEvaluation(statement, 1)}> <img src={ThumbUp} alt="vote up" /></div>
         }
     }
     else {
         if (evaluation < 0) {
-            return (<ThumbDownIcon className="icon" onClick={() => setEvaluation(statement, 0)} />)
+            return (<div className="icon" onClick={() => setEvaluation(statement, 0)} ><img src={ThumbDown} alt="vote down" /></div>)
         }
         else {
-            return <ThumbDownOffAltIcon className="icon" onClick={() => setEvaluation(statement, -1)} />
+            return <div className="icon" style={{ opacity: 0.5 }} onClick={() => setEvaluation(statement, -1)} ><img src={ThumbDown} alt="vote down" /></div>
         }
 
     }

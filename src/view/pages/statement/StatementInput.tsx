@@ -1,9 +1,11 @@
 import { FC } from 'react'
-import { Statement } from 'delib-npm';
+import { Screen, Statement } from 'delib-npm';
 import { setStatmentToDB } from '../../../functions/db/statements/setStatments';
 
 import SendIcon from '@mui/icons-material/Send';
 import { getNewStatment } from '../../../functions/general/helpers';
+import { useAppSelector } from '../../../functions/hooks/reduxHooks';
+import { userSelector } from '../../../model/users/userSlice';
 
 interface Props {
     statement: Statement
@@ -11,18 +13,22 @@ interface Props {
 
 const StatementInput: FC<Props> = ({ statement }) => {
 
+    const user = useAppSelector(userSelector);
+
     function handleAddStatement(e: any) {
         try {
+            if(!user) throw new Error('No user');
             console.log('handleAddStatement')
             e.preventDefault();
             const value = e.target.newStatement.value;
             //remove white spaces and \n
             const _value = value.replace(/\s+/g, ' ').trim();
-            console.log(_value)
             if (!_value) throw new Error('No value');
 
-            const newStatement: Statement | undefined = getNewStatment({ value, statement });
+            const newStatement: Statement | undefined = getNewStatment({ value, statement, user });
             if (!newStatement) throw new Error('No statement');
+            newStatement.subScreens =[Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
+            console.log(newStatement)
             setStatmentToDB(newStatement);
             e.target.reset();
         } catch (error) {
@@ -46,10 +52,15 @@ const StatementInput: FC<Props> = ({ statement }) => {
                 };
 
                 // submit form
-                const newStatement: Statement | undefined = getNewStatment({ value: e.target.value, statement });
+                if(!user) throw new Error('No user');
+                console.log(user)
+                const newStatement: Statement | undefined = getNewStatment({ value: e.target.value, statement, user });
 
                 if (!newStatement) throw new Error('No statement');
 
+                newStatement.subScreens =[Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
+                console.log(newStatement)
+                
                 setStatmentToDB(newStatement);
                 e.target.value = '';
             }
@@ -62,7 +73,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
     return (
 
         <form onSubmit={handleAddStatement} name="theForm" className="page__footer statement__input">
-            <textarea name='newStatement' onKeyUp={handleInput} required />
+            <textarea name='newStatement' onKeyUp={handleInput} required autoFocus={true} />
             <button className="fav"><div><SendIcon>Submit</SendIcon></div></button>
         </form>
 

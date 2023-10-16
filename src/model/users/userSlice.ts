@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { User, UserSchema } from './userModel';
+import { User, UserSchema } from 'delib-npm';
 
 export enum Status {
   idle = 'idle',

@@ -1,6 +1,5 @@
 import { collection, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import { Collections } from "delib-npm";
-import { Statement, StatementSubscription, StatementSubscriptionSchema, StatementType } from "../../../model/statements/statementModel";
+import {Collections, Statement, StatementSubscription, StatementSubscriptionSchema, StatementType } from "delib-npm";
 import { DB } from "../config";
 import { auth } from "../auth";
 
@@ -38,6 +37,7 @@ export function listenToStatementSubscription(statementId: string, updateStore: 
         const user = auth.currentUser;
         if (!user) throw new Error("User not logged in");
         if (!user.uid) throw new Error("User not logged in");
+    
         const statementsSubscribeRef = doc(DB, Collections.statementsSubscribe, `${user.uid}--${statementId}`);
 
         
