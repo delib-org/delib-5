@@ -1,10 +1,10 @@
 import { doc, getDoc } from "firebase/firestore";
 import { auth } from "../auth";
-import { Collections } from "delib-npm";
+import { Collections, User } from "delib-npm";
 import { DB } from "../config";
 
 // get user font size and update document and html with the size in the DB
-export async function getUserFontSizeFromDB() {
+export async function getUserFromDB(): Promise<User |undefined> {
     try {
         const user = auth.currentUser;
         if (!user) throw new Error('user is not logged in');
@@ -14,15 +14,16 @@ export async function getUserFontSizeFromDB() {
 
         if (!userDoc.exists()) throw new Error('user does not exist');
 
-        const fontSize: number | undefined = userDoc.data().fontSize as number;
-        if (!fontSize) return 14;
+        const userDB = userDoc.data() as User;
 
-        if (typeof fontSize !== 'number') throw new Error('fontSize is not a number');
-        if (fontSize < 0) throw new Error('fontSize must be positive');
-        
-        return fontSize;
+        if (!userDB) throw new Error('userDB is undefined');
+        if (userDB.fontSize === undefined || typeof userDB.fontSize !== 'number' || isNaN(userDB.fontSize)) userDB.fontSize = 14;
+        if (typeof userDB.fontSize !== 'number') throw new Error('fontSize is not a number');
+
+
+        return userDB;
     } catch (error) {
         console.error(error);
-        return 14;
+        return undefined;
     }
 }

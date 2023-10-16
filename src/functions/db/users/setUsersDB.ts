@@ -1,6 +1,6 @@
 import { Collections, User, UserSchema } from "delib-npm";
 import { DB } from "../config";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth } from "../auth";
 
 export async function setUserToDB(user:User) {
@@ -8,8 +8,9 @@ export async function setUserToDB(user:User) {
        
         UserSchema.parse(user);
         const userRef = doc(DB, Collections.users, user.uid);
-        setDoc(userRef, user, { merge: true }) 
-        
+        await setDoc(userRef, user, { merge: true });
+        const userFromDB = await getDoc(userRef);
+        return userFromDB.data();
     } catch (error) {
         console.error(error)
     }
@@ -24,7 +25,8 @@ export async function updateUserFontSize(size:number) {
         if(size<0) throw new Error('size must be positive')
        
         const userRef = doc(DB, Collections.users, user.uid);
-        setDoc(userRef, {fontSize:size}, { merge: true }) 
+        await setDoc(userRef, {fontSize:size}, { merge: true }) 
+        
     } catch (error) {
         console.error(error)
     }

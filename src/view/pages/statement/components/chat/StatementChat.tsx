@@ -7,6 +7,7 @@ import StatementChatIcon from '../StatementChatIcon';
 
 import Text from '../../../../components/text/Text';
 import StatementChatSetOption from '../StatementChatSetOption';
+import ProfileImage from './ProfileImage';
 
 
 
@@ -24,7 +25,6 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
   const [show, setShow] = useState(false)
 
   const userId = auth.currentUser?.uid;
-  const userProfile = statement.creator.photoURL;
   const creatorId = statement.creatorId;
 
   const isMe = userId === creatorId;
@@ -39,7 +39,7 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
       <div className={isMe ? `statement__chatCard statement__chatCard--me` : "statement__chatCard statement__chatCard--other"}>
         <div className="statement__chatCard__left">
         
-          <div onClick={() => showImage(statement.creator)} className="statement__chatCard__profile" style={userProfile ? { backgroundImage: `url(${userProfile})` } : {}}></div>
+          <ProfileImage statement={statement} showImage={showImage} />
           <StatementChatSetOption statement={statement} />
         </div>
       

@@ -3,7 +3,7 @@ import { getAuth, signOut, signInWithPopup, GoogleAuthProvider, onAuthStateChang
 import { app } from "./config";
 import { parseUserFromFirebase, User } from "delib-npm";
 import { setUserToDB } from "./users/setUsersDB";
-import { getUserFontSizeFromDB } from "./users/getUserDB";
+import { getUserFromDB } from "./users/getUserDB";
 
 
 const provider = new GoogleAuthProvider();
@@ -41,24 +41,30 @@ export function googleLogin() {
 }
 export function listenToAuth(cb: Function, cbFontSize: Function) {
 
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, async (userFB) => {
         try {
 
-            if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/auth.user
-                const _user: User | undefined = parseUserFromFirebase(user)
+            if (userFB) {
+                const user = {...userFB};
+                if (!user.displayName) user.displayName = localStorage.getItem('displayName') || 'anonymous';
+                const _user = parseUserFromFirebase(user);
+                                              
                 console.log('User is signed in')
                 if (!_user) throw new Error('user is undefined')
-                cb(_user)
+               
+               
 
-                const fontSize = await getUserFontSizeFromDB() || 14;
-
+                //get font size from db
+                const { fontSize } = await getUserFromDB() || { fontSize: 14 };
+               
                 document.documentElement.style.fontSize = fontSize + 'px';
                 document.body.style.fontSize = fontSize + 'px';
                 cbFontSize(fontSize);
 
-                setUserToDB(_user);
+                const userDB = await setUserToDB(_user) as User;
+                console.log(userDB)
+                if(!userDB) throw new Error('userDB is undefined');
+                cb(userDB)
 
             } else {
                 // User is signed out
@@ -93,6 +99,6 @@ export function signAnonymously() {
             console.info('user signed in anounymously')
         })
         .catch((error) => {
-          console.error(error)
+            console.error(error)
         });
 }
