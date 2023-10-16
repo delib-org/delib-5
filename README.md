@@ -47,7 +47,7 @@ under ```/src/functions/db/``` add  ```configKey.ts``` file. This file is not up
 use the Project config to set the cofig file:
 
 
-```javascript
+``` javascript
 export const keys = {
     apiKey: "your key",
     authDomain: "your key",
