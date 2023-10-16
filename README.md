@@ -31,19 +31,38 @@ if you still get an error try to give permission to your self as a manager with 
 
 ```Set-ExecutionPolicy RemoteSigned -Scope CurrentUser```
 
-run the commend below and login to your google account
+Run the commend below and login to your google account
 
 ```firebase login``` 
-=======
-In firebase console, create a new project and copy the project id.
 
-in ```.firebaserc``` change the project id to the project id you just created.
-
-Then run ```firebase login``` and login with your google account.
+In firebase console, create a new project, and call it "delib-5", and copy the project id. In ```.firebaserc``` change the project id to the project id you just created.
 
 Then run ```firebase use <project-id>``` to select the project you just created.
 
 Then run ```firebase init emulators``` and install all the emulators.
+
+## settings configKey file
+
+under ```/src/functions/db/config.js``` add  ```configKey.ts``` file. This file is not uploaded to github, and you will have to create it yourself.
+use the Project config to set the cofig file:
+
+
+```javascript
+export const keys = {
+    apiKey: "your key",
+    authDomain: "your key",
+    databaseURL: "your key",
+    projectId: "your key",
+    storageBucket: "your key",
+    messagingSenderId: "your key",
+    appId: "your key",
+    measurementId: "your key"
+}
+
+
+export const vapidKey = 'your key';
+```
+
 # Development mode
 
 Then initlise the emualtors by running:
