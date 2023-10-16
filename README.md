@@ -43,7 +43,7 @@ Then run ```firebase init emulators``` and install all the emulators.
 
 ## settings configKey file
 
-under ```/src/functions/db/config.js``` add  ```configKey.ts``` file. This file is not uploaded to github, and you will have to create it yourself.
+under ```/src/functions/db/``` add  ```configKey.ts``` file. This file is not uploaded to github, and you will have to create it yourself.
 use the Project config to set the cofig file:
 
 
