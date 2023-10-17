@@ -1,0 +1,34 @@
+.pageTransion{
+   display: flex;
+   width: 200vw;
+   height: 100vh;
+   animation: transition 600ms forwards ease-in-out;
+   overflow-x: auto;
+   scroll-behavior: smooth;
+   position: relative;
+ 
+}
+
+.pageIn{
+    background-color: black;
+    flex:1;
+    
+}
+
+.pageOut{
+    background-color: red;
+    flex:1;
+   
+}
+
+// add animation of pageTransion moving to the right
+
+
+@keyframes transition{
+    0%{
+        transform: translateX(0);
+    }
+    100%{
+        transform: translateX(100vw);
+    }
+}

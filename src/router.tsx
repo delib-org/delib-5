@@ -8,6 +8,7 @@ import App from './view/pages/home/App';
 // import Statement from './view/pages/statement/Statement';
 import All from './view/pages/all/All';
 import ErrorPage from './view/pages/error/ErrorPage';
+import PageTransition from "./view/components/pageTransition/PageTransition";
 
 // const App = lazy(() => import('./view/pages/home/App'));
 const Main = lazy(() => import('./view/pages/main/Main'));
@@ -52,6 +53,10 @@ export const router = createBrowserRouter([
                         path: "",
                         element: <Suspense fallback={<p>Loading...</p>}><Main /></Suspense>,
                         errorElement: <ErrorPage />,
+                    },
+                    {
+                        path:"transition",
+                        element: <Suspense fallback={<p>Loading...</p>}><PageTransition pageIn={<Main />} pageOut={<Statement />} /></Suspense>,
                     },
                     {
                         path: "addStatment",
