@@ -78,8 +78,6 @@ go to ```localhost:5173``` to see the app, and to ```localhost:5002``` to see th
 When login with google login, create a new user on the popup modal.
 
 
-fjknvjfn
-
 
 
 
