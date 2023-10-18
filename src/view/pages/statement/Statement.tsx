@@ -94,7 +94,7 @@ const Statement: FC = () => {
 
     useEffect(() => {
         return () => {
-           pageOut.pageOut = Statement;
+           pageOut.pageOut = <Statement />;
         }
     },[])
 

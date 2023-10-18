@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, {ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import './view/style/style.scss';
 import "delib-npm/dist/index.css"
@@ -8,6 +8,7 @@ import { RouterProvider } from "react-router-dom";
 import { store } from './model/store'
 import { Provider } from 'react-redux'
 import { router } from './router';
+import Main from './view/pages/main/Main';
 
 
 
@@ -25,7 +26,7 @@ export const install:{deferredPrompt:any}= {
   deferredPrompt:null
 }
 
-export const pageOut:{pageOut:ReactNode|null} = {pageOut:null}
+export const pageOut:{pageOut:ReactNode|null} = {pageOut:<Main />}
 
 window.addEventListener('beforeinstallprompt', (e) => {
 

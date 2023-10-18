@@ -11,6 +11,7 @@ import { setUser } from '../../../model/users/userSlice';
 import { logOut } from '../../../functions/db/auth';
 import StatementCard from '../statement/components/StatementCard';
 import { install } from '../../../main';
+import { pageOut } from '../../../router';
 
 //install
 
@@ -23,6 +24,8 @@ const Main = () => {
     const isLgged = useAuth();
     const dispatch = useAppDispatch();
 
+    
+
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     // const [isApp, setIsApp] = useState(false);
 
@@ -31,7 +34,7 @@ const Main = () => {
     }
 
     useEffect(() => {
-
+        pageOut.pageOut = <Main />;
        setDeferredPrompt(install.deferredPrompt);
       
     }, [])
@@ -97,3 +100,4 @@ const Main = () => {
 }
 
 export default React.memo(Main)
+

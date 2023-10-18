@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import {  lazy, Suspense } from 'react';
+// import {  lazy, Suspense } from 'react';
 
 import Start from './view/pages/start/Start';
 import App from './view/pages/home/App';
@@ -10,33 +10,42 @@ import All from './view/pages/all/All';
 import ErrorPage from './view/pages/error/ErrorPage';
 import PageTransition from "./view/components/pageTransition/PageTransition";
 
-// const App = lazy(() => import('./view/pages/home/App'));
-const Main = lazy(() => import('./view/pages/main/Main'));
-const Statement = lazy(() => import('./view/pages/statement/Statement'));
-// const All = lazy(() => import('./view/pages/all/All'));
-const SetStatement = lazy(() => import('./view/pages/statement/components/set/SetStatement'));
+import Main from "./view/pages/main/Main";
+import Statement from "./view/pages/statement/Statement";
+import SetStatement from "./view/pages/statement/components/set/SetStatement";
+import { ReactNode } from "react";
 
-const SuspenseFallback = () => {
-    return (
-        <div className="loader-container">
-            <div className="loader"></div>
-        </div>
-    )
-}
 
-export const SuspenseComp = ({ chlildren }: any) => {
-    return (
-        <Suspense fallback={<SuspenseFallback />}>
-            {chlildren}
-        </Suspense>
-    )
-}
+// // const App = lazy(() => import('./view/pages/home/App'));
+// const Main = lazy(() => import('./view/pages/main/Main'));
+// const Statement = lazy(() => import('./view/pages/statement/Statement'));
+// // const All = lazy(() => import('./view/pages/all/All'));
+// const SetStatement = lazy(() => import('./view/pages/statement/components/set/SetStatement'));
+
+// const SuspenseFallback = () => {
+//     return (
+//         <div className="loader-container">
+//             <div className="loader"></div>
+//         </div>
+//     )
+// }
+
+// export const SuspenseComp = ({ chlildren }: any) => {
+//     return (
+//         <Suspense fallback={<SuspenseFallback />}>
+//             {chlildren}
+//         </Suspense>
+//     )
+// }
 
 //keep prevoius page in memory
-export const pageOut = {
+export const pageOut:{pageOut:ReactNode|null} = {
     pageOut: null
 }
 
+function setPageOut(page: ReactNode) {
+    pageOut.pageOut = page;
+}
 
 
 
@@ -58,43 +67,27 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: "",
-                        element: <Suspense fallback={<p>Loading...</p>}><Main /></Suspense>,
+                        element: <Main />,
                         errorElement: <ErrorPage />,
                     },
                     {
-                        path:"transition",
-                        element: <Suspense fallback={<p>Loading...</p>}><PageTransition pageIn={<Main />} /></Suspense>,
-                    },
-                    {
                         path: "addStatment",
-                        element: <Suspense fallback={<p>Loading...</p>}><PageTransition pageIn={<SetStatement />} /></Suspense> ,
+                        element: <SetStatement /> ,
                         errorElement: <ErrorPage />,
                     },
                     {
                         path: "updateStatement/:statementId",
-                        element: <Suspense fallback={<p>Loading...</p>}><SetStatement /></Suspense>,
+                        element:<SetStatement />,
                         errorElement: <ErrorPage />,
                     },
                     {
                         path: "statement-t/:statementId",
-                        element:<Suspense fallback={<p>Loading...</p>}><PageTransition pageIn={<Statement />}/></Suspense>,
+                        element:<PageTransition pageIn={<Statement />}/>,
                         errorElement: <ErrorPage />,
-                        children: [
-                            {
-                                path: ":page",
-                                element: <Statement />,
-                                children: [
-                                    {
-                                        path: ":sort",
-                                        element: <Statement />
-                                    }
-                                ]
-                            }
-                        ]
                     },
                     {
                         path: "statement/:statementId",
-                        element:<Suspense fallback={<p>Loading...</p>}><Statement /></Suspense>,
+                        element:<Statement />,
                         errorElement: <ErrorPage />,
                         children: [
                             {

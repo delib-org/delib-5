@@ -10,36 +10,32 @@ interface PageTransitionProps {
 
 
 
-let firstTime = true;
+
 
 const PageTransition: FC<PageTransitionProps> = ({ pageIn }) => {
     const {statementId} = useParams();
     const componentRef = useRef(null);
     const navigate = useNavigate();
-    // const location = useLocation();
+
 
 
     useEffect(() => {
-        if (firstTime) {
-            console.log("transition")
+       
+            console.log("first time transition ....")
             const page: any = componentRef.current;
 
             page.onanimationend = () => {
                 console.log('animationend');
-                pageOut.pageOut = pageIn;
+                // pageOut.pageOut = pageIn;
                 console.log("saving pageOut")
                 navigate(`/home/statement/${statementId}`)
             };
-            firstTime = false;
-        } else{
-            console.log("not the first time");
-        }
+          
+       
        
     }, []);
 
-    useEffect(() => {
-        firstTime = true;
-    },[statementId]);
+
 
 
 
