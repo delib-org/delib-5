@@ -13,7 +13,7 @@ const StatementCard: FC<Props> = ({ statement }) => {
     return (
 
         <div className='card statementCard' >
-            <Link className='href--undecorated' to={`/home/statement/${statement.statementId}`}>
+            <Link className='href--undecorated' to={`/home/statement-t/${statement.statementId}`}>
                 <Text text={statement.statement} />
                 {statement.lastMessage ? <p className='statementCard__next'>{statement.lastMessage}</p> : null}
             </Link>

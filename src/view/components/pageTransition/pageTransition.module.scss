@@ -10,13 +10,11 @@
 }
 
 .pageIn{
-    background-color: black;
-    flex:1;
+      flex:1;
     
 }
 
 .pageOut{
-    background-color: red;
     flex:1;
    
 }
@@ -26,9 +24,9 @@
 
 @keyframes transition{
     0%{
-        transform: translateX(0);
+        transform: translateX(100vw);
     }
     100%{
-        transform: translateX(100vw);
+        transform: translateX(0);
     }
 }

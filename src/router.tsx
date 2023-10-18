@@ -32,6 +32,13 @@ export const SuspenseComp = ({ chlildren }: any) => {
     )
 }
 
+//keep prevoius page in memory
+export const pageOut = {
+    pageOut: null
+}
+
+
+
 
 export const router = createBrowserRouter([
     {
@@ -56,17 +63,34 @@ export const router = createBrowserRouter([
                     },
                     {
                         path:"transition",
-                        element: <Suspense fallback={<p>Loading...</p>}><PageTransition pageIn={<Main />} pageOut={<Statement />} /></Suspense>,
+                        element: <Suspense fallback={<p>Loading...</p>}><PageTransition pageIn={<Main />} /></Suspense>,
                     },
                     {
                         path: "addStatment",
-                        element: <Suspense fallback={<p>Loading...</p>}><SetStatement /></Suspense> ,
+                        element: <Suspense fallback={<p>Loading...</p>}><PageTransition pageIn={<SetStatement />} /></Suspense> ,
                         errorElement: <ErrorPage />,
                     },
                     {
                         path: "updateStatement/:statementId",
                         element: <Suspense fallback={<p>Loading...</p>}><SetStatement /></Suspense>,
                         errorElement: <ErrorPage />,
+                    },
+                    {
+                        path: "statement-t/:statementId",
+                        element:<Suspense fallback={<p>Loading...</p>}><PageTransition pageIn={<Statement />}/></Suspense>,
+                        errorElement: <ErrorPage />,
+                        children: [
+                            {
+                                path: ":page",
+                                element: <Statement />,
+                                children: [
+                                    {
+                                        path: ":sort",
+                                        element: <Statement />
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         path: "statement/:statementId",

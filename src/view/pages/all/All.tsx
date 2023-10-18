@@ -7,6 +7,7 @@ import { User } from '../../../model/users/userModel';
 import { setIntialLocationSessionStorage } from '../../../functions/general/helpers';
 import Accessiblity from '../../components/accessibility/Accessiblity';
 import { setFontSize } from '../../../model/accessibility/accessibiliySlice';
+import { pageOut } from '../../../main';
 // import { app, messaging } from '../../../functions/db/config';
 // import { getMessaging } from 'firebase/messaging';
 
@@ -26,6 +27,12 @@ const All = () => {
 
 
     }, []);
+
+   
+    useEffect(() => {
+        console.log("moved to: ", location.pathname)
+     
+    }, [location.pathname])
 
     return (
         <>

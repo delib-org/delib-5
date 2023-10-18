@@ -1,6 +1,6 @@
 import { Statement } from 'delib-npm';
 import { FC } from 'react';
-import anonymous from '../../../../../assets/anonymous1.png'
+
 
 interface Props {
     statement: Statement;
@@ -9,7 +9,7 @@ interface Props {
 
 const ProfileImage:FC<Props>= ({statement, showImage}) => {
     const userProfile = statement.creator.photoURL;
-    console.log(statement.creator)
+
 
     //from statement.creator.displayName get only first three letters
     const displayName = statement.creator.displayName.slice(0,6);

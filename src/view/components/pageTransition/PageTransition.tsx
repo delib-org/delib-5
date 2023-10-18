@@ -1,24 +1,47 @@
-import { FC, ReactNode, useRef , useEffect } from 'react';
+import { FC, ReactNode, useRef, useEffect } from 'react';
 import styles from './pageTransition.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { pageOut } from '../../../main';
 
 interface PageTransitionProps {
     pageIn: ReactNode;
-    pageOut: ReactNode;
+    // pageOut: ReactNode;
 }
 
-const PageTransition: FC<PageTransitionProps> = ({ pageIn, pageOut }) => {
+
+
+let firstTime = true;
+
+const PageTransition: FC<PageTransitionProps> = ({ pageIn }) => {
+    const {statementId} = useParams();
     const componentRef = useRef(null);
     const navigate = useNavigate();
+    // const location = useLocation();
+
 
     useEffect(() => {
-        const page:any = componentRef.current;
+        if (firstTime) {
+            console.log("transition")
+            const page: any = componentRef.current;
 
-        page.onanimationend =  () => {
-            console.log('animationend');
-            navigate('/home/statement/8700677c-0b5a-4e07-9a41-6a254b48255d/vote')
-        };
+            page.onanimationend = () => {
+                console.log('animationend');
+                pageOut.pageOut = pageIn;
+                console.log("saving pageOut")
+                navigate(`/home/statement/${statementId}`)
+            };
+            firstTime = false;
+        } else{
+            console.log("not the first time");
+        }
+       
     }, []);
+
+    useEffect(() => {
+        firstTime = true;
+    },[statementId]);
+
+
 
     return (
         <div className={styles.pageTransion} ref={componentRef}>
@@ -26,10 +49,12 @@ const PageTransition: FC<PageTransitionProps> = ({ pageIn, pageOut }) => {
                 {pageIn}
             </div>
             <div className={styles.pageOut}>
-                {pageOut}
+                {pageOut.pageOut}
             </div>
         </div>
     );
 };
 
 export default PageTransition;
+
+

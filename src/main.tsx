@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC, ReactNode } from 'react'
 import ReactDOM from 'react-dom/client'
 import './view/style/style.scss';
 import "delib-npm/dist/index.css"
@@ -24,6 +24,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 export const install:{deferredPrompt:any}= {
   deferredPrompt:null
 }
+
+export const pageOut:{pageOut:ReactNode|null} = {pageOut:null}
 
 window.addEventListener('beforeinstallprompt', (e) => {
 
