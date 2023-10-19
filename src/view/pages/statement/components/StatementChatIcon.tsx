@@ -8,7 +8,7 @@ import { statementSubscriptionSelector } from '../../../../model/statements/stat
 
 interface Props {
     statement: Statement
-    page:any;
+    page?:any;
 }
 
 const StatementChatIcon: FC<Props> = ({ statement, page }) => {
@@ -34,12 +34,14 @@ const StatementChatIcon: FC<Props> = ({ statement, page }) => {
 
 export default StatementChatIcon;
 
-export function handleCreateSubStatements(statement: Statement, navigate: Function, page:any) {
+export function handleCreateSubStatements(statement: Statement, navigate: Function, page?:any) {
     try {
-        if(!page) throw new Error('page is undefined');
-        console.log('handleCreateSubStatements')
-      
-    
+        if(!page) {
+            setStatmentGroupToDB(statement);
+            navigate(`/home/statement/${statement.statementId}`)
+            return
+        }
+     
         page.classList.add('page--anima__forwardOutScreen');
         page.onanimationend = () => {
             setStatmentGroupToDB(statement);

@@ -12,7 +12,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
     const participants = useAppSelector(participantsSelector(statement.statementId))
     console.log(participants)
-    console.log(divideItoTopics(participants))
+    console.log(divideIntoTopics(participants))
     return (
         <div>
             <h1>חלק לחדרים בלחיצה</h1>
@@ -30,11 +30,13 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
 export default AdminSeeAllGroups
 
-function divideItoTopics(participants: RoomAskToJoin[]) {
+function divideIntoTopics(participants: RoomAskToJoin[]) {
     try {
 
         const topicsParticipants: any = {};
+         //build topicsParticipantsObject
         participants.forEach((participant) => {
+           
             try {
                 if (!(participant.statementId in topicsParticipants)) {
                     topicsParticipants[participant.statementId] = { statementId: participant.statementId, statement: participant.statement, participants: [participant] };
@@ -48,10 +50,11 @@ function divideItoTopics(participants: RoomAskToJoin[]) {
             }
         })
 
+        //divide participents according to topics and rooms
         for (const key in topicsParticipants) {
 
             const patricipantsInTopic = topicsParticipants[key].participants;
-            const rooms = divideIntoRooms(patricipantsInTopic, 7);
+            const rooms = divideIntoRoomsRandomly(patricipantsInTopic, 7);
             topicsParticipants[key].rooms = rooms;
 
         }
@@ -63,23 +66,22 @@ function divideItoTopics(participants: RoomAskToJoin[]) {
     }
 }
 
-function divideIntoRooms(participants: RoomAskToJoin[], maxPerRoom: number) {
+function divideIntoRoomsRandomly(participants: RoomAskToJoin[], maxPerRoom: number) {
     try {
         const rooms:any = [[]];
        
         let count = 0;
         const _participants = [...participants].sort(() => Math.random() - 0.5);
        
-        for (let index = 0; index < _participants.length; index++) {
-            const participant = _participants[index];
+        _participants.forEach((participant) => {
             if (count < maxPerRoom) {
                 rooms[count].push(participant);
-                count++;
+               
             } else {
                 rooms.push([]);
-                count = 0;
+                count++;
             }
-        }
+        });
         return rooms;
     } catch (error) {
         console.error(error);

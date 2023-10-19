@@ -8,7 +8,7 @@ const Accessiblity = () => {
     const dispatch = useAppDispatch();
     const fontSize = useAppSelector(fontSizeSelector);
     const [isOpen, setIsOpen] = useState(false);
-    const [show, setShow] = useState(false);
+
 
     useEffect(() => {
         document.documentElement.style.fontSize = fontSize + 'px';
@@ -40,21 +40,21 @@ const Accessiblity = () => {
 
 
     return (
-        <>
-            {show ? <div className="accessibility" style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}>
-                <div className='accessibility__button' onClick={handleOpen}>
-                    <AccessibleIcon htmlColor='white' />
-                </div>
-                <div className="accessibility__fonts">
 
-                    <div className="accessibility__fonts__control" onClick={() => handleChangeFontSize(1)}>+</div>
-                    <div className="accessibility__fonts__size">{fontSize}px</div>
-                    <div className="accessibility__fonts__control" onClick={() => handleChangeFontSize(-1)}>-</div>
-                    <span dir="ltr">Fonts:</span>
-                </div>
+        <div className="accessibility" style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}>
+            <div className='accessibility__button' onClick={handleOpen}>
+                <AccessibleIcon htmlColor='white' />
+            </div>
+            <div className="accessibility__fonts">
 
-            </div> : null}
-        </>
+                <div className="accessibility__fonts__control" onClick={() => handleChangeFontSize(1)}>+</div>
+                <div className="accessibility__fonts__size">{fontSize}px</div>
+                <div className="accessibility__fonts__control" onClick={() => handleChangeFontSize(-1)}>-</div>
+                <span dir="ltr">Fonts:</span>
+            </div>
+
+        </div>
+
     )
 }
 

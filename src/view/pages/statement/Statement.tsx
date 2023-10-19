@@ -106,7 +106,7 @@ const Statement: FC = () => {
     useEffect(() => {
         const page = pageRef.current;
         const animationDireaction = navigationDirection(statement, prevStId);
-        console.log('animation direction',animationDireaction);
+        console.log('animation direction', animationDireaction);
         if (animationDireaction == 'forward') {
 
             page.classList.add('page--anima__forwardInScreen');
@@ -114,8 +114,8 @@ const Statement: FC = () => {
                 page.classList.remove('page--anima__forwardInScreen');
             }
 
-           
-            
+
+
         } else if (animationDireaction == 'back') {
             page.classList.add('page--anima__backInScreen');
 
@@ -178,12 +178,12 @@ const Statement: FC = () => {
 
     function handleBack() {
         console.log("back")
-       
+
         const page = pageRef.current;
         page.classList.add('page--anima__backOutScreen');
         page.onanimationend = () => {
             page.classList.remove('page--anima__backOutScreen');
-            navigate(statement?.parentId === "top"?'/home':`/home/statement/${statement?.parentId}`);
+            navigate(statement?.parentId === "top" ? '/home' : `/home/statement/${statement?.parentId}`);
         }
 
     }
@@ -218,7 +218,7 @@ const Statement: FC = () => {
 
 export default Statement;
 
-function switchScreens(screen: string | undefined, statement: Statement | undefined, subStatements: Statement[], handleShowTalker: Function, page:any) {
+function switchScreens(screen: string | undefined, statement: Statement | undefined, subStatements: Statement[], handleShowTalker: Function, page: any) {
     try {
         if (!statement) return null;
 
