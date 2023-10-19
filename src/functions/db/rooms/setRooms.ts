@@ -1,5 +1,5 @@
 import { Collections, Statement, RoomAskToJoin, getRequestIdToJoinRoom, RoomsStateSelection } from "delib-npm";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { DB } from "../config";
 import { getUserFromFirebase } from "../users/usersGeneral";
 
@@ -63,6 +63,19 @@ export async function setRoomsStateToDB(statement: Statement,roomsState : RoomsS
         const statementRef = doc(DB, Collections.statements, statement.statementId);
         await setDoc(statementRef, { roomsState }, { merge: true });
     } catch (error) {roomsState
+        console.error(error)
+    }
+}
+
+export function approveToJoinRoomDB(participantId: string, statement: Statement, roomNumber: number) {
+    try {
+        
+        const requestId = getRequestIdToJoinRoom(participantId, statement.parentId);
+        if(!requestId) throw new Error("Request id is undefined");
+
+        const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
+        updateDoc(requestRef, { approved: true, roomNumber});
+    } catch (error) {
         console.error(error)
     }
 }

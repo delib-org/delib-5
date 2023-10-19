@@ -1,12 +1,15 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import RoomParticpantBadge from '../RoomParticpantBadge'
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
-import { RoomAskToJoin, Statement } from 'delib-npm'
+import { RoomAskToJoin, RoomDivied, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
+import { approveToJoinRoomDB } from '../../../../../../functions/db/rooms/setRooms'
 
 interface Props {
     statement: Statement
 }
+
+
 
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
@@ -17,8 +20,13 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             const { rooms, topicsParticipants } = divideIntoTopics(participants, 2);
             console.log(rooms)
             console.log(topicsParticipants)
+            rooms.forEach((room) => {
+                room.room.forEach((participant:RoomAskToJoin) => {
+                    approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber);
+                })
+            })
         } catch (error) {
-
+            console.error(error);
         }
     }
 
@@ -43,7 +51,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 export default AdminSeeAllGroups
 export interface ParticipantInRoom { uid: string, room: number, roomNumber?: number, topic?: Statement, statementId?: string }
 
-function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7): { rooms: Array<ParticipantInRoom>, topicsParticipants: any } {
+function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7): { rooms: Array<RoomDivied>, topicsParticipants: any } {
     try {
 
         const topicsParticipants: any = {};
@@ -118,11 +126,7 @@ function divideParticipantsIntoRoomsRandomly(participants: RoomAskToJoin[], maxP
     }
 }
 
-interface RoomDivied {
-    roomNumber: number,
-    statement: Statement,
-    room: Array<RoomAskToJoin>
-}
+
 
 function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
     try {
