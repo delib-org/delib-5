@@ -8,6 +8,7 @@ const Accessiblity = () => {
     const dispatch = useAppDispatch();
     const fontSize = useAppSelector(fontSizeSelector);
     const [isOpen, setIsOpen] = useState(false);
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         document.documentElement.style.fontSize = fontSize + 'px';
@@ -24,34 +25,36 @@ const Accessiblity = () => {
         if (isOpen) {
             // If it's not open, open it and start the timer to close it after 2 seconds
             setIsOpen(false);
-    
-            
+
+
         } else {
             // If it's already open, close it immediately
             setIsOpen(true);
             setTimeout(() => {
                 setIsOpen(false);
-             
-            }, 14000); 
+
+            }, 14000);
         }
     }
 
 
 
     return (
-        <div className="accessibility" style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}>
-            <div className='accessibility__button' onClick={handleOpen}>
-                <AccessibleIcon htmlColor='white' />
-            </div>
-            <div className="accessibility__fonts">
+        <>
+            {show ? <div className="accessibility" style={!isOpen ? { left: "-12.6rem" } : { left: "0rem" }}>
+                <div className='accessibility__button' onClick={handleOpen}>
+                    <AccessibleIcon htmlColor='white' />
+                </div>
+                <div className="accessibility__fonts">
 
-                <div className="accessibility__fonts__control" onClick={() => handleChangeFontSize(1)}>+</div>
-                <div className="accessibility__fonts__size">{fontSize}px</div>
-                <div className="accessibility__fonts__control" onClick={() => handleChangeFontSize(-1)}>-</div>
-                <span dir="ltr">Fonts:</span>
-            </div>
+                    <div className="accessibility__fonts__control" onClick={() => handleChangeFontSize(1)}>+</div>
+                    <div className="accessibility__fonts__size">{fontSize}px</div>
+                    <div className="accessibility__fonts__control" onClick={() => handleChangeFontSize(-1)}>-</div>
+                    <span dir="ltr">Fonts:</span>
+                </div>
 
-        </div>
+            </div> : null}
+        </>
     )
 }
 
