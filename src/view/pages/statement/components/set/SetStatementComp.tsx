@@ -27,7 +27,7 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
     const navigate = useNavigate();
     const { statementId } = useParams();
     const statement = useAppSelector(statementSelector(statementId));
-    const user:User = useAppSelector(userSelector);
+    const user:User|null = useAppSelector(userSelector);
     const dispatch = useAppDispatch();
 
     const [isLoading, setIsLoading] = useState(false);

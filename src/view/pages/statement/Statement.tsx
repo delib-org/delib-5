@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom'
+import { FC, useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
@@ -29,6 +29,9 @@ import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { SetStatementComp } from './components/set/SetStatementComp';
 import StatmentRooms from './components/rooms/StatmentRooms';
+import { set } from 'lodash';
+
+
 
 
 
@@ -43,7 +46,13 @@ const Statement: FC = () => {
 
     const [talker, setTalker] = useState<User | null>(null);
     const [title, setTitle] = useState<string>('קבוצה');
-    const dispatch = useAppDispatch();
+    const [move, setMove] = useState<number>(0);
+    const [transitionTime, setTransitionTime] = useState<number>(250);
+    const [prevStId, setPrevStId] = useState<Statement | null | undefined>(null);
+
+    const dispatch: any = useAppDispatch();
+    const navigate = useNavigate();
+    const pageRef = useRef<any>(null);
     const { statementId, page } = useParams();
     const screen: string | undefined = page;
 
@@ -91,10 +100,32 @@ const Statement: FC = () => {
     }
 
 
-
+    // useEffect(() => {
+    //     setMove(2);
+    //     return () => {
+    //         setMove(0);
+    //     }
+    // }, []);
 
 
     useEffect(() => {
+        const page = pageRef.current;
+        const animationDireaction = navigationDirection(statement, prevStId);
+        console.log('animation direction',animationDireaction);
+        if (animationDireaction == 'forward') {
+            setMove(-40);
+
+            setTimeout(() => {
+                setMove(0);
+            }, 250);
+        } else if (animationDireaction == 'back') {
+            setTransitionTime(0);
+            setMove(-40);
+            page.ontransitionend = () => {
+                setMove(0);
+            }
+        }
+        setPrevStId(statement);
         if (statementId) {
             unsub = listenToStatement(statementId, updateStoreStatementCB);
         }
@@ -147,19 +178,34 @@ const Statement: FC = () => {
         }
     }, [statement])
 
-    //first line of the statement and remove * from the title
+    function handleBack() {
+        console.log("back")
+        setMove(40);
+        // const page = pageRef.current;
+
+        setTimeout(() => {
+            console.log('animation end')
+            navigate(statement?.parentId === "top" ? "/home" : `/home/statement/${statement?.parentId}`)
+            setMove(0);
+        }, 250);
+
+
+    }
+
 
 
     //JSX
     return (
-        <div className='page'>
+        <div ref={pageRef} className='page' style={{ transition: `all ${transitionTime}ms`, transform: `translateX(${move}px)` }}>
 
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
             </div> : null}
             <div className="page__header">
                 <div className='page__header__wrapper'>
-                    <Link to={statement?.parentId === "top" ? "/home" : `/home/statement/${statement?.parentId}`}><ArrowBackIosIcon /></Link>
+                    <div onClick={handleBack}>
+                        <ArrowBackIosIcon />
+                    </div>
                     <div onClick={handleRegisterToNotifications}>
                         {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon htmlColor='lightgray' />}
                     </div>
@@ -189,8 +235,8 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
                 return <StatementOptions statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
             case Screen.VOTE:
                 return <StatementVote statement={statement} subStatements={subStatements} />
-                case Screen.GROUPS:
-                    return <StatmentRooms statement={statement} subStatements={subStatements} />
+            case Screen.GROUPS:
+                return <StatmentRooms statement={statement} subStatements={subStatements} />
             case Screen.SETTINGS:
                 return <SetStatementComp />
             default:
@@ -199,5 +245,18 @@ function switchScreens(screen: string | undefined, statement: Statement | undefi
     } catch (error) {
         console.error(error);
         return null;
+    }
+}
+
+function navigationDirection(currentStatement: Statement | null | undefined, prevStatement: Statement | null | undefined): 'forward' | 'back' | undefined {
+    try {
+        if (!prevStatement) return 'forward';
+        if (!currentStatement) return undefined;
+        if (currentStatement.parentId === prevStatement.statementId) return 'forward';
+        if (currentStatement.statementId === prevStatement.parentId) return 'back';
+        return undefined;
+    } catch (error) {
+        console.error(error);
+        return undefined;
     }
 }
