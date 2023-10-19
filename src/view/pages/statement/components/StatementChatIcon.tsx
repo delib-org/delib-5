@@ -8,9 +8,10 @@ import { statementSubscriptionSelector } from '../../../../model/statements/stat
 
 interface Props {
     statement: Statement
+    page:any;
 }
 
-const StatementChatIcon: FC<Props> = ({ statement }) => {
+const StatementChatIcon: FC<Props> = ({ statement, page }) => {
     const statementSubscription:StatementSubscription|undefined = useAppSelector(statementSubscriptionSelector(statement.statementId))
     let   messagesRead = 0;
     if(statementSubscription) messagesRead = statementSubscription.totalSubStatementsRead ||0;
@@ -18,7 +19,7 @@ const StatementChatIcon: FC<Props> = ({ statement }) => {
  
     const navigate = useNavigate();
     return (
-        <div className="more clickable" onClick={() => handleCreateSubStatements(statement, navigate)}>
+        <div className="more clickable" onClick={() => handleCreateSubStatements(statement, navigate, page)}>
             <div className="icon">
                 {statement.type === StatementType.GROUP && (messages - messagesRead)>0 ? <div className="redCircle">
                     {messages - messagesRead<10?messages - messagesRead:`9+`}
@@ -33,11 +34,23 @@ const StatementChatIcon: FC<Props> = ({ statement }) => {
 
 export default StatementChatIcon;
 
-export function handleCreateSubStatements(statement: Statement, navigate: Function) {
-    setStatmentGroupToDB(statement);
+export function handleCreateSubStatements(statement: Statement, navigate: Function, page:any) {
+    try {
+        if(!page) throw new Error('page is undefined');
+        console.log('handleCreateSubStatements')
+      
+    
+        page.classList.add('page--anima__forwardOutScreen');
+        page.onanimationend = () => {
+            setStatmentGroupToDB(statement);
+            console.log('onanimationend')
+            page.classList.remove('page--anima__forwardOutScreen');
+            navigate(`/home/statement/${statement.statementId}`)
+        }
+    } catch (error) {
+        console.error(error);
+    }
 
-
-    navigate(`/home/statement/${statement.statementId}`)
-    //if no kids change it to group type GROUP
+   
 
 }

@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom'
+import { FC, useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
@@ -32,7 +32,6 @@ import StatmentRooms from './components/rooms/StatmentRooms';
 
 
 
-
 let unsub: Function = () => { }
 let unsubSubStatements: Function = () => { };
 let unsubStatementSubscription: Function = () => { };
@@ -43,7 +42,12 @@ const Statement: FC = () => {
 
     const [talker, setTalker] = useState<User | null>(null);
     const [title, setTitle] = useState<string>('קבוצה');
-    const dispatch = useAppDispatch();
+    const [prevStId, setPrevStId] = useState<Statement | null | undefined>(null);
+
+    const dispatch: any = useAppDispatch();
+    const navigate = useNavigate();
+    const pageRef = useRef<any>(null);
+    const _page = pageRef.current;
     const { statementId, page } = useParams();
     const screen: string | undefined = page;
 
@@ -91,10 +95,35 @@ const Statement: FC = () => {
     }
 
 
-
+    // useEffect(() => {
+    //     setMove(2);
+    //     return () => {
+    //         setMove(0);
+    //     }
+    // }, []);
 
 
     useEffect(() => {
+        const page = pageRef.current;
+        const animationDireaction = navigationDirection(statement, prevStId);
+        console.log('animation direction',animationDireaction);
+        if (animationDireaction == 'forward') {
+
+            page.classList.add('page--anima__forwardInScreen');
+            page.onanimationend = () => {
+                page.classList.remove('page--anima__forwardInScreen');
+            }
+
+           
+            
+        } else if (animationDireaction == 'back') {
+            page.classList.add('page--anima__backInScreen');
+
+            page.onanimationend = () => {
+                page.classList.remove('page--anima__backInScreen');
+            }
+        }
+        setPrevStId(statement);
         if (statementId) {
             unsub = listenToStatement(statementId, updateStoreStatementCB);
         }
@@ -147,19 +176,32 @@ const Statement: FC = () => {
         }
     }, [statement])
 
-    //first line of the statement and remove * from the title
+    function handleBack() {
+        console.log("back")
+       
+        const page = pageRef.current;
+        page.classList.add('page--anima__backOutScreen');
+        page.onanimationend = () => {
+            page.classList.remove('page--anima__backOutScreen');
+            navigate(statement?.parentId === "top"?'/home':`/home/statement/${statement?.parentId}`);
+        }
+
+    }
+
 
 
     //JSX
     return (
-        <div className='page'>
+        <div ref={pageRef} className='page'>
 
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
             </div> : null}
             <div className="page__header">
                 <div className='page__header__wrapper'>
-                    <Link to={statement?.parentId === "top" ? "/home" : `/home/statement/${statement?.parentId}`}><ArrowBackIosIcon /></Link>
+                    <div onClick={handleBack}>
+                        <ArrowBackIosIcon />
+                    </div>
                     <div onClick={handleRegisterToNotifications}>
                         {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon htmlColor='lightgray' />}
                     </div>
@@ -168,7 +210,7 @@ const Statement: FC = () => {
                 </div>
                 {statement ? <StatementNav statement={statement} /> : null}
             </div>
-            {switchScreens(screen, statement, subStatements, handleShowTalker)}
+            {switchScreens(screen, statement, subStatements, handleShowTalker, _page)}
 
         </div>
     )
@@ -176,28 +218,41 @@ const Statement: FC = () => {
 
 export default Statement;
 
-function switchScreens(screen: string | undefined, statement: Statement | undefined, subStatements: Statement[], handleShowTalker: Function) {
+function switchScreens(screen: string | undefined, statement: Statement | undefined, subStatements: Statement[], handleShowTalker: Function, page:any) {
     try {
         if (!statement) return null;
 
         switch (screen) {
             case Screen.HOME:
-                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} page={page} />
             case Screen.CHAT:
-                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} page={page} />
             case Screen.OPTIONS:
                 return <StatementOptions statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
             case Screen.VOTE:
                 return <StatementVote statement={statement} subStatements={subStatements} />
-                case Screen.GROUPS:
-                    return <StatmentRooms statement={statement} subStatements={subStatements} />
+            case Screen.GROUPS:
+                return <StatmentRooms statement={statement} subStatements={subStatements} />
             case Screen.SETTINGS:
                 return <SetStatementComp />
             default:
-                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} />
+                return <StatementMain statement={statement} subStatements={subStatements} handleShowTalker={handleShowTalker} page={page} />
         }
     } catch (error) {
         console.error(error);
         return null;
+    }
+}
+
+function navigationDirection(currentStatement: Statement | null | undefined, prevStatement: Statement | null | undefined): 'forward' | 'back' | undefined {
+    try {
+        if (!prevStatement) return 'forward';
+        if (!currentStatement) return undefined;
+        if (currentStatement.parentId === prevStatement.statementId) return 'forward';
+        if (currentStatement.statementId === prevStatement.parentId) return 'back';
+        return undefined;
+    } catch (error) {
+        console.error(error);
+        return undefined;
     }
 }

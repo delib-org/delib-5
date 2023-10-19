@@ -6,11 +6,12 @@ interface Props {
     statement: Statement;
     subStatements: Statement[];
     handleShowTalker: Function;
+    page:any;
 }
 
 let firstTime = true;
 
-const StatementMain: FC<Props> = ({ statement, subStatements, handleShowTalker }) => {
+const StatementMain: FC<Props> = ({ statement, subStatements, handleShowTalker, page }) => {
 
     const messagesEndRef = useRef(null)
 
@@ -42,7 +43,7 @@ const StatementMain: FC<Props> = ({ statement, subStatements, handleShowTalker }
                 <div className="wrapper wrapper--chat">
                     {subStatements?.map((statementSub: Statement) => (
                         <div key={statementSub.statementId} >
-                            <StatementChat statement={statementSub} showImage={handleShowTalker} />
+                            <StatementChat statement={statementSub} showImage={handleShowTalker} page={page} />
                         </div>
                     ))
                     }

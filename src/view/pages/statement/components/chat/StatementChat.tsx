@@ -16,9 +16,10 @@ import ProfileImage from './ProfileImage';
 interface Props {
   statement: Statement
   showImage: Function
+  page:any
 }
 
-const StatementChat: FC<Props> = ({ statement, showImage }) => {
+const StatementChat: FC<Props> = ({ statement, showImage, page }) => {
   // const evaluation = useAppSelector(evaluationSelector(statement.statementId))
 
 
@@ -52,7 +53,7 @@ const StatementChat: FC<Props> = ({ statement, showImage }) => {
             </div>
             <div className="statement__bubble__more">
               
-              <StatementChatIcon statement={statement} />
+              <StatementChatIcon statement={statement} page={page} />
             </div>
           </div>
         </div>
