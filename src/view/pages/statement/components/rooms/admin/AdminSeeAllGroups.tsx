@@ -14,11 +14,11 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
     function handleDivideIntoRooms() {
         try {
-            const {rooms, topicsParticipants} = divideIntoTopics(participants, 2);
+            const { rooms, topicsParticipants } = divideIntoTopics(participants, 2);
             console.log(rooms)
             console.log(topicsParticipants)
         } catch (error) {
-            
+
         }
     }
 
@@ -41,9 +41,9 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 }
 
 export default AdminSeeAllGroups
-export interface Room { uid: string, room: number, roomNumber?: number, topic?: Statement, statementId?: string }
+export interface ParticipantInRoom { uid: string, room: number, roomNumber?: number, topic?: Statement, statementId?: string }
 
-function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7): { rooms: Array<Room>, topicsParticipants: any }  {
+function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7): { rooms: Array<ParticipantInRoom>, topicsParticipants: any } {
     try {
 
         const topicsParticipants: any = {};
@@ -64,53 +64,52 @@ function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7)
         })
 
         //divide participents according to topics and rooms
-        // let rooms: Array<Room> = [];
+        // let rooms: Array<ParticipantInRoom> = [];
         for (const topic in topicsParticipants) {
 
             const patricipantsInTopic = topicsParticipants[topic].participants;
-            topicsParticipants[topic].rooms = divideIntoRoomsRandomly(patricipantsInTopic, maxPerRoom);
+            topicsParticipants[topic].rooms = divideParticipantsIntoRoomsRandomly(patricipantsInTopic, maxPerRoom);
 
 
         }
 
         const rooms = divideIntoGeneralRooms(topicsParticipants);
 
+        console.log(rooms)
+
         return { rooms, topicsParticipants };
 
     } catch (error) {
         console.error(error);
-        return { rooms:[], topicsParticipants:undefined}
+        return { rooms: [], topicsParticipants: undefined }
     }
 }
 
 
 
 
-function divideIntoRoomsRandomly(participants: RoomAskToJoin[], maxPerRoom: number): Array<Room> {
+function divideParticipantsIntoRoomsRandomly(participants: RoomAskToJoin[], maxPerRoom: number): Array<Array<RoomAskToJoin>> {
     try {
-      
-        const rooms: Array<Room> = [];
-        const numberOfParticipants = participants.length;
+
+        const numberOfRooms = Math.ceil(participants.length / maxPerRoom);
+
         //randomize participants
         participants.sort(() => Math.random() - 0.5);
 
         let roomNumber = 0;
-        let participantIndex = 0;
-       
 
-       
-        while (numberOfParticipants > rooms.length) {
-    
 
-            roomNumber++;
-            const room: Room = { uid: participants[participantIndex].participant.uid, room: roomNumber };
-         
-            rooms.push(room);
-            if (roomNumber >= maxPerRoom) {
-                roomNumber = 0;
-            }
-            participantIndex++;
-        }
+        const rooms: Array<Array<RoomAskToJoin>> = [[]]
+        participants.forEach((participant: RoomAskToJoin) => {
+
+            if (!rooms[roomNumber]) rooms[roomNumber] = [];
+            rooms[roomNumber].push(participant)
+            if (roomNumber < numberOfRooms - 1) roomNumber++;
+            else roomNumber = 0;
+        });
+
+
+
 
         return rooms;
     } catch (error) {
@@ -119,19 +118,27 @@ function divideIntoRoomsRandomly(participants: RoomAskToJoin[], maxPerRoom: numb
     }
 }
 
-function divideIntoGeneralRooms(topics: any): Array<Room> {
+interface RoomDivied {
+    roomNumber: number,
+    statement: Statement,
+    room: Array<RoomAskToJoin>
+}
+
+function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
     try {
+        console.log(topics)
         let roomNumber = 1;
-        const rooms: Array<Room> = [];
+        let rooms: Array<RoomDivied> = [];
         for (const topic in topics) {
             const topicRooms = topics[topic].rooms;
-     
-            topicRooms.forEach((participant: Room) => {
-                rooms.push({ ...participant, topic: topics[topic].statement, roomNumber })
+            topicRooms.forEach((room: Array<RoomAskToJoin>) => {
 
+                rooms.push({ room, roomNumber, statement: topics[topic].statement });
+                roomNumber++;
             })
-            roomNumber++;
+
         }
+        console.log(rooms)
         return rooms;
     } catch (error) {
         console.error(error);
