@@ -148,7 +148,7 @@ export const statementElementHightSelector = (statementId: string | undefined) =
 export const participantsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.filter(room => room.parentId === statementId);
 export const askToJoinRoomsSelector = (state: RootState) => state.statements.askToJoinRooms;
 export const askToJoinRoomSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.statementId === statementId);
-export const userSelectedRoomSelector =(statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === auth.currentUser?.uid && room.statementId === statementId);
+export const userSelectedRoomSelector =(statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === auth.currentUser?.uid && room.parentId === statementId);
 export const topicParticipantsSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.filter(room => room.statementId === statementId);
 //find the user selected topic
 export const userSelectedTopicSelector = (statementId: string | undefined) => (state: RootState) => state.statements.askToJoinRooms.find(room => room.participant.uid === auth.currentUser?.uid && room.parentId === statementId);
