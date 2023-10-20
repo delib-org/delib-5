@@ -4,6 +4,7 @@ import { useAppSelector } from '../../../../../functions/hooks/reduxHooks';
 import { userSelectedRoomSelector, userSelectedTopicSelector } from '../../../../../model/statements/statementsSlice';
 import { auth } from '../../../../../functions/db/auth';
 import AdminSeeAllGroups from './admin/AdminSeeAllGroups';
+import LoaderGlass from '../../../../components/loaders/LoaderGlass';
 
 
 
@@ -24,10 +25,6 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
 
   try {
 
-
-
-
-
     return (
       <>
         <h1>חלוקה לחדרים</h1>
@@ -36,6 +33,7 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
             <h1>נושא: {userTopic.statement.statement}</h1>
             <h2>מוזמן לחדר מספר: {userTopic.roomNumber}</h2>
           </div> : null}
+          <LoaderGlass />
         {isAdmin ? <AdminSeeAllGroups statement={statement} /> : null}
       </>
     )
