@@ -21,7 +21,7 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
         const requestDB = await getDoc(requestRef);
 
         if (!requestDB.exists()) {
-            await saveToDB(requestId, requestRef,statement);
+            await saveToDB(requestId, requestRef, statement);
 
 
             return true;
@@ -58,24 +58,29 @@ export async function askToJoinRoomDB(statement: Statement): Promise<boolean> {
     }
 }
 
-export async function setRoomsStateToDB(statement: Statement,roomsState : RoomsStateSelection) {
+export async function setRoomsStateToDB(statement: Statement, roomsState: RoomsStateSelection) {
     try {
         const statementRef = doc(DB, Collections.statements, statement.statementId);
         await setDoc(statementRef, { roomsState }, { merge: true });
-    } catch (error) {roomsState
+    } catch (error) {
+        roomsState
         console.error(error)
     }
 }
 
-export function approveToJoinRoomDB(participantId: string, statement: Statement, roomNumber: number) {
+export function approveToJoinRoomDB(participantId: string, statement: Statement, roomNumber: number, approved: boolean =true) {
     try {
-        
+
         const requestId = getRequestIdToJoinRoom(participantId, statement.parentId);
-        if(!requestId) throw new Error("Request id is undefined");
+        if (!requestId) throw new Error("Request id is undefined");
 
         const requestRef = doc(DB, Collections.statementRoomsAsked, requestId);
-        updateDoc(requestRef, { approved: true, roomNumber});
+        if(approved) updateDoc(requestRef, { approved: true, roomNumber });
+        else updateDoc(requestRef, { approved: false, roomNumber });
+
+
     } catch (error) {
         console.error(error)
     }
 }
+

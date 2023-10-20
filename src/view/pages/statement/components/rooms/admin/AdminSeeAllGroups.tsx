@@ -1,9 +1,10 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import RoomParticpantBadge from '../RoomParticpantBadge'
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
 import { RoomAskToJoin, RoomDivied, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
 import { approveToJoinRoomDB } from '../../../../../../functions/db/rooms/setRooms'
+import { boolean } from 'zod'
 
 interface Props {
     statement: Statement
@@ -13,7 +14,8 @@ interface Props {
 
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
-    const participants = useAppSelector(participantsSelector(statement.statementId))
+    const participants = useAppSelector(participantsSelector(statement.statementId));
+    const [setRooms, setSetRooms] = useState<boolean>(true);
 
     function handleDivideIntoRooms() {
         try {
@@ -22,13 +24,16 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             console.log(topicsParticipants)
             rooms.forEach((room) => {
                 room.room.forEach((participant:RoomAskToJoin) => {
-                    approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber);
+                    approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber, setRooms);
                 })
             })
+            setSetRooms(state=>!state);
         } catch (error) {
             console.error(error);
         }
     }
+
+   
 
     return (
         <div>
@@ -36,7 +41,8 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             <div className="wrapper">
                 <h3>משתתפים</h3>
                 <div className="btns">
-                    <button onClick={handleDivideIntoRooms}>חלק/י לחדרים</button>
+                    {setRooms?<button  onClick={handleDivideIntoRooms}>חלק/י לחדרים</button>:<button className='btn--cancel' onClick={handleDivideIntoRooms}>ביטול חלוקה</button>}
+                    
                 </div>
                 <div>
                     {participants.map((request) => (
