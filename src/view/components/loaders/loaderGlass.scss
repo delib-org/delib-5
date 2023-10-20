@@ -6,7 +6,7 @@
     border-top: 5px solid #fff;
     border-bottom: 5px solid #fff;
     position: relative;
-    background: linear-gradient(#FF3D00 30px, transparent 0) no-repeat;
+    background: linear-gradient(var(--accent) 30px, transparent 0) no-repeat;
     background-size: 2px 40px;
     background-position: 50% 0px;
     animation: spinx 7s linear infinite;
@@ -34,25 +34,25 @@
   }
   @keyframes lqt {
     0%, 100% {
-      background-image: linear-gradient(#FF3D00 40px, transparent 0);
+      background-image: linear-gradient(var(--accent) 40px, transparent 0);
       background-position: 0% 0px;
     }
     50% {
-      background-image: linear-gradient(#FF3D00 40px, transparent 0);
+      background-image: linear-gradient(var(--accent) 40px, transparent 0);
       background-position: 0% 40px;
     }
     50.1% {
-      background-image: linear-gradient(#FF3D00 40px, transparent 0);
+      background-image: linear-gradient(var(--accent) 40px, transparent 0);
       background-position: 0% -40px;
     }
   }
   @keyframes lqb {
     0% {
-      background-image: linear-gradient(#FF3D00 40px, transparent 0);
+      background-image: linear-gradient(var(--accent) 40px, transparent 0);
       background-position: 0 40px;
     }
     100% {
-      background-image: linear-gradient(#FF3D00 40px, transparent 0);
+      background-image: linear-gradient(var(--accent) 40px, transparent 0);
       background-position: 0 -40px;
     }
   }

@@ -5,6 +5,7 @@ import { userSelectedRoomSelector, userSelectedTopicSelector } from '../../../..
 import { auth } from '../../../../../functions/db/auth';
 import AdminSeeAllGroups from './admin/AdminSeeAllGroups';
 import LoaderGlass from '../../../../components/loaders/LoaderGlass';
+import styles from './roomDivide.module.scss';
 
 
 
@@ -28,12 +29,18 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
     return (
       <>
         <h1>חלוקה לחדרים</h1>
-        {userTopic ?
-          <div>
-            <h1>נושא: {userTopic.statement.statement}</h1>
-            <h2>מוזמן לחדר מספר: {userTopic.roomNumber}</h2>
-          </div> : null}
-          <LoaderGlass />
+        {userTopic && userTopic.approved ?
+          <div className={styles.message}>
+            <h2>נושא דיון: {userTopic.statement.statement}</h2>
+            <div className={styles.text}>מוזמן/ת לחדר מספר <span>{userTopic.roomNumber}</span> בזום</div>
+          </div>
+          :
+          <div className={styles.container} style={{flexDirection:"column"}}>
+            <h2>אנא המתינו לחלוקה לחדרים...</h2>
+            <LoaderGlass />
+          </div>
+        }
+
         {isAdmin ? <AdminSeeAllGroups statement={statement} /> : null}
       </>
     )
