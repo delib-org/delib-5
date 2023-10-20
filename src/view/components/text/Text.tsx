@@ -1,9 +1,10 @@
 import { FC } from 'react'
 
 interface Props {
-    text: string
+    text: string;
+    onlyTitle?: boolean;
 }
-const Text: FC<Props> = ({ text }) => {
+const Text: FC<Props> = ({ text, onlyTitle }) => {
 
     const textId = `${Math.random()}`.replace('.', '')
     //convert sentences, devided by /n to paragraphs
@@ -22,12 +23,10 @@ const Text: FC<Props> = ({ text }) => {
             return <p key={`${textId}--${i}`}>{boldedParagraph}</p>
         }
 
-
-
-
         return <p key={`${textId}--${i}`}>{paragraph}</p>
     })
 
+    if(onlyTitle) return (<>{paragraphs[0]}</>)
     return (
         <>{paragraphs}</>
     )

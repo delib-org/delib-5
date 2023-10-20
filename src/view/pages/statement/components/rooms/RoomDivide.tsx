@@ -6,6 +6,7 @@ import { auth } from '../../../../../functions/db/auth';
 import AdminSeeAllGroups from './admin/AdminSeeAllGroups';
 import LoaderGlass from '../../../../components/loaders/LoaderGlass';
 import styles from './roomDivide.module.scss';
+import Text from '../../../../components/text/Text';
 
 
 
@@ -31,7 +32,7 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
         <h1>חלוקה לחדרים</h1>
         {userTopic && userTopic.approved ?
           <div className={styles.message}>
-            <h2>נושא דיון: {userTopic.statement.statement}</h2>
+            <h2><Text text={`נושא הדיון: ${userTopic.statement.statement}`}git onlyTitle={true}/></h2>
             <div className={styles.text}>מוזמן/ת לחדר מספר <span>{userTopic.roomNumber}</span> בזום</div>
           </div>
           :
