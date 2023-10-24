@@ -30,6 +30,8 @@ import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { SetStatementComp } from './components/set/SetStatementComp';
 import StatmentRooms from './components/rooms/StatmentRooms';
+import { getUserPermissionToNotifications } from '../../../functions/notifications';
+import AskPermisssion from '../../components/askPermission/AskPermisssion';
 
 
 
@@ -44,6 +46,7 @@ const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const [title, setTitle] = useState<string>('קבוצה');
     const [prevStId, setPrevStId] = useState<Statement | null | undefined>(null);
+    const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 
     const dispatch: any = useAppDispatch();
     const navigate = useNavigate();
@@ -91,23 +94,21 @@ const Statement: FC = () => {
         navigator.share(shareData);
     }
 
-    function handleRegisterToNotifications() {
+    async function handleRegisterToNotifications() {
+        const isPermited = await getUserPermissionToNotifications();
+        console.log('isPermited', isPermited)
+        if(!isPermited){
+            setShowAskPermission(true)
+            return;
+        }
         setStatmentSubscriptionNotificationToDB(statement, role)
     }
-
-
-    // useEffect(() => {
-    //     setMove(2);
-    //     return () => {
-    //         setMove(0);
-    //     }
-    // }, []);
 
 
     useEffect(() => {
         const page = pageRef.current;
         const animationDireaction = navigationDirection(statement, prevStId);
-        console.log('animation direction', animationDireaction);
+      
         if (animationDireaction == 'forward') {
 
             page.classList.add('page--anima__forwardInScreen');
@@ -194,7 +195,7 @@ const Statement: FC = () => {
     //JSX
     return (
         <div ref={pageRef} className='page'>
-
+            {showAskPermission?<AskPermisssion showFn={setShowAskPermission} />:null}
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
             </div> : null}
