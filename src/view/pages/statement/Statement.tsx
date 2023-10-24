@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
@@ -23,6 +23,7 @@ import StatementOptions from './components/options/StatementOptions';
 import StatementVote from './components/vote/StatementVote';
 
 //icons
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ShareIcon from '../../icons/ShareIcon';
 import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
@@ -202,6 +203,9 @@ const Statement: FC = () => {
                     <div onClick={handleBack}>
                         <ArrowBackIosIcon />
                     </div>
+                    <Link to={"/home"}>
+                        <HomeOutlinedIcon />
+                    </Link>
                     <div onClick={handleRegisterToNotifications}>
                         {hasNotifications ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
