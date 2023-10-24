@@ -1,4 +1,4 @@
-console.log('firebase-messaging-sw.js')
+console.info('firebase-messaging-sw.js')
 // importScripts('/__/firebase/9.2.0/firebase-app-compat.js');
 // importScripts('/__/firebase/9.2.0/firebase-messaging-compat.js');
 // importScripts('/__/firebase/init.js?useEmulator=true');
@@ -29,7 +29,7 @@ const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage(function (payload) {
   try {
-    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  
     // Customize notification here
     if (!payload.data) throw new Error('no data');
     const { title, body, url } = payload.data;
@@ -54,14 +54,14 @@ messaging.onBackgroundMessage(function (payload) {
 
 
     self.addEventListener('notificationclick', function (event) {
-      console.log(event.notification)
+     
       event.notification.close();
       if (event.action === 'explore') {
         clients.openWindow(event.notification.data.url);
 
 
       } else if (event.action === 'close') {
-        console.log('close')
+   
       } else {
         clients.openWindow(event.notification.data.url);
       }
@@ -71,6 +71,6 @@ messaging.onBackgroundMessage(function (payload) {
 
     });
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 });

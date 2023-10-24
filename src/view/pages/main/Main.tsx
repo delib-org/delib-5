@@ -51,13 +51,12 @@ const Main = () => {
     function handleInstallApp() {
         try {
             const deferredPrompt = install.deferredPrompt;
-            console.log('handleInstallApp')
-            console.log(deferredPrompt)
+           
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult: any) => {
                     if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the A2HS prompt');
+                        console.info('User accepted the A2HS prompt');
                     }
                     setDeferredPrompt(null);
                 });

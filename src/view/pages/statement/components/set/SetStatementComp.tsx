@@ -49,8 +49,7 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
             ev.preventDefault();
             setIsLoading(true);
             const data = new FormData(ev.currentTarget);
-            console.log(data);
-            console.log(data.keys());
+          
             let title: any = data.get('statement');
             const description = data.get('description');
             //add to title * at the beggining
@@ -62,7 +61,7 @@ export const SetStatementComp: FC<Props> = ({ simple }) => {
 
 
             const newStatement: any = Object.fromEntries(data.entries());
-            console.log(newStatement)
+         
 
             newStatement.subScreens = parseScreensCheckBoxes(newStatement, navArray);
             newStatement.statement = _statement;

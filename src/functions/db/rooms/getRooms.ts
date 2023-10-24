@@ -89,7 +89,7 @@ export function listenToAllRoomsRquest(statement: Statement, cb: Function) {
 export function listenToRoomSolutions(statementId:string, cb: Function) {
     try {
      
-console.log(statementId)
+
         const statementSolutionsRef = collection(DB, Collections.statements);
         const q = query(statementSolutionsRef,where("parentId", "==", statementId), where("type", "==", StatementType.SOLUTION));
         return onSnapshot(q, roomSolutionsDB => {

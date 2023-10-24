@@ -16,7 +16,7 @@ const EnterName:FC<Props> = ({setShowNameModul}) => {
     setDisplayName(ev.target.value)
     if (isReadyToStart(ev.target.value)) setShowStartBtn(true)
     else setShowStartBtn(false)
-    console.log(ev.target.value)
+
   }
 
   function handleStart() {

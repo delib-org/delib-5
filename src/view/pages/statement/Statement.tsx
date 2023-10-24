@@ -96,7 +96,7 @@ const Statement: FC = () => {
 
     async function handleRegisterToNotifications() {
         const isPermited = await getUserPermissionToNotifications();
-        console.log('isPermited', isPermited)
+      
         if(!isPermited){
             setShowAskPermission(true)
             return;
@@ -179,8 +179,7 @@ const Statement: FC = () => {
     }, [statement])
 
     function handleBack() {
-        console.log("back")
-
+  
         const page = pageRef.current;
         page.classList.add('page--anima__backOutScreen');
         page.onanimationend = () => {

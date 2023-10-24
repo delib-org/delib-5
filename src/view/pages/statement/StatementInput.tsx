@@ -18,7 +18,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
     function handleAddStatement(e: any) {
         try {
             if(!user) throw new Error('No user');
-            console.log('handleAddStatement')
+         
             e.preventDefault();
             const value = e.target.newStatement.value;
             //remove white spaces and \n
@@ -28,7 +28,7 @@ const StatementInput: FC<Props> = ({ statement }) => {
             const newStatement: Statement | undefined = getNewStatment({ value, statement, user });
             if (!newStatement) throw new Error('No statement');
             newStatement.subScreens =[Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
-            console.log(newStatement)
+    
             setStatmentToDB(newStatement);
             e.target.reset();
         } catch (error) {
@@ -53,14 +53,13 @@ const StatementInput: FC<Props> = ({ statement }) => {
 
                 // submit form
                 if(!user) throw new Error('No user');
-                console.log(user)
+              
                 const newStatement: Statement | undefined = getNewStatment({ value: e.target.value, statement, user });
 
                 if (!newStatement) throw new Error('No statement');
 
                 newStatement.subScreens =[Screen.CHAT, Screen.OPTIONS, Screen.VOTE];
-                console.log(newStatement)
-                
+                            
                 setStatmentToDB(newStatement);
                 e.target.value = '';
             }

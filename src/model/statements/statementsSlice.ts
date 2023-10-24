@@ -104,8 +104,7 @@ export const statementsSlicer = createSlice({
 
         if (!request) {
           //remove preivous room request
-          console.log("remove request")
-          console.log(parentId)
+      
           state.askToJoinRooms = state.askToJoinRooms.filter(room => room.parentId !== parentId);
           return;
         }

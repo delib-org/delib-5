@@ -1,1 +1,1 @@
-console.log('firebase-messaging-sw.js')
+console.info('firebase-messaging-sw.js')

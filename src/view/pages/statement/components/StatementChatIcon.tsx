@@ -45,7 +45,7 @@ export function handleCreateSubStatements(statement: Statement, navigate: Functi
         page.classList.add('page--anima__forwardOutScreen');
         page.onanimationend = () => {
             setStatmentGroupToDB(statement);
-            console.log('onanimationend')
+           
             page.classList.remove('page--anima__forwardOutScreen');
             navigate(`/home/statement/${statement.statementId}`)
         }

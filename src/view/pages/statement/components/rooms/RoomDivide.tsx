@@ -19,9 +19,6 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
 
   const userTopic = useAppSelector(userSelectedTopicSelector(statement.statementId));
   const userRoom = useAppSelector(userSelectedRoomSelector(statement.statementId));
-  console.log(statement.statementId);
-  console.log(auth.currentUser?.uid)
-  console.log(userRoom)
 
   const isAdmin = statement.creatorId === auth.currentUser?.uid;
 

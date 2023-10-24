@@ -21,7 +21,7 @@ export function googleLogin() {
 
             // The signed-in user info.
             // const user = result.user;
-            console.log('user signed in with google ', result.user)
+            console.info('user signed in with google ', result.user)
 
             // IdP data available using getAdditionalUserInfo(result)
             // ...
@@ -49,7 +49,7 @@ export function listenToAuth(cb: Function, cbFontSize: Function) {
                 if (!user.displayName) user.displayName = localStorage.getItem('displayName') || 'anonymous';
                 const _user = parseUserFromFirebase(user);
                                               
-                console.log('User is signed in')
+                console.info('User is signed in')
                 if (!_user) throw new Error('user is undefined')
                
                
@@ -62,13 +62,13 @@ export function listenToAuth(cb: Function, cbFontSize: Function) {
                 cbFontSize(fontSize);
 
                 const userDB = await setUserToDB(_user) as User;
-                console.log(userDB)
+         
                 if(!userDB) throw new Error('userDB is undefined');
                 cb(userDB)
 
             } else {
                 // User is signed out
-                console.log('User is signed out')
+                console.info('User is signed out')
                 cb(null)
             }
         } catch (error) {
@@ -81,7 +81,7 @@ export function logOut() {
 
     signOut(auth).then(() => {
         // Sign-out successful.
-        console.log('Sign-out successful.')
+        console.info('Sign-out successful.')
     }).catch((error) => {
         // An error happened.
         console.error(error)
@@ -94,8 +94,8 @@ export function logOut() {
 // const auth = getAuth();
 export function signAnonymously() {
     signInAnonymously(auth)
-        .then((user) => {
-            console.log(user)
+        .then(() => {
+          
             console.info('user signed in anounymously')
         })
         .catch((error) => {

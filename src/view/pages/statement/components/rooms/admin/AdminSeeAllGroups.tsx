@@ -20,8 +20,7 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
     function handleDivideIntoRooms() {
         try {
             const { rooms, topicsParticipants } = divideIntoTopics(participants, 2);
-            console.log(rooms)
-            console.log(topicsParticipants)
+     
             rooms.forEach((room) => {
                 room.room.forEach((participant:RoomAskToJoin) => {
                     approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber, setRooms);
@@ -89,8 +88,6 @@ function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7)
 
         const rooms = divideIntoGeneralRooms(topicsParticipants);
 
-        console.log(rooms)
-
         return { rooms, topicsParticipants };
 
     } catch (error) {
@@ -136,7 +133,7 @@ function divideParticipantsIntoRoomsRandomly(participants: RoomAskToJoin[], maxP
 
 function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
     try {
-        console.log(topics)
+  
         let roomNumber = 1;
         let rooms: Array<RoomDivied> = [];
         for (const topic in topics) {
@@ -148,7 +145,7 @@ function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
             })
 
         }
-        console.log(rooms)
+       
         return rooms;
     } catch (error) {
         console.error(error);
