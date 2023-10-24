@@ -10,29 +10,43 @@ interface Props {
     statement: Statement
 }
 
+interface RoomsAdmin {
+    [statementId: string]: {
+        participants: Array<RoomAskToJoin>,
+        roomNumber: number,
+        statement: Statement
+    }
+}
 
 
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
     const participants = useAppSelector(participantsSelector(statement.statementId));
     const [setRooms, setSetRooms] = useState<boolean>(true);
+    const [roomsAdmin, setRoomsAdmin] = useState<RoomsAdmin>({} as RoomsAdmin);
 
     function handleDivideIntoRooms() {
         try {
             const { rooms, topicsParticipants } = divideIntoTopics(participants, 2);
-     
+            console.log(topicsParticipants)
+            console.log(rooms)
+            const roomsAdmin: RoomsAdmin = {};
             rooms.forEach((room) => {
-                room.room.forEach((participant:RoomAskToJoin) => {
+                room.room.forEach((participant: RoomAskToJoin) => {
                     approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber, setRooms);
+
+                    if (!(room.statement.statementId in roomsAdmin)) roomsAdmin[room.statement.statementId] = { participants: [], roomNumber: room.roomNumber, statement: room.statement };
+                    roomsAdmin[room.statement.statementId].participants.push(participant)
                 })
             })
-            setSetRooms(state=>!state);
+            setRoomsAdmin(roomsAdmin)
+            setSetRooms(state => !state);
         } catch (error) {
             console.error(error);
         }
     }
 
-   
+
 
     return (
         <div>
@@ -40,14 +54,28 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
             <div className="wrapper">
                 <h3>משתתפים</h3>
                 <div className="btns">
-                    {setRooms?<button  onClick={handleDivideIntoRooms}>חלק/י לחדרים</button>:<button className='btn--cancel' onClick={handleDivideIntoRooms}>ביטול חלוקה</button>}
-                    
+                    {setRooms ? <button onClick={handleDivideIntoRooms}>חלק/י לחדרים</button> : <button className='btn--cancel' onClick={handleDivideIntoRooms}>ביטול חלוקה</button>}
+
                 </div>
                 <div>
                     {participants.map((request) => (
                         <RoomParticpantBadge key={request.participant.uid} participant={request.participant} />
                     ))}
                 </div>
+                <h3>חלוקה לחדרים</h3>
+                {Object.keys(roomsAdmin).map((statementId) => {
+                    const room = roomsAdmin[statementId];
+                    return (
+                        <div key={room.roomNumber}>
+                            <h4>חדר {room.roomNumber}</h4>
+                            <div>
+                                {room.participants.map((participant) => (
+                                    <RoomParticpantBadge key={participant.participant.uid} participant={participant.participant} />
+                                ))}
+                            </div>
+                        </div>
+                    )
+                })}            
             </div>
         </div>
     )
@@ -133,7 +161,7 @@ function divideParticipantsIntoRoomsRandomly(participants: RoomAskToJoin[], maxP
 
 function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
     try {
-  
+
         let roomNumber = 1;
         let rooms: Array<RoomDivied> = [];
         for (const topic in topics) {
@@ -145,7 +173,7 @@ function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
             })
 
         }
-       
+
         return rooms;
     } catch (error) {
         console.error(error);
