@@ -208,7 +208,7 @@ const Statement: FC = () => {
                         <HomeOutlinedIcon />
                     </Link>
                     <div onClick={handleRegisterToNotifications}>
-                        {hasNotifications ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
+                        {hasNotifications && Notification.permission === "granted" ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
                     <h1>{title}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>

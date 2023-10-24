@@ -3,6 +3,7 @@ export async function getUserPermissionToNotifications(): Promise<boolean> {
        
         if (!("Notification" in window)) throw new Error("Notification not supported");
         if (Notification.permission === "granted") return true;
+       
         if (Notification.permission === "denied") throw new Error("Permission not granted");
        
         //in case the user didn't set the notification permission yet

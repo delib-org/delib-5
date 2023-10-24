@@ -12,7 +12,7 @@ const TextSchema = z.string().min(2);
 
 export async function setStatmentToDB(statement: Statement, addSubscription: boolean = true) {
     try {
-
+console.log("setStatmentToDB")
         TextSchema.parse(statement.statement);
         statement.consensus = 0;
      
@@ -27,6 +27,7 @@ export async function setStatmentToDB(statement: Statement, addSubscription: boo
         //add subscription
         if (addSubscription) {
             await setStatmentSubscriptionToDB(statement, Role.admin, true);
+            console.log("can get notifications?")
             const canGetNotifications = await getUserPermissionToNotifications();
 
             if (canGetNotifications)
@@ -72,6 +73,7 @@ export async function setStatmentSubscriptionNotificationToDB(statement: Stateme
         const { statementId } = statement;
 
         //ask user for permission to send notifications
+        console.log("ask user for permission to send notifications");
         await getUserPermissionToNotifications();
 
 
