@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getIsSubscribed, listenToStatement, listenToStatementSubscription, listenToStatementsOfStatment } from '../../../functions/db/statements/getStatement';
 import { useAppDispatch, useAppSelector } from '../../../functions/hooks/reduxHooks';
 import { setStatement, setStatementSubscription, statementNotificationSelector, statementSelector, statementSubsSelector, statementSubscriptionSelector } from '../../../model/statements/statementsSlice';
@@ -23,12 +23,15 @@ import StatementOptions from './components/options/StatementOptions';
 import StatementVote from './components/vote/StatementVote';
 
 //icons
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import ShareIcon from '../../icons/ShareIcon';
 import ArrowBackIosIcon from '../../icons/ArrowBackIosIcon';
 import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { SetStatementComp } from './components/set/SetStatementComp';
 import StatmentRooms from './components/rooms/StatmentRooms';
+import { getUserPermissionToNotifications } from '../../../functions/notifications';
+import AskPermisssion from '../../components/askPermission/AskPermisssion';
 
 
 
@@ -43,6 +46,7 @@ const Statement: FC = () => {
     const [talker, setTalker] = useState<User | null>(null);
     const [title, setTitle] = useState<string>('קבוצה');
     const [prevStId, setPrevStId] = useState<Statement | null | undefined>(null);
+    const [showAskPermission, setShowAskPermission] = useState<boolean>(false);
 
     const dispatch: any = useAppDispatch();
     const navigate = useNavigate();
@@ -90,23 +94,21 @@ const Statement: FC = () => {
         navigator.share(shareData);
     }
 
-    function handleRegisterToNotifications() {
+    async function handleRegisterToNotifications() {
+        const isPermited = await getUserPermissionToNotifications();
+        console.log('isPermited', isPermited)
+        if(!isPermited){
+            setShowAskPermission(true)
+            return;
+        }
         setStatmentSubscriptionNotificationToDB(statement, role)
     }
-
-
-    // useEffect(() => {
-    //     setMove(2);
-    //     return () => {
-    //         setMove(0);
-    //     }
-    // }, []);
 
 
     useEffect(() => {
         const page = pageRef.current;
         const animationDireaction = navigationDirection(statement, prevStId);
-        console.log('animation direction',animationDireaction);
+      
         if (animationDireaction == 'forward') {
 
             page.classList.add('page--anima__forwardInScreen');
@@ -114,8 +116,8 @@ const Statement: FC = () => {
                 page.classList.remove('page--anima__forwardInScreen');
             }
 
-           
-            
+
+
         } else if (animationDireaction == 'back') {
             page.classList.add('page--anima__backInScreen');
 
@@ -178,12 +180,12 @@ const Statement: FC = () => {
 
     function handleBack() {
         console.log("back")
-       
+
         const page = pageRef.current;
         page.classList.add('page--anima__backOutScreen');
         page.onanimationend = () => {
             page.classList.remove('page--anima__backOutScreen');
-            navigate(statement?.parentId === "top"?'/home':`/home/statement/${statement?.parentId}`);
+            navigate(statement?.parentId === "top" ? '/home' : `/home/statement/${statement?.parentId}`);
         }
 
     }
@@ -193,7 +195,7 @@ const Statement: FC = () => {
     //JSX
     return (
         <div ref={pageRef} className='page'>
-
+            {showAskPermission?<AskPermisssion showFn={setShowAskPermission} />:null}
             {talker ? <div onClick={() => { handleShowTalker(null) }}>
                 <ProfileImage user={talker} />
             </div> : null}
@@ -202,8 +204,11 @@ const Statement: FC = () => {
                     <div onClick={handleBack}>
                         <ArrowBackIosIcon />
                     </div>
+                    <Link to={"/home"}>
+                        <HomeOutlinedIcon />
+                    </Link>
                     <div onClick={handleRegisterToNotifications}>
-                        {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon htmlColor='lightgray' />}
+                        {hasNotifications ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
                     <h1>{title}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>
@@ -218,7 +223,7 @@ const Statement: FC = () => {
 
 export default Statement;
 
-function switchScreens(screen: string | undefined, statement: Statement | undefined, subStatements: Statement[], handleShowTalker: Function, page:any) {
+function switchScreens(screen: string | undefined, statement: Statement | undefined, subStatements: Statement[], handleShowTalker: Function, page: any) {
     try {
         if (!statement) return null;
 

@@ -1,23 +1,49 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import RoomParticpantBadge from '../RoomParticpantBadge'
 import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
-import { RoomAskToJoin, Statement } from 'delib-npm'
+import { RoomAskToJoin, RoomDivied, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
+import { approveToJoinRoomDB } from '../../../../../../functions/db/rooms/setRooms'
+
 
 interface Props {
     statement: Statement
 }
 
+
+
 const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 
-    const participants = useAppSelector(participantsSelector(statement.statementId))
-    console.log(participants)
-    console.log(divideItoTopics(participants))
+    const participants = useAppSelector(participantsSelector(statement.statementId));
+    const [setRooms, setSetRooms] = useState<boolean>(true);
+
+    function handleDivideIntoRooms() {
+        try {
+            const { rooms, topicsParticipants } = divideIntoTopics(participants, 2);
+            console.log(rooms)
+            console.log(topicsParticipants)
+            rooms.forEach((room) => {
+                room.room.forEach((participant:RoomAskToJoin) => {
+                    approveToJoinRoomDB(participant.participant.uid, room.statement, room.roomNumber, setRooms);
+                })
+            })
+            setSetRooms(state=>!state);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+   
+
     return (
         <div>
             <h1>חלק לחדרים בלחיצה</h1>
             <div className="wrapper">
                 <h3>משתתפים</h3>
+                <div className="btns">
+                    {setRooms?<button  onClick={handleDivideIntoRooms}>חלק/י לחדרים</button>:<button className='btn--cancel' onClick={handleDivideIntoRooms}>ביטול חלוקה</button>}
+                    
+                </div>
                 <div>
                     {participants.map((request) => (
                         <RoomParticpantBadge key={request.participant.uid} participant={request.participant} />
@@ -29,12 +55,15 @@ const AdminSeeAllGroups: FC<Props> = ({ statement }) => {
 }
 
 export default AdminSeeAllGroups
+export interface ParticipantInRoom { uid: string, room: number, roomNumber?: number, topic?: Statement, statementId?: string }
 
-function divideItoTopics(participants: RoomAskToJoin[]) {
+function divideIntoTopics(participants: RoomAskToJoin[], maxPerRoom: number = 7): { rooms: Array<RoomDivied>, topicsParticipants: any } {
     try {
 
         const topicsParticipants: any = {};
+        //build topicsParticipantsObject
         participants.forEach((participant) => {
+
             try {
                 if (!(participant.statementId in topicsParticipants)) {
                     topicsParticipants[participant.statementId] = { statementId: participant.statementId, statement: participant.statement, participants: [participant] };
@@ -48,41 +77,81 @@ function divideItoTopics(participants: RoomAskToJoin[]) {
             }
         })
 
-        for (const key in topicsParticipants) {
+        //divide participents according to topics and rooms
+        // let rooms: Array<ParticipantInRoom> = [];
+        for (const topic in topicsParticipants) {
 
-            const patricipantsInTopic = topicsParticipants[key].participants;
-            const rooms = divideIntoRooms(patricipantsInTopic, 7);
-            topicsParticipants[key].rooms = rooms;
+            const patricipantsInTopic = topicsParticipants[topic].participants;
+            topicsParticipants[topic].rooms = divideParticipantsIntoRoomsRandomly(patricipantsInTopic, maxPerRoom);
+
 
         }
-        return topicsParticipants;
+
+        const rooms = divideIntoGeneralRooms(topicsParticipants);
+
+        console.log(rooms)
+
+        return { rooms, topicsParticipants };
 
     } catch (error) {
         console.error(error);
-        return undefined
+        return { rooms: [], topicsParticipants: undefined }
     }
 }
 
-function divideIntoRooms(participants: RoomAskToJoin[], maxPerRoom: number) {
+
+
+
+function divideParticipantsIntoRoomsRandomly(participants: RoomAskToJoin[], maxPerRoom: number): Array<Array<RoomAskToJoin>> {
     try {
-        const rooms:any = [[]];
-       
-        let count = 0;
-        const _participants = [...participants].sort(() => Math.random() - 0.5);
-       
-        for (let index = 0; index < _participants.length; index++) {
-            const participant = _participants[index];
-            if (count < maxPerRoom) {
-                rooms[count].push(participant);
-                count++;
-            } else {
-                rooms.push([]);
-                count = 0;
-            }
-        }
+
+        const numberOfRooms = Math.ceil(participants.length / maxPerRoom);
+
+        //randomize participants
+        participants.sort(() => Math.random() - 0.5);
+
+        let roomNumber = 0;
+
+
+        const rooms: Array<Array<RoomAskToJoin>> = [[]]
+        participants.forEach((participant: RoomAskToJoin) => {
+
+            if (!rooms[roomNumber]) rooms[roomNumber] = [];
+            rooms[roomNumber].push(participant)
+            if (roomNumber < numberOfRooms - 1) roomNumber++;
+            else roomNumber = 0;
+        });
+
+
+
+
         return rooms;
     } catch (error) {
         console.error(error);
-        return undefined;
+        return [];
+    }
+}
+
+
+
+function divideIntoGeneralRooms(topics: any): Array<RoomDivied> {
+    try {
+        console.log(topics)
+        let roomNumber = 1;
+        let rooms: Array<RoomDivied> = [];
+        for (const topic in topics) {
+            const topicRooms = topics[topic].rooms;
+            topicRooms.forEach((room: Array<RoomAskToJoin>) => {
+
+                rooms.push({ room, roomNumber, statement: topics[topic].statement });
+                roomNumber++;
+            })
+
+        }
+        console.log(rooms)
+        return rooms;
+    } catch (error) {
+        console.error(error);
+        return [];
     }
 }

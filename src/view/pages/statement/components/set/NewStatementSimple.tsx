@@ -3,7 +3,7 @@ import { StatementType } from '../../../../../model/statements/statementModel';
 import { setStatmentToDB } from '../../../../../functions/db/statements/setStatments';
 
 import { auth } from '../../../../../functions/db/auth';
-import { UserSchema } from '../../../../../model/users/userModel';
+import { UserSchema } from 'delib-npm';
 import Loader from '../../../../components/loaders/Loader';
 
 import {Statement, parseUserFromFirebase } from 'delib-npm';

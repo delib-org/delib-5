@@ -53,17 +53,17 @@
 
     &--anima{
         &__backOutScreen{
-           animation: fadeUpOut 650ms ease-in-out 0s 1 forwards normal;
+           animation: fadeUpOut 200ms ease-in-out 0s 1 forwards normal;
         }
         &__backInScreen{
-            animation: comeinUpIn 650ms ease-in-out 0s 1 forwards normal;
+            animation: comeinUpIn 200ms ease-in-out 0s 1 forwards normal;
         }
 
         &__forwardOutScreen{
-            animation: forwardOutScreen 650ms ease-in-out 0s 1 forwards normal;
+            animation: forwardOutScreen 200ms ease-in-out 0s 1 forwards normal;
         }
         &__forwardInScreen{
-            animation: forwardInScreen 650ms ease-in-out 0s 1 forwards normal;
+            animation: forwardInScreen 200ms ease-in-out 0s 1 forwards normal;
         }
 
 
@@ -78,14 +78,14 @@
     }
 
     100% {
-        transform: scale(2);
+        transform: scale(1.2);
         opacity: 0;
     }
 }
 
 @keyframes comeinUpIn {
     0% {
-        transform: scale(0);
+        transform: scale(.8);
         opacity: 0;
     }
 
@@ -102,14 +102,14 @@
     }
 
     100% {
-        transform: scale(0);
+        transform: scale(.8);
         opacity: 0;
     }
 }
 
 @keyframes forwardInScreen {
     0% {
-        transform: scale(2);
+        transform: scale(1.2);
         opacity: 0;
     }
 
