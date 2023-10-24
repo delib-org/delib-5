@@ -203,7 +203,7 @@ const Statement: FC = () => {
                         <ArrowBackIosIcon />
                     </div>
                     <div onClick={handleRegisterToNotifications}>
-                        {hasNotifications ? <NotificationsOffIcon /> : <NotificationsActiveIcon htmlColor='lightgray' />}
+                        {hasNotifications ? <NotificationsActiveIcon /> : <NotificationsOffIcon htmlColor='lightgray' />}
                     </div>
                     <h1>{title}</h1>
                     <div onClick={handleShare}><ShareIcon /></div>

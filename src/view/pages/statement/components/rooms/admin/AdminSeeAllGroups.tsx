@@ -4,7 +4,7 @@ import { useAppSelector } from '../../../../../../functions/hooks/reduxHooks'
 import { RoomAskToJoin, RoomDivied, Statement } from 'delib-npm'
 import { participantsSelector } from '../../../../../../model/statements/statementsSlice'
 import { approveToJoinRoomDB } from '../../../../../../functions/db/rooms/setRooms'
-import { boolean } from 'zod'
+
 
 interface Props {
     statement: Statement

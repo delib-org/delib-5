@@ -32,7 +32,7 @@ const RoomQuestions: FC<Props> = ({ statement }) => {
         <h1>חלוקה לחדרים</h1>
         {userTopic && userTopic.approved ?
           <div className={styles.message}>
-            <h2><Text text={`נושא הדיון: ${userTopic.statement.statement}`}git onlyTitle={true}/></h2>
+            <h2><Text text={`נושא הדיון: ${userTopic.statement.statement}`} onlyTitle={true}/></h2>
             <div className={styles.text}>מוזמן/ת לחדר מספר <span>{userTopic.roomNumber}</span> בזום</div>
           </div>
           :
